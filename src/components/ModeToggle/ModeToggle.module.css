@@ -1,0 +1,49 @@
+.trigger {
+  border-radius: 50%;
+  display: grid;
+    place-items: center;
+  height: 2.5rem;
+  order: 1;
+  width: 2.5rem;
+}
+.portal {
+  z-index: 1001;
+}
+.viewport {
+  display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  z-index: 1001;
+}
+.group {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 1.0625rem;
+  box-sizing: content-box;
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.125rem;
+  width: 2rem;
+  z-index: 1001;
+}
+.item {
+  border: 2px solid var(--color-background);
+  border-radius: 2rem;
+  display: grid;
+    place-items: center;
+  height: 2rem;
+  outline: 1px solid transparent;
+  transition: border  0.1s ease-in,
+              outline 0.1s ease-in;
+  width: 2rem;
+}
+.item:hover,
+.item:focus {
+  border: 1px solid var(--color-green);
+  cursor: pointer;
+  outline: 1px solid var(--color-green);
+}
+.item[data-state='checked'] {
+  background-color: var(--color-surface-secondary);
+}

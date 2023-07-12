@@ -1,0 +1,18 @@
+
+
+.logo {
+  border-radius: 0.25rem;
+  font-size: 3rem;
+  font-weight: 800;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  padding-inline: 0.25rem;
+  position: relative;
+    left: -0.25rem;
+  text-transform: lowercase;
+
+  .dot {
+    color: var(--red-9);
+    font-weight: 500;
+  }
+}

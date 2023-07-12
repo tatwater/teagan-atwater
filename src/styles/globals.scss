@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+  --slate-1: hsl(206, 30.0%, 98.8%);
+  --slate-2: hsl(210, 16.7%, 97.6%);
+  --slate-3: hsl(209, 13.3%, 95.3%);
+  --slate-4: hsl(209, 12.2%, 93.2%);
+  --slate-5: hsl(208, 11.7%, 91.1%);
+  --slate-6: hsl(208, 11.3%, 88.9%);
+  --slate-7: hsl(207, 11.1%, 85.9%);
+  --slate-8: hsl(205, 10.7%, 78.0%);
+  --slate-9: hsl(206, 6.0%, 56.1%);
+  --slate-10: hsl(206, 5.8%, 52.3%);
+  --slate-11: hsl(206, 6.0%, 43.5%);
+  --slate-12: hsl(206, 24.0%, 9.0%);
+
+  --red-1: hsl(359, 100%, 99.4%);
+  --red-2: hsl(359, 100%, 98.6%);
+  --red-3: hsl(360, 100%, 96.8%);
+  --red-4: hsl(360, 97.9%, 94.8%);
+  --red-5: hsl(360, 90.2%, 91.9%);
+  --red-6: hsl(360, 81.7%, 87.8%);
+  --red-7: hsl(359, 74.2%, 81.7%);
+  --red-8: hsl(359, 69.5%, 74.3%);
+  --red-9: hsl(358, 75.0%, 59.0%);
+  --red-10: hsl(358, 69.4%, 55.2%);
+  --red-11: hsl(358, 65.0%, 48.7%);
+  --red-12: hsl(354, 50.0%, 14.6%);
+
+  --color-background: hsl(0, 0%, 100%);
+  --color-surface-secondary: hsl(210, 40%, 96%);
+  --color-surface-secondary: #f1ede7;
+
+  --color-text-primary: hsl(222, 47%, 11%);
+  --color-text-secondary: hsl(222, 9%, 55%);
+
+  --color-border-primary: hsl(214, 32%, 91%);
+
+  --color-green: #14b8a6;
+
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+
+  --surface-tertiary: rgb(16, 36, 62);
+
+  --text-rgb: 15, 23, 32;
+}
+
+[data-theme='dark'] {
+  --slate-1: hsl(200, 7.0%, 8.8%);
+  --slate-2: hsl(195, 7.1%, 11.0%);
+  --slate-3: hsl(197, 6.8%, 13.6%);
+  --slate-4: hsl(198, 6.6%, 15.8%);
+  --slate-5: hsl(199, 6.4%, 17.9%);
+  --slate-6: hsl(201, 6.2%, 20.5%);
+  --slate-7: hsl(203, 6.0%, 24.3%);
+  --slate-8: hsl(207, 5.6%, 31.6%);
+  --slate-9: hsl(206, 6.0%, 43.9%);
+  --slate-10: hsl(206, 5.2%, 49.5%);
+  --slate-11: hsl(206, 6.0%, 63.0%);
+  --slate-12: hsl(210, 6.0%, 93.0%);
+
+  --red-1: hsl(353, 23.0%, 9.8%);
+  --red-2: hsl(357, 34.4%, 12.0%);
+  --red-3: hsl(356, 43.4%, 16.4%);
+  --red-4: hsl(356, 47.6%, 19.2%);
+  --red-5: hsl(356, 51.1%, 21.9%);
+  --red-6: hsl(356, 55.2%, 25.9%);
+  --red-7: hsl(357, 60.2%, 31.8%);
+  --red-8: hsl(358, 65.0%, 40.4%);
+  --red-9: hsl(358, 75.0%, 59.0%);
+  --red-10: hsl(358, 85.3%, 64.0%);
+  --red-11: hsl(358, 100%, 69.5%);
+  --red-12: hsl(351, 89.0%, 96.0%);
+
+  --color-background: var(--slate-1);
+  --color-surface-secondary: hsl(217, 33%, 17%);
+
+  --color-text-primary:hsl(0, 0%, 100%);
+
+  --color-border-primary: hsl(215, 19%, 35%);
+
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
+
+  --surface-tertiary: rgb(16, 36, 62);
+
+  --text-rgb: 255, 255, 255;
+}
+
+*:focus {
+  outline: 2px solid var(--color-green);
+}
+
+body {
+  background-color: var(--color-background);
+  background-image: radial-gradient(var(--slate-4) 1px, transparent 2px);
+  background-position: 0 0, 50% 50%;
+  background-size: 40px 40px;
+  color: var(--slate-12);
+  display: flex;
+    flex-direction: column;
+  font-family: var(--font-inter);
+  min-height: 100dvh;
+}
+
+main {
+  display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.hero {
+  display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+  padding: 2rem;
+
+  &--max {
+    justify-content: center;
+    min-height: 50svh;
+  }
+}
+
+h1 {
+  font-size: 6rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}

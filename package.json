@@ -9,15 +9,30 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@types/node": "18.15.11",
-    "@types/react": "18.0.33",
-    "@types/react-dom": "18.0.11",
-    "autoprefixer": "10.4.14",
-    "next": "13.3.0",
-    "postcss": "8.4.21",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "tailwindcss": "3.3.1",
-    "typescript": "5.0.4"
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@fortawesome/sharp-light-svg-icons": "^6.4.0",
+    "@fortawesome/sharp-regular-svg-icons": "^6.4.0",
+    "@fortawesome/sharp-solid-svg-icons": "^6.4.0",
+    "@radix-ui/react-select": "^1.2.2",
+    "kbar": "^0.1.0-beta.40",
+    "next": "^13.4.8",
+    "next-pwa": "^5.6.0",
+    "next-sanity": "^5.1.0",
+    "next-themes": "^0.2.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sanity": "^3.14.1",
+    "typewriter-effect": "^2.20.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.4.0",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "sass": "^1.63.6",
+    "tailwindcss": "^3.3.2",
+    "typescript": "^5.1.6"
   }
 }

@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
+.npmrc
 .pnp.js
 
 # testing
@@ -33,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# vscode
+/.vscode
+
+# pwa
+/public/sw.*
+/public/workbox-*

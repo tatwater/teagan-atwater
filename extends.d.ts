@@ -1,0 +1,4 @@
+
+interface Navigator {
+  keyboard: any;
+}
