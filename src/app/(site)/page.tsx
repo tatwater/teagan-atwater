@@ -1,5 +1,5 @@
 import Typewriter from '@/components/Typewriter';
-import styled from './homePage.module.scss';
+import styled from './HomePage.module.scss';
 
 
 export default function HomePage() {
