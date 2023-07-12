@@ -13,10 +13,29 @@ export default function CmdkHint() {
 
 
   useEffect(() => {
-    if (navigator.platform.includes('Mac')) {
+    // if (navigator.platform.includes('Mac')) {
+    //   setIsMac(true);
+    //   setShowHint(true);
+    // } else if (navigator.platform.includes('Win') || navigator.platform.includes('Linux')) {
+    //   setShowHint(true);
+    // }
+
+    if (navigator.userAgent.includes('Macintosh')) {
       setIsMac(true);
       setShowHint(true);
-    } else if (navigator.platform.includes('Win') || navigator.platform.includes('Linux')) {
+    } else if (
+      navigator.userAgent.includes('CrOS')
+      || (
+        navigator.userAgent.includes('Windows')
+        && !navigator.userAgent.includes('Phone')
+        && !navigator.userAgent.includes('Xbox')
+      )
+      || (
+        navigator.userAgent.includes('Linux')
+        && !navigator.userAgent.includes('Android')
+        && !navigator.userAgent.includes('Kindle')
+      )
+    ) {
       setShowHint(true);
     }
   });
