@@ -8,16 +8,15 @@ import { faCommand } from '@fortawesome/sharp-regular-svg-icons';
 
 
 export default function CmdkHint() {
+  const [isMac,    setIsMac]    = useState(false);
   const [showHint, setShowHint] = useState(false);
-  // Check whether windows / mac to choose ctrl / cmd
-  // useEffect(() => {
-  //   console.log(window.navigator.userAgentData?.platform);
-  // });
 
-  // console.log (navigator.userAgent.includes('Macintosh'));
 
   useEffect(() => {
-    if (!!navigator.keyboard) {
+    if (navigator.platform.includes('Mac')) {
+      setIsMac(true);
+      setShowHint(true);
+    } else if (navigator.platform.includes('Win') || navigator.platform.includes('Linux')) {
       setShowHint(true);
     }
   });
@@ -29,8 +28,11 @@ export default function CmdkHint() {
                       font-mono text-xs'>
         <span>Explore by keyboard</span>
         <div className='flex gap-1 items-center'>
-          <KeyboardKey icon>
-            <FontAwesomeIcon icon={ faCommand } />
+          <KeyboardKey icon={ isMac }>
+            { isMac
+              ? <FontAwesomeIcon icon={ faCommand } />
+              : 'Ctrl'
+            }
           </KeyboardKey>
           <KeyboardKey>
             { 'K' }
