@@ -2,38 +2,45 @@
 
 import type { ReactNode } from 'react';
 
-// import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommand } from '@fortawesome/sharp-regular-svg-icons';
 
 
 export default function CmdkHint() {
-
+  const [showHint, setShowHint] = useState(false);
   // Check whether windows / mac to choose ctrl / cmd
   // useEffect(() => {
   //   console.log(window.navigator.userAgentData?.platform);
   // });
-  
+
   // console.log (navigator.userAgent.includes('Macintosh'));
 
-  if (!navigator.keyboard) {
-    return null;
+  useEffect(() => {
+    if (!!navigator.keyboard) {
+      setShowHint(true);
+    }
+  });
+
+
+  if (showHint) {
+    return (
+      <div className='flex gap-3 items-center
+                      font-mono text-xs'>
+        <span>Explore by keyboard</span>
+        <div className='flex gap-1 items-center'>
+          <KeyboardKey icon>
+            <FontAwesomeIcon icon={ faCommand } />
+          </KeyboardKey>
+          <KeyboardKey>
+            { 'K' }
+          </KeyboardKey>
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <div className='flex gap-3 items-center
-                    font-mono text-xs'>
-      <span>Explore by keyboard</span>
-      <div className='flex gap-1 items-center'>
-        <KeyboardKey icon>
-          <FontAwesomeIcon icon={ faCommand } />
-        </KeyboardKey>
-        <KeyboardKey>
-          { 'K' }
-        </KeyboardKey>
-      </div>
-    </div>
-  );
+  return <></>;
 }
 
 

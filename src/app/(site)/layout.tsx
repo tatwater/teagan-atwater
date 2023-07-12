@@ -24,7 +24,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: Props) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang='en'>
       <body className={` ${ inter.variable } ${ mono.variable } `}>
         <Providers>
           <Navbar />
