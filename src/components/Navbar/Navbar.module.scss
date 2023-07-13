@@ -1,0 +1,19 @@
+
+.navbar {
+  display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: space-between;
+  margin-top: 1rem;
+  padding: 1.25rem 1rem;
+  position: sticky;
+    top: 0;
+    right: 0;
+    left: 0;
+  user-select: none;
+  z-index: 1000;
+
+  @media (min-width: 800px) {
+    padding: 1.25rem 1.5rem;
+  }
+}

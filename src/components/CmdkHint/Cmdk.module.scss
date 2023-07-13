@@ -1,0 +1,11 @@
+
+.key {
+  background: var(--color-surface-secondary);
+  border-radius: 0.25rem;
+  display: grid;
+    place-items: center;
+  font-weight: 600;
+  height: 1.5rem;
+  min-width: 1.5rem;
+  padding-inline: 0.375rem;
+}

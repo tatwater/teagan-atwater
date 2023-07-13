@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCommand } from '@fortawesome/sharp-regular-svg-icons';
 
+import styled from './Cmdk.module.scss';
+
 
 export default function CmdkHint() {
   const [isMac,    setIsMac]    = useState(false);
@@ -13,13 +15,6 @@ export default function CmdkHint() {
 
 
   useEffect(() => {
-    // if (navigator.platform.includes('Mac')) {
-    //   setIsMac(true);
-    //   setShowHint(true);
-    // } else if (navigator.platform.includes('Win') || navigator.platform.includes('Linux')) {
-    //   setShowHint(true);
-    // }
-
     if (navigator.userAgent.includes('Macintosh')) {
       setIsMac(true);
       setShowHint(true);
@@ -39,7 +34,6 @@ export default function CmdkHint() {
       setShowHint(true);
     }
   });
-
 
   if (showHint) {
     return (
@@ -67,10 +61,7 @@ export default function CmdkHint() {
 
 const KeyboardKey = ({ children, icon }: { children: ReactNode, icon?: boolean }) => {
   return (
-    <div className={ `bg-[color:var(--color-surface-secondary)] rounded
-                      h-6 w-6
-                      grid place-items-center
-                      font-semibold ${ icon ? 'text-xs' : 'text-sm' }` }>
+    <div className={ `${ icon ? 'text-xs' : 'text-sm' } ${ styled.key }` }>
       { children }
     </div>
   )

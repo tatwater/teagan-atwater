@@ -1,0 +1,29 @@
+.input-wrapper {
+  display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+label {
+  color: var(--slate-9);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+input {
+  background: none;
+  border: none;
+
+  &[type='email'],
+  &[type='text'] {
+    border-bottom: 1px solid var(--slate-5);
+    font-family: var(--font-mono);
+    padding-bottom: 0.25rem;
+
+    &:focus {
+      border-color: var(--color-green);
+      outline: none;
+    }
+  }
+
+}

@@ -1,3 +1,7 @@
+@use 'buttons';
+@use 'colors';
+@use 'input';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,6 +33,19 @@
   --red-10: hsl(358, 69.4%, 55.2%);
   --red-11: hsl(358, 65.0%, 48.7%);
   --red-12: hsl(354, 50.0%, 14.6%);
+
+  --green-1: hsl(136, 50.0%, 98.9%);
+  --green-2: hsl(138, 62.5%, 96.9%);
+  --green-3: hsl(139, 55.2%, 94.5%);
+  --green-4: hsl(140, 48.7%, 91.0%);
+  --green-5: hsl(141, 43.7%, 86.0%);
+  --green-6: hsl(143, 40.3%, 79.0%);
+  --green-7: hsl(146, 38.5%, 69.0%);
+  --green-8: hsl(151, 40.2%, 54.1%);
+  --green-9: hsl(151, 55.0%, 41.5%);
+  --green-10: hsl(152, 57.5%, 37.6%);
+  --green-11: hsl(153, 67.0%, 28.5%);
+  --green-12: hsl(155, 40.0%, 14.0%);
 
   --color-background: hsl(0, 0%, 100%);
   --color-surface-secondary: hsl(210, 40%, 96%);
@@ -97,8 +114,11 @@
   outline: 2px solid var(--color-green);
 }
 
-body {
+html {
   background-color: var(--color-background);
+}
+
+body {
   background-image: radial-gradient(var(--slate-4) 1px, transparent 2px);
   background-position: 0 0, 50% 50%;
   background-size: 40px 40px;

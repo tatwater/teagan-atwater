@@ -1,0 +1,16 @@
+
+form button {
+  background-color: var(--green-8);
+  border: 1px solid var(--green-9);
+  border-radius: 0.25rem;
+  color: #fff;
+  display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+  // font-family: var(--font-mono);
+  // font-size: 0.75rem;
+  height: 1.75rem;
+  // letter-spacing: 0.12em;
+  // text-transform: uppercase;
+}
