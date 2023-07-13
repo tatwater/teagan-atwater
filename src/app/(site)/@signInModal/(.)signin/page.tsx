@@ -19,7 +19,6 @@ export default function SignInModal() {
       <Dialog.Portal>
         <Dialog.Overlay className={ styled.overlay } />
         <Dialog.Content className={ styled.content }>
-          {/* <Dialog.Title /> */}
           <form className={ styled.form }>
             <div className='input-wrapper'>
               <label htmlFor='signin-email'>Email address</label>
@@ -35,7 +34,6 @@ export default function SignInModal() {
               <FontAwesomeIcon icon={ faLongArrowRight } />
             </button>
           </form>
-          <Dialog.Close />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
