@@ -1,0 +1,192 @@
+.header {
+  padding: 8rem 2rem 6rem;
+  margin: 0 auto;
+  max-width: 90rem;
+}
+.resume {
+  display: flex;
+    gap: 6rem;
+    justify-content: center;
+}
+.resume h2 {
+  font-size: 1.25;
+  letter-spacing: 0.25em;
+  margin-bottom: 1rem;
+  position: relative;
+  text-transform: uppercase;
+}
+/* .resume h2::after {
+  background: var(--color-green);
+  content: '';
+  height: 2px;
+  position: absolute;
+    bottom: -2px;
+    left: 0;
+  width: 120px;
+} */
+.resume h3 {
+  display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.resume h3 span {
+  font-size: 1rem;
+  font-weight: 600;
+}
+.resume h4 {
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+.resume p + h4 {
+  margin-top: 1rem;
+}
+.sidebar {
+  flex-basis: 25%;
+  max-width: 20rem;
+}
+.sidebar h4 {
+  margin-bottom: 0.125rem;
+}
+.sidebar p {
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+}
+.content {
+  flex-basis: 75%;
+  max-width: 60rem;
+}
+.section {
+  display: flex;
+    flex-direction: column;
+}
+.section + .section {
+  margin-top: 4rem;
+}
+.entry {
+  border-radius: 0.5rem;
+  display: flex;
+    flex-direction: column;
+  padding: 1rem;
+  transition: background-color 0.1s ease-in-out;
+}
+.entry header > svg {
+  height: 4rem;
+}
+.entry:hover {
+  background-color: var(--color-surface-secondary);
+}
+.organization {
+  display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  font-weight: 500;
+  margin-bottom: -0.25rem;
+}
+.organization .location {
+  /* color: var(--color-text-secondary); */
+  font-size: 0.8rem;
+  /* font-style: italic; */
+  /* font-weight: 400; */
+  margin-left: 1.25rem;
+}
+.organization .location svg {
+  margin-right: 0.25rem;
+}
+.organization .caseStudy {
+  border: 1px solid var(--color-text-primary);
+  border-radius: 0.25rem;
+  display: flex;
+    align-items: center;
+  font-size: 0.75rem;
+  height: 1.5rem;
+  letter-spacing: 0.01em;
+  padding-inline: 0.75rem;
+  text-transform: uppercase;
+}
+.organization .caseStudy svg {
+  margin-left: 0.5rem;
+}
+.organization .caseStudy:hover {
+  background-color: var(--color-text-primary);
+  color: var(--color-background);
+}
+.description {
+  display: flex;
+    flex-direction: column;
+}
+.description > div:not(:last-of-type) {
+  margin-bottom: 0.75rem;
+}
+.row {
+  display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+    justify-content: space-between;
+}
+.row div {
+  flex-grow: 1;
+}
+.divider {
+  background-color: var(--color-text-primary);
+  display: block;
+  height: 1px;
+  margin-block: 1.75rem 1.25rem;
+  width: 72px;
+}
+.light {
+  opacity: 0.5;
+}
+.covid {
+  /* background-color: var(--color-surface-secondary); */
+  border: 1px solid var(--color-text-primary);
+  /* border-radius: 0.5rem; */
+  margin-bottom: 2rem;
+  position: relative;
+}
+.covid::before {
+  color: var(--color-background);
+  content: 'COVID-19 Pandemic';
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  position: absolute;
+    top: 1rem;
+    left: -1.4rem;
+  text-orientation: sideways;
+  text-transform: uppercase;
+  transform: rotate(180deg);
+  writing-mode: vertical-lr;
+}
+.covid::after {
+  background-color: var(--color-text-primary);
+  /* border: 1px solid var(--color-text-primary); */
+  content: '';
+  position: absolute;
+    top: -1px;
+    left: -24px;
+    bottom: -1px;
+  width: 24px;
+  z-index: -1;
+}
+.covid .entry {
+  border-radius: 0;
+}
+
+.cta {
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border-primary);
+  border-radius: 0.75rem;
+  /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+  padding: 6rem 2rem 2rem;
+  transition: border-color 0.1s ease-in-out;
+  z-index: 1;
+}
+.cta:hover {
+  border-color: var(--color-text-primary);
+}
