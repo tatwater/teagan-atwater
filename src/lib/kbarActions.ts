@@ -6,6 +6,13 @@ const actions = [
     keywords: "",
     perform: () => (window.location.pathname = "/"),
   },
+  {
+    id: "signin",
+    name: "Sign In",
+    shortcut: ["s"],
+    keywords: "",
+    perform: () => (window.location.pathname = "/signin"),
+  },
   // {
   //   id: "projects",
   //   name: "Sanity Projects List",

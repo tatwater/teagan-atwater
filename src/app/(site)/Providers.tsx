@@ -31,7 +31,7 @@ function KBarProvider({ children }: { children: ReactNode }) {
     {
       id:       'lightMode',
       icon:     <FontAwesomeIcon icon={ faSunBright } />,
-      name:     'Light',
+      name:     'Theme: Light',
       shortcut: ['l'],
       keywords: 'color mode theme',
       perform:  () => (setTheme('light')),
@@ -39,7 +39,7 @@ function KBarProvider({ children }: { children: ReactNode }) {
     {
       id:       'darkMode',
       icon:     <FontAwesomeIcon icon={ faMoon } />,
-      name:     'Dark',
+      name:     'Theme: Dark',
       shortcut: ['d'],
       keywords: 'color mode theme',
       perform:  () => (setTheme('dark')),
@@ -50,6 +50,13 @@ function KBarProvider({ children }: { children: ReactNode }) {
       shortcut: ["h"],
       keywords: "",
       perform: () => (router.push('/')),
+    },
+    {
+      id: "signin",
+      name: "Sign In",
+      shortcut: ["s"],
+      keywords: "",
+      perform: () => (router.push('/signin')),
     },
     // {
     //   id: "resume",

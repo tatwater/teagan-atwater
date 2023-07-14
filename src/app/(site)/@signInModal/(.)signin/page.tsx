@@ -20,16 +20,18 @@ export default function SignInModal() {
         <Dialog.Overlay className={ styled.overlay } />
         <Dialog.Content className={ styled.content }>
           <form className={ styled.form }>
+            {/* <h2 className='h3'>Hey there!</h2> */}
             <div className='input-wrapper'>
               <label htmlFor='signin-email'>Email address</label>
               <input
+                autoComplete='new-password'
                 autoFocus
                 id='signin-email'
                 placeholder='email@example.com'
                 type='email'
               />
             </div>
-            <button>
+            <button disabled>
               { 'Sign in' }
               <FontAwesomeIcon icon={ faLongArrowRight } />
             </button>

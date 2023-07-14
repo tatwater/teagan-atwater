@@ -1,12 +1,14 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle } from '@fortawesome/sharp-regular-svg-icons';
+import { faUserCircle as faUserCircleReg } from '@fortawesome/sharp-regular-svg-icons';
+import { faUserCircle as faUserCircleSolid } from '@fortawesome/sharp-solid-svg-icons';
 
 import CmdkHint from '@/components/CmdkHint';
 import ModeToggle from '@/components/ModeToggle';
 import Logo from './Logo';
 
 import styled from './Navbar.module.scss';
+import SignInButton from './SignInButton';
 
 
 export default function Navbar() {
@@ -21,12 +23,7 @@ export default function Navbar() {
       <div className='flex gap-4 items-center'>
         <CmdkHint />
         <div className='flex gap-2 items-center'>
-          <Link
-            className='h-10 w-10 grid place-items-center order-2 rounded-3xl'
-            href='/signin'
-          >
-            <FontAwesomeIcon icon={ faUserCircle } />
-          </Link>
+          <SignInButton />
           <ModeToggle />
         </div>
       </div>
