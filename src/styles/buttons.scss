@@ -1,5 +1,6 @@
 
-form button {
+form button,
+form button[type='submit'] {
   background-color: var(--green-8);
   border: 1px solid var(--green-9);
   border-radius: 0.25rem;

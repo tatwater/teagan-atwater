@@ -2,6 +2,16 @@
   display: flex;
     flex-direction: column;
     gap: 0.25rem;
+  
+  .instructions {
+    display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+  }
+  .message {
+    color: var(--red-9);
+    font-size: 0.75rem;
+  }
 }
 label {
   color: var(--slate-9);

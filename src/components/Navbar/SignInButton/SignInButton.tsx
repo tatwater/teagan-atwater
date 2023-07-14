@@ -14,7 +14,7 @@ export default function SignInButton() {
   return (
     <Link
       className='h-10 w-10 grid place-items-center order-2 rounded-3xl'
-      href='/signin'
+      href={ `/signin?redirectTo=${ pathname }` }
       style={{ color: signingIn ? 'var(--green-9)' : 'inherit' }}
     >
       <FontAwesomeIcon icon={ signingIn ? faUserCircleSolid : faUserCircleReg } />
