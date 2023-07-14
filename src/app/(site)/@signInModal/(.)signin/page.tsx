@@ -2,9 +2,9 @@
 
 import type { ChangeEvent, FormEvent } from 'react';
 
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Form from '@radix-ui/react-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
