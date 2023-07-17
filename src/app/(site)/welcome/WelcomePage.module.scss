@@ -1,0 +1,46 @@
+
+.centerCenter {
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+  padding-bottom: 6rem;
+}
+.message {
+  background: var(--slate-2);
+  border-radius: 0.5rem;
+  color: var(--slate-11);
+  display: flex;
+    align-items: center;
+    gap: 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5em;
+  max-width: min(calc(100% - 1rem), 400px);
+  padding: 0.5rem 1rem;
+  width: 100%;
+
+  svg {
+    color: var(--green-9);
+    font-size: 1.25rem;
+  }
+  strong {
+    display: block;
+  }
+}
+.policyNotice {
+  color: var(--slate-9);
+  font-size: 0.75rem;
+  margin-top: -0.5rem;
+  max-width: 300px;
+  text-align: center;
+  text-wrap: balance;
+
+  a {
+    color: var(--green-9);
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,21 +1,26 @@
+import type { Database } from '@/lib/database.types';
+
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUserCircle as faUserCircleReg } from '@fortawesome/sharp-regular-svg-icons';
-import { faUserCircle as faUserCircleSolid } from '@fortawesome/sharp-solid-svg-icons';
 
 import CmdkHint from '@/components/CmdkHint';
 import ModeToggle from '@/components/ModeToggle';
+import SignInButton from './auth/SignInButton';
+import UserButton from './auth/UserButton';
 import Logo from './Logo';
-
 import styled from './Navbar.module.scss';
-import SignInButton from './SignInButton';
 
 
-export default function Navbar() {
+export default async function Navbar() {
+  const supabase = createServerComponentClient<Database>({ cookies });
+  const {
+    data: { user }
+  } = await supabase.auth.getUser();
+
   return (
     <nav className={ styled.navbar }>
       <div className='ml-4'>
-        {/* <img src='Logo.svg' alt='TA Logo' /> */}
         <Link href='/'>
           <Logo />
         </Link>
@@ -23,7 +28,10 @@ export default function Navbar() {
       <div className='flex gap-4 items-center'>
         <CmdkHint />
         <div className='flex gap-2 items-center'>
-          <SignInButton />
+          {(!!user)
+            ? <UserButton user={ user } />
+            : <SignInButton />
+          }
           <ModeToggle />
         </div>
       </div>

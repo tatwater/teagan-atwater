@@ -1,0 +1,37 @@
+
+.form {
+  background: var(--color-background);
+  border: 1px solid var(--slate-3);
+  border-radius: 1rem;
+  display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  max-width: min(calc(100% - 1rem), 400px);
+  padding: 1rem;
+  width: 100%;
+}
+.avatarLayout {
+  display: flex;
+    align-items: center;
+    gap: 1rem;
+  margin-block: 0.5rem;
+}
+.uploadLayout {
+  display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: flex-start;
+  width: 100%;
+}
+.uploadText {
+  display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 0.25rem;
+
+  p, strong {
+    color: var(--slate-12);
+    font-size: 0.875rem;
+  }
+}

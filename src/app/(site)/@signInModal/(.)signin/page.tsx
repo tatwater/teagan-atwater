@@ -1,6 +1,7 @@
 'use client';
 
 import type { ChangeEvent, FormEvent } from 'react';
+import type { Database } from '@/lib/database.types';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -8,14 +9,14 @@ import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import * as Form from '@radix-ui/react-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLongArrowRight } from '@fortawesome/sharp-regular-svg-icons';
+import { faLongArrowRight } from '@fortawesome/sharp-solid-svg-icons';
 import { faCheckCircle } from '@fortawesome/sharp-light-svg-icons';
 
 import styled from './SigninModal.module.scss';
 
 
 export default function SignInModal() {
-  const supabase = createClientComponentClient();
+  const supabase = createClientComponentClient<Database>();
   const router = useRouter();
   const params = useSearchParams();
   const redirectTo = params.get('redirectTo');

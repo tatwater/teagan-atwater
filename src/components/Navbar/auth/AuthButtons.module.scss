@@ -1,0 +1,25 @@
+.button {
+  border-radius: 50%;
+  color: inherit;
+  display: grid;
+    place-items: center;
+  height: 2.5rem;
+  order: 2;
+  transition: color 0.2s ease;
+  width: 2.5rem;
+
+  &:global {
+    &.active {
+      color: var(--green-9);
+    }
+  }
+}
+.welcomePlaceholder {
+  aspect-ratio: 1;
+  background-color: var(--slate-12);
+  border-radius: 50%;
+  color: var(--color-background);
+  display: grid;
+    place-items: center;
+  width: 2rem;
+}
