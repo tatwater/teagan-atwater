@@ -4,14 +4,12 @@ import type { User } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/lib/database.types';
 
 import { useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/sharp-regular-svg-icons';
 
-import Avatar from '@/features/auth/Avatar/Avatar';
-
+import ProfileModal from '@/features/auth/ProfileModal';
+import downloadAvatar from '@/utils/downloadAvatar';
 import styled from '../AuthButtons.module.scss';
 
 
@@ -21,16 +19,13 @@ type Props = {
 
 
 export default function UserButton({ user }: Props) {
+  const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(true);
   const [fullName, setFullName] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  const pathname = usePathname();
-  const supabase = createClientComponentClient<Database>();
-  const href     = `/auth/signout`;
-  const viewingProfile = pathname.startsWith('/account');
-  const activeClass    = viewingProfile ? 'active' : '';
 
   const getProfile = useCallback(async () => {
     try {
@@ -40,6 +35,7 @@ export default function UserButton({ user }: Props) {
         .from('profiles')
         .select(`
           avatar_url,
+          email,
           full_name
         `)
         .eq('user_id', user?.id)
@@ -50,8 +46,9 @@ export default function UserButton({ user }: Props) {
       }
 
       if (data) {
-        setFullName(data.full_name || '');
         setAvatarPath(data.avatar_url);
+        setEmail(data.email || '');
+        setFullName(data.full_name || '');
       }
     } catch (error) {
       alert('Error loading user data!');
@@ -66,47 +63,28 @@ export default function UserButton({ user }: Props) {
   }, [user, getProfile]);
 
   useEffect(() => {
-    async function downloadImage(path: string) {
-      try {
-        const { data, error } = await supabase.storage.from('avatars').download(path);
-
-        if (error) {
-          throw error;
-        }
-
-        const url = URL.createObjectURL(data);
-
-        setAvatarUrl(url);
-      } catch (error) {
-        console.log('Error downloading image: ', error);
-      }
+    async function download(path: string) {
+      const url = await downloadAvatar(path, supabase);
+      setAvatarUrl(url);
     }
 
-    if (avatarPath) {
-      downloadImage(avatarPath);
-    }
+    if (!!avatarPath) download(avatarPath);
   }, [avatarPath, supabase]);
 
 
-  return (
-    <Link
-      className={ `${ styled.button } ${ activeClass }` }
-      href={ href }
-    >
-      {(!!loading || !user?.user_metadata.hasProfile)
-        ? (
-          <div className={ styled.welcomePlaceholder }>
-            <FontAwesomeIcon icon={ faUserCircle } />
-          </div>
-        )
-        : (
-          <Avatar
-            image={ avatarUrl || '' }
-            name={ fullName || user?.email || '' }
-            sizeREM='2'
-          />
-        )
-      }
-    </Link>
-  );
+  if (!!loading || !user?.user_metadata.hasProfile) {
+    return (
+      <div className={ styled.welcomePlaceholder }>
+        <FontAwesomeIcon icon={ faUserCircle } />
+      </div>
+    );
+  } else {
+    return (
+      <ProfileModal
+        avatarUrl={ avatarUrl || '' }
+        email={ email || '' }
+        fullName={ fullName || user?.email || '' }
+      />
+    );
+  }
 }

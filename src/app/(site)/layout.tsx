@@ -10,8 +10,8 @@ import Providers from './Providers';
 
 
 type Props = {
-  children:    ReactNode,
-  signInModal: ReactNode,
+  children: ReactNode,
+  modal:    ReactNode,
 }
 
 
@@ -23,14 +23,14 @@ export const metadata = {
   description: 'The personal website of Teagan Atwater',
 }
 
-export default function RootLayout({ children, signInModal }: Props) {
+export default function RootLayout({ children, modal }: Props) {
   return (
     <html lang='en'>
       <body className={` ${ inter.variable } ${ mono.variable } `}>
         <Providers>
           <Navbar />
           { children }
-          { signInModal }
+          { modal }
         </Providers>
       </body>
     </html>

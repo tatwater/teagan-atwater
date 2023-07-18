@@ -57,3 +57,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 ## Notes
 
 - `encoding` package is temp fix for module not found error in node-fetch with Supabase [Issue](https://github.com/supabase/supabase-js/issues/612)
+
+- When profile is deleted, be sure to remove user_metadata.hasProfile from corresponding `user`

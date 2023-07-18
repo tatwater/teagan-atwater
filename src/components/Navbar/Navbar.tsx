@@ -14,9 +14,7 @@ import styled from './Navbar.module.scss';
 
 export default async function Navbar() {
   const supabase = createServerComponentClient<Database>({ cookies });
-  const {
-    data: { user }
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   return (
     <nav className={ styled.navbar }>

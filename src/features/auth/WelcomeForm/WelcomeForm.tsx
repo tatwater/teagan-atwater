@@ -151,7 +151,7 @@ export default function WelcomeForm({ email, userId }: Props) {
         <div className={ styled.uploadLayout }>
           <AvatarUpload
             onUpload={ handleUpload }
-            url={ null }
+            image={ null }
             userId={ userId }
           />
           <div className={ styled.uploadText }>
