@@ -109,11 +109,20 @@
     form {
       align-self: center;
     }
-    .signout {
-      background: none;
-      border: none;
+    .signout-button {
+      border-radius: 0.25rem;
       color: inherit;
+      display: flex;
+        align-items: center;
+        align-self: center;
+        gap: 0.5rem;
+        justify-content: center;
+      font-size: 0.875rem;
+      font-weight: 500;
+      height: 1.75rem;
+      letter-spacing: 0.01em;
       padding: 0 1rem;
+      user-select: none;
     }
     .policies {
       font-size: 0.75rem;

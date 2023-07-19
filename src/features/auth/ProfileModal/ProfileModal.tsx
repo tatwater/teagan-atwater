@@ -3,9 +3,10 @@
 import Link from 'next/link';
 import * as Dialog from '@radix-ui/react-dialog';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRightFromBracket, faLongArrowRight } from '@fortawesome/sharp-regular-svg-icons';
+import { faLongArrowRight } from '@fortawesome/sharp-regular-svg-icons';
 
 import Avatar from '@/features/auth/Avatar/Avatar';
+import SignOutButton from './SignOutButton';
 import styled from './ProfileModal.module.scss';
 
 
@@ -51,10 +52,8 @@ export default function ProfileModal({
                 className='button gradient height-md'
                 href='/dashboard/edit-profile'
               >
-                {/* <span className='text'> */}
-                  <span>Your Dashboard</span>
-                  <FontAwesomeIcon icon={ faLongArrowRight } id='icon' />
-                {/* </span> */}
+                <span>Your Dashboard</span>
+                <FontAwesomeIcon icon={ faLongArrowRight } id='icon' />
               </Link>
             </Dialog.Close>
           </header>
@@ -71,20 +70,7 @@ export default function ProfileModal({
             )
           }
           <footer className={ styled.footer }>
-            <form
-              action='/auth/signout'
-              autoFocus={ false }
-              method='post'
-            >
-              <button
-                autoFocus={ false }
-                className='signout'
-                type='submit'
-              >
-                <span>Sign out</span>
-                <FontAwesomeIcon icon={ faArrowRightFromBracket } />
-              </button>
-            </form>
+            <SignOutButton />
             <span className='policies'><Link href=''>Terms of Service</Link> • <Link href=''>Privacy Policy</Link></span>
           </footer>
         </Dialog.Content>
