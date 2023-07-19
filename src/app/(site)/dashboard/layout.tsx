@@ -14,6 +14,7 @@ type Props = {
   currentPage: ReactNode,
 }
 
+export const dynamic = 'force-dynamic';
 
 export default async function DashboardLayout({ children, currentPage }: Props) {
   const supabase = createServerComponentClient<Database>({ cookies });

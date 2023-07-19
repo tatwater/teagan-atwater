@@ -7,6 +7,8 @@ import EditProfileForm from '@/features/auth/EditProfile/EditProfile';
 import styled from '../DashboardPage.module.scss';
 
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardEditProfilePage() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const { data: { user } } = await supabase.auth.getUser();

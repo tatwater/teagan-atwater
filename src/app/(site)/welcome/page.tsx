@@ -10,6 +10,8 @@ import WelcomeForm from '@/features/auth/WelcomeForm/WelcomeForm';
 import styled from './WelcomePage.module.scss';
 
 
+export const dynamic = 'force-dynamic';
+
 export default async function WelcomePage() {
   const supabase = createServerComponentClient<Database>({ cookies });
   const {

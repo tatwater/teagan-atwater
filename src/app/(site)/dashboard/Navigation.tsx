@@ -5,7 +5,6 @@ import type { ReactNode } from 'react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import * as Select from '@radix-ui/react-select';
 import * as Collapsible from '@radix-ui/react-collapsible';
 
 import styled from './DashboardLayout.module.scss';
@@ -33,65 +32,52 @@ export default function DashboardNavigation({ currentPage }: Props) {
           <FontAwesomeIcon className={ styled.icon } icon={ faChevronDown } />
         </Collapsible.Trigger>
         <Collapsible.Content className={ styled.content }>
-          <Link
-            className={ pathname.endsWith('/dashboard') ? 'active' : '' }
-            href='/dashboard'
-            onClick={() => setOpen(false) }
-          >
-            Dashboard
-          </Link>
-          <Link
-            className={ pathname.endsWith('/edit-profile') ? 'active' : '' }
-            href='/dashboard/edit-profile'
-            onClick={() => setOpen(false) }
-          >
-            Edit Profile
-          </Link>
-          <Link
-            className={ pathname.endsWith('/email-settings') ? 'active' : '' }
-            href='/dashboard/email-settings'
-            onClick={() => setOpen(false) }
-          >
-            Email Settings
-          </Link>
-          <hr />
-          <Link
-            className={ pathname.endsWith('/delete-account') ? 'active delete' : 'delete' }
-            href='/dashboard/delete-account'
-            onClick={() => setOpen(false) }
-          >
-            Delete Account
-          </Link>
+          <Links
+            pathname={ pathname }
+            setOpen={ setOpen }
+          />
         </Collapsible.Content>
       </Collapsible.Root>
 
       <div className={ styled.navLinks }>
-        <Link
-          className={ pathname.endsWith('/dashboard') ? 'active' : '' }
-          href='/dashboard'
-        >
-          Dashboard
-        </Link>
-        <Link
-          className={ pathname.endsWith('/edit-profile') ? 'active' : '' }
-          href='/dashboard/edit-profile'
-        >
-          Edit Profile
-        </Link>
-        <Link
-          className={ pathname.endsWith('/email-settings') ? 'active' : '' }
-          href='/dashboard/email-settings'
-        >
-          Email Settings
-        </Link>
-        <hr />
-        <Link
-          className={ pathname.endsWith('/delete-account') ? 'active delete' : 'delete' }
-          href='/dashboard/delete-account'
-        >
-          Delete Account
-        </Link>
+        <Links pathname={ pathname } />
       </div>
     </nav>
   );
+}
+
+function Links({ pathname, setOpen }: { pathname: string; setOpen?: (open: boolean) => void; }) {
+  return (
+    <>
+      <Link
+        className={ pathname.endsWith('/dashboard') ? 'active' : '' }
+        href='/dashboard'
+        onClick={() => setOpen && setOpen(false) }
+      >
+        Dashboard
+      </Link>
+      <Link
+        className={ pathname.endsWith('/edit-profile') ? 'active' : '' }
+        href='/dashboard/edit-profile'
+        onClick={() => setOpen && setOpen(false) }
+      >
+        Edit Profile
+      </Link>
+      <Link
+        className={ pathname.endsWith('/email-settings') ? 'active' : '' }
+        href='/dashboard/email-settings'
+        onClick={() => setOpen && setOpen(false) }
+      >
+        Email Settings
+      </Link>
+      <hr />
+      <Link
+        className={ pathname.endsWith('/delete-account') ? 'active delete' : 'delete' }
+        href='/dashboard/delete-account'
+        onClick={() => setOpen && setOpen(false) }
+      >
+        Delete Account
+      </Link>
+    </>
+  )
 }

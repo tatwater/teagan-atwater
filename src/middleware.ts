@@ -10,6 +10,7 @@ export async function middleware(req: NextRequest) {
   const supabase = createMiddlewareClient<Database>({ req, res });
   const pathname = req.nextUrl.pathname;
   const redirectTo = req.nextUrl.searchParams.get('redirectTo');
+  await supabase.auth.getSession();
   const { data: { user } } = await supabase.auth.getUser();
   const { device, os } = userAgent(req);
 
