@@ -1,0 +1,73 @@
+.dashboardContainer {
+  margin: 0 auto;
+  max-width: 60rem;
+  padding-inline: 2rem;
+  width: 100%;
+}
+.dashboardHeader {
+  display: flex;
+    align-items: center;
+    gap: 1rem;
+    // justify-content: space-between;
+  margin-bottom: 2.5rem;
+  padding-top: 8rem;
+  padding-left: 0.5rem;
+
+  :global {
+    .text {
+      display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+    }
+    .name {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+    .email {
+      color: var(--slate-11);
+      font-size: 0.875rem;
+    }
+  }
+}
+.dashboardLayout {
+  display: flex;
+    align-items: flex-start;
+    gap: 2rem;
+}
+.dashboardNav {
+  display: flex;
+    flex-direction: column;
+  width: 25%;
+
+  a {
+    border-radius: 0.25rem;
+    color: var(--slate-11);
+    display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    height: 2rem;
+    padding-inline: 0.5rem;
+
+    &:global {
+      &.active {
+        color: var(--green-9);
+        font-weight: 500;
+
+        &::after {
+          content: '»';
+        }
+
+        &.delete {
+          color: var(--red-9);
+        }
+      }
+    }
+  }
+  hr {
+    border-color: var(--slate-5);
+    margin-block: 1rem;
+  }
+}
+.dashboardContent {
+  width: 75%;
+}

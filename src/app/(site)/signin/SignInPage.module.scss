@@ -8,11 +8,20 @@
     justify-content: center;
   margin-top: -6rem;
   padding-bottom: 6rem;
+  position: relative;
 
   @media (min-width: 1280px) {
     border-right: 1px solid var(--slate-3);
     width: 40%;
   }
+}
+.backLink {
+  border-radius: 0.25rem;
+  height: 2rem;
+  padding-inline: 1rem;
+  position: absolute;
+    top: 7rem;
+    left: 2rem;
 }
 .featured {
   display: none;

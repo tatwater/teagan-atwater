@@ -5,31 +5,30 @@ import type { Database } from '@/lib/database.types';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import * as Form from '@radix-ui/react-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLongArrowRight } from '@fortawesome/sharp-regular-svg-icons';
+import { faCheck } from '@fortawesome/sharp-regular-svg-icons';
 
 import AvatarUpload from '@/features/auth/AvatarUpload/AvatarUpload';
-import styled from './WelcomeForm.module.scss';
+import styled from './EditProfile.module.scss';
 
 
 type Profiles = Database['public']['Tables']['profiles']['Row'];
-type Props = {
-  email:  string;
-  userId: string;
-}
 
 
-export default function WelcomeForm({ email, userId }: Props) {
+export default function EditProfileForm() {
   const supabase = createClientComponentClient<Database>();
+  // const { data: { user } } = await supabase.auth.getUser();
+  const [avatarPath, setAvatarPath] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState<Profiles['avatar_url']>(null);
   const [fullName,  setFullName]  = useState<string | null>(null);
   const [loading,   setLoading]   = useState(false);
   const [nickname,  setNickname]  = useState<string | null>(null);
-  const router = useRouter();
-  const params = useSearchParams();
-  const redirectTo = params.get('redirectTo');
+  // const userId = user?.id || '';
+  // const email = user?.email || "";
+  const userId = '';
+  const email = '';
+
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     switch (event.target.name) {
@@ -73,14 +72,6 @@ export default function WelcomeForm({ email, userId }: Props) {
               hasProfile: true,
             },
           });
-      
-          if (!!data && !hasProfileError) {
-            if (!!redirectTo) {
-              router.push(redirectTo);
-            } else {
-              router.push('/');
-            }
-          }
         }
       } catch (error) {
         console.log(error);
@@ -97,6 +88,21 @@ export default function WelcomeForm({ email, userId }: Props) {
       className={ styled.form }
       onSubmit={ handleSubmit }
     >
+      <Form.Field
+        className={`input-wrapper ${ styled.avatarLayout }`}
+        name='welcome-avatar'
+      >
+        <div className={ styled.uploadLayout }>
+          <AvatarUpload
+            onUpload={ handleUpload }
+            image={ null }
+            userId={ userId }
+          />
+          <div className={ styled.uploadText }>
+            
+          </div>
+        </div>
+      </Form.Field>
       <Form.Field
         className='input-wrapper'
         name='welcome-full-name'
@@ -145,39 +151,59 @@ export default function WelcomeForm({ email, userId }: Props) {
         </Form.Control>
       </Form.Field>
       <Form.Field
-        className={`input-wrapper ${ styled.avatarLayout }`}
-        name='welcome-avatar'
+        className='input-wrapper'
+        name='location'
       >
-        <div className={ styled.uploadLayout }>
-          <AvatarUpload
-            onUpload={ handleUpload }
-            image={ null }
-            userId={ userId }
-          />
-          <div className={ styled.uploadText }>
-            {(!!avatarUrl)
-              ? (
-                <>
-                  <strong>Looks great!</strong>
-                  <p>You can also change this photo at any time from your profile.</p>
-                </>
-              )
-              : (
-                <>
-                  <strong>Put a face to the name!</strong>
-                  <p>This photo will accompany any correspondence or interactions between us on this site.</p>
-                </>
-              )
-            }
-          </div>
+        <div className='instructions'>
+          <Form.Label>Location</Form.Label>
         </div>
+        <Form.Control asChild>
+          <input
+            onChange={ handleChange }
+            placeholder='Boston, MA'
+            type='text'
+            value={ '' }
+          />
+        </Form.Control>
+      </Form.Field>
+      <Form.Field
+        className='input-wrapper'
+        name='organization'
+      >
+        <div className='instructions'>
+          <Form.Label>Organization</Form.Label>
+        </div>
+        <Form.Control asChild>
+          <input
+            onChange={ handleChange }
+            placeholder='Company Name'
+            type='text'
+            value={ '' }
+          />
+        </Form.Control>
+      </Form.Field>
+      <Form.Field
+        className='input-wrapper'
+        name='role'
+      >
+        <div className='instructions'>
+          <Form.Label>Role</Form.Label>
+        </div>
+        <Form.Control asChild>
+          <input
+            onChange={ handleChange }
+            placeholder='CEO'
+            type='text'
+            value={ '' }
+          />
+        </Form.Control>
       </Form.Field>
       <Form.Submit asChild>
         <button>
-          { 'Save and continue' }
-          <FontAwesomeIcon icon={ faLongArrowRight } />
+          <FontAwesomeIcon icon={ faCheck } />
+          { 'Save' }
         </button>
       </Form.Submit>
     </Form.Root>
-  )
+  );
 }

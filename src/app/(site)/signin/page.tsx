@@ -10,6 +10,13 @@ export default async function SignInPage() {
   return (
     <>
       <main className={ styled.centerCenter }>
+        <Link
+          className={ styled.backLink }
+          href=''
+        >
+          <FontAwesomeIcon icon={ faLongArrowLeft } />
+          Back
+        </Link>
         <h1 className='h2'>Sign in</h1>
         <SignInForm />
       </main>

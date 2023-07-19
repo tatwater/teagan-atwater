@@ -1,7 +1,12 @@
+import styled from './DashboardPage.module.scss';
+
+
 export default function DashboardPage() {
   return (
-    <div>
-      This is the dashboard page
-    </div>
+    <main>
+      <div className={ styled.card }>
+        <span className={ styled.nothingHere }>There's nothing here yet</span>
+      </div>
+    </main>
   );
 }

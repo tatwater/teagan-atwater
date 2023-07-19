@@ -39,6 +39,10 @@ export async function middleware(req: NextRequest) {
     if (['/welcome'].includes(pathname)) {
       return NextResponse.redirect(new URL('/', req.url))
     }
+
+    if (pathname.startsWith('/dashboard')) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
   }
 
   return res;

@@ -40,7 +40,10 @@ export interface Database {
           created_at: string
           email: string
           full_name: string
+          location: string | null
           nickname: string
+          organization: string | null
+          role: string | null
           updated_at: string
           user_id: string
         }
@@ -49,7 +52,10 @@ export interface Database {
           created_at?: string
           email: string
           full_name: string
+          location?: string | null
           nickname: string
+          organization?: string | null
+          role?: string | null
           updated_at?: string
           user_id: string
         }
@@ -58,7 +64,10 @@ export interface Database {
           created_at?: string
           email?: string
           full_name?: string
+          location?: string | null
           nickname?: string
+          organization?: string | null
+          role?: string | null
           updated_at?: string
           user_id?: string
         }

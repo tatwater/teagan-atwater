@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/sharp-regular-svg-icons';
 
 import ProfileModal from '@/features/auth/ProfileModal';
-import downloadAvatar from '@/utils/downloadAvatar';
 import styled from '../AuthButtons.module.scss';
 
 
@@ -24,14 +23,13 @@ export default function UserButton({ user }: Props) {
   const [fullName, setFullName] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
 
   const getProfile = useCallback(async () => {
     try {
       setLoading(true);
 
-      let { data, error, status } = await supabase
+      const { data, error, status } = await supabase
         .from('profiles')
         .select(`
           avatar_url,
@@ -62,15 +60,6 @@ export default function UserButton({ user }: Props) {
     getProfile()
   }, [user, getProfile]);
 
-  useEffect(() => {
-    async function download(path: string) {
-      const url = await downloadAvatar(path, supabase);
-      setAvatarUrl(url);
-    }
-
-    if (!!avatarPath) download(avatarPath);
-  }, [avatarPath, supabase]);
-
 
   if (!!loading || !user?.user_metadata.hasProfile) {
     return (
@@ -81,7 +70,7 @@ export default function UserButton({ user }: Props) {
   } else {
     return (
       <ProfileModal
-        avatarUrl={ avatarUrl || '' }
+        avatarUrl={ avatarPath || '' }
         email={ email || '' }
         fullName={ fullName || user?.email || '' }
       />

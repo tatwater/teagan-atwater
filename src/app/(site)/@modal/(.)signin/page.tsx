@@ -3,8 +3,8 @@
 import { useRouter } from 'next/navigation';
 import * as Dialog from '@radix-ui/react-dialog';
 
-import styled from './SigninModal.module.scss';
 import SignInForm from '@/features/auth/SignInForm/SignInForm';
+import styled from './SigninModal.module.scss';
 
 
 export default function SignInModal() {

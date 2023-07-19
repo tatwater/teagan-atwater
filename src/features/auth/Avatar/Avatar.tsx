@@ -1,24 +1,42 @@
+'use client';
+
+import type { Database } from '@/lib/database.types';
+
+import { useEffect, useState } from 'react';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import * as RadixAvatar from '@radix-ui/react-avatar';
 
+import downloadAvatar from '@/utils/downloadAvatar';
 import getInitialsFromName from '@/utils/getInitialsFromName';
-
 import styled from './Avatar.module.scss';
 
 
 type Props = {
-  image:   string;
-  name:    string;
-  sizeREM: string;
+  avatarUrl: string;
+  fullName:  string;
+  sizeREM:   string;
 }
 
 
 export default function Avatar({
-  image,
-  name,
+  avatarUrl,
+  fullName,
   sizeREM,
 }: Props) {
-  const initials = getInitialsFromName(name);
+  const supabase = createClientComponentClient<Database>();
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const initials = getInitialsFromName(fullName);
   
+
+  useEffect(() => {
+    async function download(path: string) {
+      const url = await downloadAvatar(path, supabase);
+      setImageSrc(url);
+    }
+
+    if (!!avatarUrl) download(avatarUrl);
+  }, [avatarUrl, supabase]);
+
 
   return (
     <RadixAvatar.Root
@@ -29,9 +47,9 @@ export default function Avatar({
       }}
     >
       <RadixAvatar.Image
-        alt={ name }
+        alt={ fullName }
         className={ styled.image }
-        src={ image }
+        src={ imageSrc || '' }
       />
       <RadixAvatar.Fallback className={ styled.fallback }>
         { initials }

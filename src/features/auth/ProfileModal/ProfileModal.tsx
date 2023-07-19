@@ -25,8 +25,8 @@ export default function ProfileModal({
     <Dialog.Root>
       <Dialog.Trigger className={ styled.button }>
         <Avatar
-          image={ avatarUrl || '' }
-          name={ fullName || '' }
+          avatarUrl={ avatarUrl }
+          fullName={ fullName }
           sizeREM='2'
         />
       </Dialog.Trigger>
@@ -36,8 +36,8 @@ export default function ProfileModal({
           <header className={ styled.header }>
             <div className={ styled.profile }>
               <Avatar
-                image={ avatarUrl }
-                name={ fullName }
+                avatarUrl={ avatarUrl }
+                fullName={ fullName }
                 sizeREM='5'
               />
               <div className='content'>
@@ -69,8 +69,16 @@ export default function ProfileModal({
             )
           }
           <footer className={ styled.footer }>
-            <form action='/auth/signout' method='post'>
-              <button className='signout' type='submit'>
+            <form
+              action='/auth/signout'
+              autoFocus={ false }
+              method='post'
+            >
+              <button
+                autoFocus={ false }
+                className='signout'
+                type='submit'
+              >
                 <span>Sign out</span>
                 <FontAwesomeIcon icon={ faArrowRightFromBracket } />
               </button>
