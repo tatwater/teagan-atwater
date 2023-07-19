@@ -52,6 +52,7 @@
 
 html {
   background-color: var(--color-background);
+  height: 100%;
 }
 
 body {
@@ -62,7 +63,7 @@ body {
   display: flex;
     flex-direction: column;
   font-family: var(--font-inter);
-  min-height: 100dvh;
+  min-height: 100%;
 }
 
 main {
