@@ -12,6 +12,7 @@ import * as Form from '@radix-ui/react-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImagePolaroidUser, faRefresh, faSpinner } from '@fortawesome/sharp-regular-svg-icons';
 
+import Avatar from '@/features/auth/Avatar/Avatar';
 import downloadAvatar from '@/utils/downloadAvatar';
 import styled from './AvatarUpload.module.scss';
 
@@ -30,7 +31,6 @@ export default function AvatarUpload({
 }: Props) {
   const supabase = createClientComponentClient<Database>();
   const [avatarPath, setAvatarPath] = useState<Profiles['avatar_url']>(image);
-  const [avatarUrl, setAvatarUrl]   = useState('');
   const [uploading, setUploading]   = useState(false);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = async (event) => {
@@ -62,16 +62,6 @@ export default function AvatarUpload({
   }
 
 
-  useEffect(() => {
-    async function download(path: string) {
-      const url = await downloadAvatar(path, supabase);
-      setAvatarUrl(url);
-    }
-
-    if (!!avatarPath) download(avatarPath);
-  }, [avatarPath, supabase]);
-
-
   return (
     <div>
       <Form.Control asChild>
@@ -83,13 +73,13 @@ export default function AvatarUpload({
           type='file'
         />
       </Form.Control>
-      {(!!avatarUrl)
+      {(!!avatarPath)
         ? (
           <Form.Label className={ styled.imageWrapper }>
-            <Image
-              alt='Profile Photo'
-              fill
-              src={ avatarUrl }
+            <Avatar
+              avatarUrl={ avatarPath }
+              fullName=''
+              sizeREM='7'
             />
             <span className={ styled.swapIcon }>
               <FontAwesomeIcon icon={ faRefresh } />

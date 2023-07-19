@@ -14,29 +14,49 @@ import styled from './EditProfile.module.scss';
 
 
 type Profiles = Database['public']['Tables']['profiles']['Row'];
+type Props = {
+  data: {
+    avatar_url:   string | null;
+    created_at:   string;
+    email:        string;
+    full_name:    string;
+    location:     string | null;
+    nickname:     string;
+    organization: string | null;
+    role:         string | null;
+  };
+  userId: string;
+}
 
 
-export default function EditProfileForm() {
+export default function EditProfileForm({ data, userId }: Props) {
   const supabase = createClientComponentClient<Database>();
-  // const { data: { user } } = await supabase.auth.getUser();
-  const [avatarPath, setAvatarPath] = useState<string | null>(null);
-  const [avatarUrl, setAvatarUrl] = useState<Profiles['avatar_url']>(null);
-  const [fullName,  setFullName]  = useState<string | null>(null);
-  const [loading,   setLoading]   = useState(false);
-  const [nickname,  setNickname]  = useState<string | null>(null);
-  // const userId = user?.id || '';
-  // const email = user?.email || "";
-  const userId = '';
-  const email = '';
+  const [avatarPath,   setAvatarPath]   = useState<string | null>(data.avatar_url || '');
+  const [avatarUrl,    setAvatarUrl]    = useState<Profiles['avatar_url']>(data.avatar_url || '');
+  const [fullName,     setFullName]     = useState<string | null>(data.full_name || '');
+  const [loading,      setLoading]      = useState(false);
+  const [location,     setLocation]     = useState<string | null>(data.location || '');
+  const [nickname,     setNickname]     = useState<string | null>(data.nickname || '');
+  const [organization, setOrganization] = useState<string | null>(data.organization || '');
+  const [role,         setRole]         = useState<string | null>(data.role || '');
 
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     switch (event.target.name) {
-      case 'welcome-full-name':
+      case 'full-name':
         setFullName(event.target.value);
         break;
-      case 'welcome-nickname':
+      case 'location':
+        setLocation(event.target.value);
+        break;
+      case 'nickname':
         setNickname(event.target.value);
+        break;
+      case 'organization':
+        setOrganization(event.target.value);
+        break;
+      case 'role':
+        setRole(event.target.value);
         break;
     }
   }
@@ -54,24 +74,21 @@ export default function EditProfileForm() {
 
         setLoading(true);
 
-        let { error } = await supabase.from('profiles').upsert({
+        const { error } = await supabase.from('profiles').upsert({
           avatar_url: avatarUrl,
-          created_at: now,
-          email,
+          created_at: data.created_at,
+          email: data.email,
           full_name: fullName,
+          location,
           nickname,
+          organization,
+          role,
           updated_at: now,
           user_id: userId,
         });
 
         if (error) {
           throw error;
-        } else {
-          const { data, error: hasProfileError } = await supabase.auth.updateUser({
-            data: {
-              hasProfile: true,
-            },
-          });
         }
       } catch (error) {
         console.log(error);
@@ -90,12 +107,12 @@ export default function EditProfileForm() {
     >
       <Form.Field
         className={`input-wrapper ${ styled.avatarLayout }`}
-        name='welcome-avatar'
+        name='avatar'
       >
         <div className={ styled.uploadLayout }>
           <AvatarUpload
             onUpload={ handleUpload }
-            image={ null }
+            image={ avatarPath }
             userId={ userId }
           />
           <div className={ styled.uploadText }>
@@ -105,7 +122,7 @@ export default function EditProfileForm() {
       </Form.Field>
       <Form.Field
         className='input-wrapper'
-        name='welcome-full-name'
+        name='full-name'
       >
         <div className='instructions'>
           <Form.Label>Full name</Form.Label>
@@ -118,7 +135,6 @@ export default function EditProfileForm() {
         </div>
         <Form.Control asChild>
           <input
-            autoFocus
             onChange={ handleChange }
             placeholder='John Smith'
             required
@@ -129,7 +145,7 @@ export default function EditProfileForm() {
       </Form.Field>
       <Form.Field
         className='input-wrapper'
-        name='welcome-nickname'
+        name='nickname'
       >
         <div className='instructions'>
           <Form.Label>What should I call you?</Form.Label>
@@ -162,7 +178,7 @@ export default function EditProfileForm() {
             onChange={ handleChange }
             placeholder='Boston, MA'
             type='text'
-            value={ '' }
+            value={ location || '' }
           />
         </Form.Control>
       </Form.Field>
@@ -178,7 +194,7 @@ export default function EditProfileForm() {
             onChange={ handleChange }
             placeholder='Company Name'
             type='text'
-            value={ '' }
+            value={ organization || '' }
           />
         </Form.Control>
       </Form.Field>
@@ -194,7 +210,7 @@ export default function EditProfileForm() {
             onChange={ handleChange }
             placeholder='CEO'
             type='text'
-            value={ '' }
+            value={ role || '' }
           />
         </Form.Control>
       </Form.Field>
