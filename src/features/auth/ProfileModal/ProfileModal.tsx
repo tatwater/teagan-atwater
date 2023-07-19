@@ -45,16 +45,18 @@ export default function ProfileModal({
                 <span className='email'>{ email }</span>
               </div>
             </div>
-            <Link
-              autoFocus
-              className='button gradient height-md'
-              href='/dashboard'
-            >
-              {/* <span className='text'> */}
-                <span>Your Dashboard</span>
-                <FontAwesomeIcon icon={ faLongArrowRight } id='icon' />
-              {/* </span> */}
-            </Link>
+            <Dialog.Close asChild>
+              <Link
+                autoFocus
+                className='button gradient height-md'
+                href='/dashboard'
+              >
+                {/* <span className='text'> */}
+                  <span>Your Dashboard</span>
+                  <FontAwesomeIcon icon={ faLongArrowRight } id='icon' />
+                {/* </span> */}
+              </Link>
+            </Dialog.Close>
           </header>
           {(false)
             ? (

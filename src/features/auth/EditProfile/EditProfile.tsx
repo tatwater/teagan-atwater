@@ -7,7 +7,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useState } from 'react';
 import * as Form from '@radix-ui/react-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck } from '@fortawesome/sharp-regular-svg-icons';
+import { faCheck, faSpinner } from '@fortawesome/sharp-regular-svg-icons';
 
 import AvatarUpload from '@/features/auth/AvatarUpload/AvatarUpload';
 import styled from './EditProfile.module.scss';
@@ -115,9 +115,6 @@ export default function EditProfileForm({ data, userId }: Props) {
             image={ avatarPath }
             userId={ userId }
           />
-          <div className={ styled.uploadText }>
-            
-          </div>
         </div>
       </Form.Field>
       <Form.Field
@@ -215,9 +212,12 @@ export default function EditProfileForm({ data, userId }: Props) {
         </Form.Control>
       </Form.Field>
       <Form.Submit asChild>
-        <button disabled={ loading }>
-          <FontAwesomeIcon icon={ faCheck } />
-          { 'Save' }
+        <button
+          className={ styled.submit }
+          disabled={ loading }
+        >
+          <FontAwesomeIcon icon={ loading ? faSpinner : faCheck } />
+          { loading ? 'Saving...' : 'Save' }
         </button>
       </Form.Submit>
     </Form.Root>
