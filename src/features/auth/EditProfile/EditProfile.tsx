@@ -215,7 +215,7 @@ export default function EditProfileForm({ data, userId }: Props) {
         </Form.Control>
       </Form.Field>
       <Form.Submit asChild>
-        <button>
+        <button disabled={ loading }>
           <FontAwesomeIcon icon={ faCheck } />
           { 'Save' }
         </button>
