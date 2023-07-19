@@ -1,0 +1,23 @@
+
+.centerCenter {
+  background-color: var(--color-background);
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1.5rem;
+    justify-content: center;
+  margin-top: -6rem;
+  padding-bottom: 6rem;
+
+  @media (min-width: 1280px) {
+    border-right: 1px solid var(--slate-3);
+    width: 40%;
+  }
+}
+.featured {
+  display: none;
+
+  @media (min-width: 1280px) {
+    width: 60%;
+  }
+}

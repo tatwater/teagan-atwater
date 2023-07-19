@@ -1,5 +1,5 @@
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
-import { NextResponse } from 'next/server';
+import { NextResponse, userAgent } from 'next/server';
 
 import type { NextRequest } from 'next/server';
 import type { Database } from '@/lib/database.types';
@@ -7,12 +7,14 @@ import type { Database } from '@/lib/database.types';
 
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
+  const supabase = createMiddlewareClient<Database>({ req, res });
   const pathname = req.nextUrl.pathname;
   const redirectTo = req.nextUrl.searchParams.get('redirectTo');
-  const supabase = createMiddlewareClient<Database>({ req, res });
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
+  const { device, os } = userAgent(req);
+
+// console.log(os.name);
+// console.log(device.type);  // console, mobile, tablet, smarttv, wearable, embedded, undefined
 
   if (!!user) {
     // Divert new users to make a profile

@@ -13,12 +13,14 @@ form button[type='submit'] {
   font-weight: 500;
   height: 1.75rem;
   letter-spacing: 0.01em;
+  user-select: none;
 
   &:disabled {
     background-color: var(--slate-8);
     border-color: var(--slate-9);
   }
 }
+
 .button {
   background-color: var(--slate-6);
   border: 1px solid var(--slate-7);
@@ -31,10 +33,42 @@ form button[type='submit'] {
   font-weight: 500;
   height: 1.75rem;
   letter-spacing: 0.01em;
+  user-select: none;
 
-  &:global {
-    &.spread {
-      justify-content: space-between;
+  &.gradient {
+    $border: 1px;
+    
+    background: linear-gradient(to right, var(--red-2), var(--orange-2));;
+    // background-color: var(--color-background);
+    background-clip: padding-box;
+    border: solid $border transparent;
+    position: relative;
+
+    &::before {
+      background: linear-gradient(to right, var(--red-11), var(--orange-11));
+      border-radius: inherit;
+      content: '';
+      margin: -$border;
+      position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+      z-index: -1;
     }
+
+    .text {
+      background: linear-gradient(to right, var(--red-11), var(--orange-11));
+      background-clip: text;
+      display: flex;
+        align-items: center;
+        flex-grow: 1;
+        gap: 0.5rem;
+        justify-content: center;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+  &.height-md {
+    height: 2rem;
+  }
+  &.spread {
+    justify-content: space-between;
   }
 }

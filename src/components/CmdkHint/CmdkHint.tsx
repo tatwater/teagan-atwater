@@ -35,6 +35,7 @@ export default function CmdkHint() {
     }
   });
 
+  
   if (showHint) {
     return (
       <div className='flex gap-3 items-center

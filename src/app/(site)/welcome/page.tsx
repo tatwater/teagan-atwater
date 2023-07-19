@@ -1,13 +1,13 @@
 import type { Database } from '@/lib/database.types';
 
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers'
+import Link from 'next/link';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/sharp-regular-svg-icons';
 
 import WelcomeForm from '@/features/auth/WelcomeForm/WelcomeForm';
 import styled from './WelcomePage.module.scss';
-import Link from 'next/link';
 
 
 export default async function WelcomePage() {

@@ -47,11 +47,13 @@ export default function ProfileModal({
             </div>
             <Link
               autoFocus
-              className='button spread'
+              className='button gradient height-md'
               href='/dashboard'
             >
-              <span>Your Dashboard</span>
-              <FontAwesomeIcon icon={ faLongArrowRight } />
+              {/* <span className='text'> */}
+                <span>Your Dashboard</span>
+                <FontAwesomeIcon icon={ faLongArrowRight } id='icon' />
+              {/* </span> */}
             </Link>
           </header>
           {(false)
