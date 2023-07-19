@@ -49,7 +49,7 @@ export default function ProfileModal({
               <Link
                 autoFocus
                 className='button gradient height-md'
-                href='/dashboard'
+                href='/dashboard/edit-profile'
               >
                 {/* <span className='text'> */}
                   <span>Your Dashboard</span>

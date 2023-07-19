@@ -49,7 +49,7 @@ export default async function DashboardLayout({ children, currentPage }: Props) 
         </div>
       </header>
       <div className={ styled.dashboardLayout }>
-        <Navigation />
+        <Navigation currentPage={ currentPage } />
         <main className={ styled.dashboardContent }>
           { children }
         </main>
