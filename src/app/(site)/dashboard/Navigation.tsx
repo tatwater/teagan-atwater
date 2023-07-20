@@ -10,6 +10,7 @@ import * as Collapsible from '@radix-ui/react-collapsible';
 import styled from './DashboardLayout.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/sharp-regular-svg-icons';
+import { faCheck } from '@fortawesome/sharp-solid-svg-icons';
 
 
 type Props = {
@@ -29,7 +30,11 @@ export default function DashboardNavigation({ currentPage }: Props) {
           style={{ display: `${ open ? 'none' : 'flex'}` }}
         >
           <span>{ currentPage }</span>
-          <FontAwesomeIcon className={ styled.icon } icon={ faChevronDown } />
+          <FontAwesomeIcon
+            className={ styled.icon }
+            fixedWidth
+            icon={ faChevronDown }
+          />
         </Collapsible.Trigger>
         <Collapsible.Content className={ styled.content }>
           <Links
@@ -54,21 +59,54 @@ function Links({ pathname, setOpen }: { pathname: string; setOpen?: (open: boole
         href='/dashboard'
         onClick={() => setOpen && setOpen(false) }
       >
-        Dashboard
+        <span>Dashboard</span>
+        {(pathname.endsWith('/dashboard'))
+          ? (
+            <FontAwesomeIcon
+              className={ styled.linkIcon }
+              fixedWidth
+              icon={ faCheck }
+            />
+          )
+        : (
+          <></>
+        )}
       </Link>
       <Link
         className={ pathname.endsWith('/edit-profile') ? 'active' : '' }
         href='/dashboard/edit-profile'
         onClick={() => setOpen && setOpen(false) }
       >
-        Edit Profile
+        <span>Edit Profile</span>
+        {(pathname.endsWith('/edit-profile'))
+          ? (
+            <FontAwesomeIcon
+              className={ styled.linkIcon }
+              fixedWidth
+              icon={ faCheck }
+            />
+          )
+        : (
+          <></>
+        )}
       </Link>
       <Link
         className={ pathname.endsWith('/email-settings') ? 'active' : '' }
         href='/dashboard/email-settings'
         onClick={() => setOpen && setOpen(false) }
       >
-        Email Settings
+        <span>Email Settings</span>
+        {(pathname.endsWith('/email-settings'))
+          ? (
+            <FontAwesomeIcon
+              className={ styled.linkIcon }
+              fixedWidth
+              icon={ faCheck }
+            />
+          )
+        : (
+          <></>
+        )}
       </Link>
       <hr />
       <Link
@@ -76,7 +114,18 @@ function Links({ pathname, setOpen }: { pathname: string; setOpen?: (open: boole
         href='/dashboard/delete-account'
         onClick={() => setOpen && setOpen(false) }
       >
-        Delete Account
+        <span>Delete Account</span>
+        {(pathname.endsWith('/delete-account'))
+          ? (
+            <FontAwesomeIcon
+              className={ styled.linkIcon }
+              fixedWidth
+              icon={ faCheck }
+            />
+          )
+        : (
+          <></>
+        )}
       </Link>
     </>
   )
