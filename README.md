@@ -3,38 +3,39 @@
 
 ## Features
 
-- PWA
-- ES6+ and TypeScript
-- React 18, server components
-- Next 13 with app/
-- Custom fonts with next/font
-- Route prefetching with next/link
-- FontAwesome icons -- AS LIBRARY OF USED ONLY
-- Styled Components / Tailwind
-- Light and dark themes with toggle and localStorage
-- CMD-K search, navigation, and theme toggle
-- Sanity studio route
-- Custom accessible Radix components
+- [ ] PWA
+- [x] ES6+ and TypeScript
+- [x] React 18, server components
+- [x] Next 13 with app/
+- [x] Custom fonts with next/font
+- [x] Route prefetching with next/link
+- [x] FontAwesome icons -- AS LIBRARY
+- [ ] Styled Components / Tailwind
+- [ ] Container queries
+- [x] Light and dark themes with toggle and localStorage
+- [x] CMD-K search, navigation, and theme toggle
+- [x] Sanity studio route
+- [x] Custom accessible Radix components
 
-- Content from Sanity
-- State managed by Redux
-- Toast notifications
-- Resume print CTA, printer styles
-- Entrance, scroll, & interaction animations (react-spring/Framer)
-- Page transition animations (react-spring/Framer)
+- [ ] Content from Sanity
+- [ ] State managed by Redux
+- [ ] Toast notifications
+- [ ] Resume print CTA, printer styles
+- [ ] Entrance, scroll, & interaction animations (react-spring/Framer)
+- [ ] Page transition animations (react-spring/Framer)
 
-- Authentication & authorization with Supabase Auth
-- Modal route for signin
-- Prisma? Or just Supabase?
-- Supabase realtime?
+- [x] Authentication & authorization with Supabase Auth
+- [x] Modal route for signin
+- [ ] Prisma? Or just Supabase?
+- [ ] Supabase realtime?
 
-- Image lazy-loading with next/image
-- Loading states
-- 404 page
-- 100% lighthouse score
-- No terminal errors
-- Accessibility tested for keyboard, screen reader, legibility
-- Responsive
+- [ ] Image lazy-loading with next/image
+- [ ] Loading states
+- [ ] 404 page
+- [ ] 100% lighthouse score
+- [ ] No terminal errors
+- [ ] Accessibility tested for keyboard, screen reader, legibility
+- [x] Responsive
 
 ## Content
 

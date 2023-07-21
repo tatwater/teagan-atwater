@@ -1,0 +1,115 @@
+.copyright {
+  display: flex;
+    align-items: center;
+    justify-content: center;
+  font-size: 0.75rem;
+  grid-area: copyright;
+}
+.footer {
+  background-color: var(--color-background);
+  border-top: 1px solid var(--slate-3);
+  padding-block: 2.5rem;
+
+  :global {
+    section {
+      margin: 0 auto;
+      max-width: 92rem;
+      padding-inline: 2rem;
+
+      &.main {
+        display: flex;
+          flex-direction: column;
+          gap: 2rem;
+          
+          @media (min-width: 800px) {
+            flex-direction: row;
+            justify-content: space-between;
+          }
+      }
+    }
+  }
+}
+.footerFooter {
+  border-top: 1px solid var(--slate-3);
+  color: var(--slate-9);
+  display: grid;
+    column-gap: 1.25rem;
+    grid-template-areas: 'legal social'
+                         'copyright copyright';
+    grid-template-columns: auto max-content;
+    grid-template-rows: max-content max-content;
+    row-gap: 0.75rem;
+  margin-top: 2.5rem;
+  padding-top: 0.75rem;
+          
+  @media (min-width: 36rem) {
+    grid-template-areas: 'copyright legal social';
+    grid-template-columns: max-content auto max-content;
+    grid-template-rows: max-content;
+  }
+}
+.legal {
+  display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  font-size: 0.75rem;
+  grid-area: legal;
+
+  a {
+    transition: color 0.1s ease-in-out;
+
+    &:hover {
+      color: var(--green-9);
+      text-decoration: underline;
+    }
+  }
+}
+.socials {
+  font-size: 1.25rem;
+  display: flex;
+  grid-area: social;
+  position: relative;
+    right: -0.625rem;
+
+  a {
+    border-radius: 0.25rem;
+    display: grid;
+      place-items: center;
+    height: 2.5rem;
+    transition: color 0.1s ease-in-out;
+    width: 2.5rem;
+
+    &:global {
+      &.linkedin:focus,
+      &.linkedin:hover {
+        color: #0077b5;
+      }
+      &.github:focus,
+      &.github:hover {
+        color: #6e40c9;
+      }
+      &.dribbble:focus,
+      &.dribbble:hover {
+        color: #ea4c89;
+      }
+    }
+  }
+}
+.wordmark {
+  font-family: var(--font-mono);
+
+  :global {
+    .cursor {
+      color: var(--red-9);
+      user-select: none;
+    }
+    .line {
+      color: var(--slate-9);
+      user-select: none;
+    }
+  }
+
+  @media (min-width: 800px) {
+    margin-top: 1.25rem;
+  }
+}

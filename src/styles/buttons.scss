@@ -13,6 +13,7 @@ form button[type='submit'] {
   font-weight: 500;
   height: 1.75rem;
   letter-spacing: 0.01em;
+  padding-inline: 0.75rem;
   user-select: none;
 
   &:disabled {

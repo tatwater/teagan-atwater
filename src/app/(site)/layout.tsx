@@ -29,8 +29,8 @@ export default function RootLayout({ children, modal }: Props) {
       <body className={` ${ inter.variable } ${ mono.variable } `}>
         <Providers>
           <Navbar />
-          { children }
           { modal }
+          { children }
         </Providers>
       </body>
     </html>

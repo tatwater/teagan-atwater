@@ -29,6 +29,7 @@ input {
   &[type='email'],
   &[type='text'] {
     border-bottom: 1px solid var(--slate-5);
+    color: var(--text-primary);
     font-family: var(--font-mono);
     padding-bottom: 0.5rem;
 

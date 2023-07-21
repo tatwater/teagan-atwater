@@ -24,6 +24,8 @@
   background-color: var(--color-background);
   border: 1px solid var(--slate-3);
   border-radius: 1rem 1rem 0 0;
+  position: fixed;
+    top: auto; right: 0; bottom: 0; left: 0;
   z-index: 1001;
 
   &:focus {
@@ -32,9 +34,7 @@
 
   @media (min-width: 600px) {
     border-radius: 0.5rem;
-    position: fixed;
-      top: 6rem;
-      right: 1.5rem;
+    top: 6rem; right: 1.5rem; bottom: auto; left: auto;
     width: 400px;
   }
 }
