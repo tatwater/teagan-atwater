@@ -32,7 +32,6 @@ export default function BuildingInPublic() {
           <label>Email address</label>
           <input
             autoComplete='none'
-            autoFocus
             // onChange={ handleChange }
             placeholder='email@example.com'
             required
