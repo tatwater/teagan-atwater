@@ -29,7 +29,7 @@ export default function RootLayout({ children, modal }: Props) {
       <body className={` ${ inter.variable } ${ mono.variable } `}>
         <Providers>
           <Navbar />
-          { modal }
+          {/* { modal } */}
           { children }
         </Providers>
       </body>
