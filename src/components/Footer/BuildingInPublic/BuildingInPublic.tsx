@@ -1,10 +1,11 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/sharp-solid-svg-icons';
-import { faLongArrowRight, faScrewdriverWrench } from '@fortawesome/sharp-regular-svg-icons';
+import { faScrewdriverWrench } from '@fortawesome/sharp-regular-svg-icons';
 
 
 import styled from './BuildingInPublic.module.scss';
+import SignUpForm from './SignUpForm';
 
 
 export default function BuildingInPublic() {
@@ -27,23 +28,7 @@ export default function BuildingInPublic() {
         </div>
         <p>Sign up to be the first to know when I drop new features & content!</p>
       </header>
-      <form>
-        <div className='input-wrapper'>
-          <label>Email address</label>
-          <input
-            autoComplete='none'
-            // onChange={ handleChange }
-            placeholder='email@example.com'
-            required
-            type='email'
-            // value={ email }
-          />
-        </div>
-        <button type='submit'>
-          <span>Sign up</span>
-          <FontAwesomeIcon icon={ faLongArrowRight } />
-        </button>
-      </form>
+      <SignUpForm />
     </aside>
   );
 }

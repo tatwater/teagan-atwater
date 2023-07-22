@@ -9,18 +9,17 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import * as Form from '@radix-ui/react-form';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/sharp-light-svg-icons';
-import { faLongArrowRight } from '@fortawesome/sharp-solid-svg-icons';
+import { faLongArrowRight } from '@fortawesome/sharp-regular-svg-icons';
 
-import styled from './SignInForm.module.scss';
+import styled from './BuildingInPublic.module.scss';
 
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const supabase = createClientComponentClient<Database>();
   const [email,           setEmail]           = useState('');
   const [showEmailPrompt, setShowEmailPrompt] = useState(false);
   const params = useSearchParams();
   const redirectTo = params.get('redirectTo');
-
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -73,7 +72,6 @@ export default function SignInForm() {
           <Form.Control asChild>
             <input
               autoComplete='none'
-              autoFocus
               onChange={ handleChange }
               placeholder='email@example.com'
               required
@@ -84,7 +82,7 @@ export default function SignInForm() {
         </Form.Field>
         <Form.Submit asChild>
           <button>
-            { 'Sign in' }
+            { 'Sign up' }
             <FontAwesomeIcon icon={ faLongArrowRight } />
           </button>
         </Form.Submit>

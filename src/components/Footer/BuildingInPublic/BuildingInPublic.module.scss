@@ -6,14 +6,6 @@
   overflow: hidden;
   width: 100%;
 
-  form {
-    background-color: var(--color-background);
-    border-top: 1px solid var(--slate-5);
-    display: flex;
-      align-items: flex-end;
-      gap: 1rem;
-    padding: 1rem;
-  }
   header {
     background: radial-gradient(75% 90% at 0% 0%, var(--green-2), transparent);
     display: flex;
@@ -77,4 +69,30 @@
     align-self: auto;
     min-width: 24rem;
   }
+}
+.emailPrompt {
+  background-color: var(--color-background);
+  border-top: 1px solid var(--slate-5);
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+  padding: 1rem;
+
+  svg {
+    color: var(--green-9);
+    font-size: 1.5rem;
+  }
+}
+.emailPromptText {
+  font-size: 0.875rem;
+  color: var(--slate-9);
+}
+.form {
+  background-color: var(--color-background);
+  border-top: 1px solid var(--slate-5);
+  display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+  padding: 1rem;
 }
