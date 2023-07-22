@@ -1,8 +1,8 @@
 {
   "name": "Teagan Atwater",
   "short_name": "Teagan",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#151718",
+  "background_color": "#151718",
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",

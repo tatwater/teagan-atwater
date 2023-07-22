@@ -21,6 +21,11 @@ fontAwesomeConfig.autoAddCss = false;
 export const metadata = {
   title: 'Teagan Atwater',
   description: 'The personal website of Teagan Atwater',
+  manifest: '/manifest.json',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#151718' },
+  ],
 }
 
 export default function RootLayout({ children, modal }: Props) {
