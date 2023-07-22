@@ -1,16 +1,18 @@
 .dashboardContainer {
-  margin: 0 auto;
+  margin: 4rem auto;
   max-width: 58rem;
   padding-inline: 1rem;
   width: 100%;
+  
+  @media (min-width: 680px) {
+    margin-block: 8rem;
+  }
 }
 .dashboardHeader {
   display: flex;
     align-items: center;
     gap: 1rem;
-    // justify-content: space-between;
   margin-bottom: 2.5rem;
-  padding-top: 4rem;
   padding-left: 0.5rem;
 
   :global {
@@ -28,10 +30,6 @@
       color: var(--slate-11);
       font-size: 0.875rem;
     }
-  }
-  
-  @media (min-width: 680px) {
-    padding-top: 8rem;
   }
 }
 .dashboardLayout {
