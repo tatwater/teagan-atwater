@@ -98,6 +98,7 @@ $second-breakpoint: 66rem;
   a {
     color: var(--slate-11);
     display: flex;
+      align-items: center;
     font-size: 0.875rem;
     height: 2rem;
     transition: color 0.1s ease-in-out;
@@ -107,7 +108,7 @@ $second-breakpoint: 66rem;
     }
   }
   span {
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
   :global {

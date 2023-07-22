@@ -19,7 +19,7 @@ export default function SignUpForm() {
   const [email,           setEmail]           = useState('');
   const [showEmailPrompt, setShowEmailPrompt] = useState(false);
   const params = useSearchParams();
-  const redirectTo = params.get('redirectTo');
+  const redirectTo = params.get('redirectTo') || '/';
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
