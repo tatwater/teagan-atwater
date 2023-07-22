@@ -73,7 +73,8 @@
     }
   }
 
-  @media (min-width: 800px) {
+  @media (min-width: 52rem) {
     align-self: auto;
+    min-width: 24rem;
   }
 }

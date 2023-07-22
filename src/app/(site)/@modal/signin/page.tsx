@@ -8,12 +8,12 @@ import styled from './SigninModal.module.scss';
 
 
 export default function SignInModal() {
-  // const router = useRouter();
+  const router = useRouter();
 
 
   return (
     <div>
-      {/* <Dialog.Root
+      <Dialog.Root
         onOpenChange={(open: boolean) => !open && router.back() }
         open={ true }
       >
@@ -23,7 +23,7 @@ export default function SignInModal() {
             <SignInForm />
           </Dialog.Content>
         </Dialog.Portal>
-      </Dialog.Root> */}
+      </Dialog.Root>
     </div>
   );
 }

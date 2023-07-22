@@ -18,7 +18,40 @@ export default function Footer() {
           { 'teagan atwater' }
           <span className='cursor'>_</span>
         </Link>
-        <BuildingInPublic />
+        <nav className={ styled.navigation }>
+          <div className='categories'>
+            <div className='category'>
+              <span>Work</span>
+              <Link href=''>Resume</Link>
+              <Link href=''>Projects</Link>
+              <Link href=''>Connect</Link>
+            </div>
+            <div className='category'>
+              <span>Life</span>
+              <Link
+                href='https://www.instagram.com/teaganskitchen/'
+                target='_blank'
+              >
+                Teagan's Kitchen
+              </Link>
+              <Link
+                href='https://www.instagram.com/teaganatwateryoga/'
+                target='_blank'
+              >
+                Teagan Atwater Yoga
+              </Link>
+              <Link
+                href='https://www.instagram.com/bradford_house_/'
+                target='_blank'
+              >
+                The Bradford House
+              </Link>
+            </div>
+          </div>
+        </nav>
+        <div className={ styled.ctaWrapper }>
+          <BuildingInPublic />
+        </div>
       </section>
       <section>
         <div className={ styled.footerFooter }>
@@ -26,8 +59,8 @@ export default function Footer() {
             <span>&copy; Teagan Atwater. All rights reserved.</span>
           </div>
           <div className={ styled.legal }>
-            <Link href='/'>Terms</Link>
-            <Link href='/'>Privacy</Link>
+            <Link href=''>Terms</Link>
+            <Link href=''>Privacy</Link>
           </div>
           <div className={ styled.socials }>
             <Link
