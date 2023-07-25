@@ -1,0 +1,43 @@
+$reflow-width: 32.5rem;
+
+.container {
+  padding: 6rem 2rem 8rem;
+
+  @media screen and (min-width: 42rem) {
+    padding-inline: 6rem;
+  }
+}
+.content {
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 2.5rem;
+  margin: 0 auto;
+  max-width: 36rem;
+  width: 100%;
+
+  @media screen and (min-width: $reflow-width) {
+    flex-direction: row;
+    gap: 1rem;
+    justify-content: space-between;
+  }
+}
+.header {
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.25rem;
+
+  @media screen and (min-width: $reflow-width) {
+    align-items: flex-start;
+  }
+}
+.heading {
+  font-size: 2rem;
+  font-weight: 600;
+}
+.subheading {
+  color: var(--slate-11);
+  font-size: 1.125rem;
+  max-width: 32em;
+}

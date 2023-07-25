@@ -58,7 +58,7 @@ export default function SignUpForm() {
       >
         <Form.Field
           className='input-wrapper'
-          name='signin-email'
+          name='signup-email'
         >
           <div className='instructions'>
             <Form.Label>Email address</Form.Label>

@@ -1,4 +1,13 @@
 
 .h1 {
   font-size: min(6rem, 12vw);
+  
+  // background: radial-gradient(circle farthest-corner at center center, var(--slate-10), var(--slate-12)) no-repeat;
+  // background-clip: text;
+  // -webkit-text-fill-color: transparent;
+
+  // [data-theme='dark'] & {
+    // background: radial-gradient(circle farthest-corner at center center, var(--slate-12), var(--slate-10)) no-repeat;
+    // background-clip: text;
+  // }
 }

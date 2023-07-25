@@ -69,6 +69,12 @@ form button[type='submit'] {
   &.height-md {
     height: 2rem;
   }
+  &.height-xlg {
+    $border: 2px;
+    font-size: 1.125rem;
+    height: 3rem;
+    padding-inline: 1rem;
+  }
   &.spread {
     justify-content: space-between;
   }

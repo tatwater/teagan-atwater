@@ -18,7 +18,7 @@ export default function BuildingInPublic() {
           target='_blank'
         >
           <FontAwesomeIcon icon={ faStar } />
-          { 'Star on GitHub' }
+          { 'Star this site on GitHub' }
         </Link>
         <div className='heading'>
           <span className='icon-wrapper'>

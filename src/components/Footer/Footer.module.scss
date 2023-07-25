@@ -169,6 +169,7 @@ $second-breakpoint: 66rem;
   }
 }
 .wordmark {
+  align-self: flex-start;
   font-family: var(--font-mono);
 
   :global {
