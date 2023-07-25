@@ -1,0 +1,37 @@
+$wrap-text-width: 545px;
+
+.contactCTA {
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 3rem;
+  padding: 8rem 1rem;
+  position: relative;
+
+  &::before {
+    aspect-ratio: 0.50;
+    background-image:
+      radial-gradient(at 35% 52%, var(--red-a5) 0px, transparent 28%),
+      radial-gradient(at 65% 48%, var(--orange-a4) 0px, transparent 28%);
+    content: '';
+    height: 360%;
+    position: absolute;
+      top: 50%; left: 50%;
+    transform:
+      translate(-50%, -50%)
+      rotate(30deg);
+    z-index: -1;
+  }
+
+  @media screen and (min-width: $wrap-text-width) {
+    gap: 1.5rem;
+    padding-inline: 2rem;
+  }
+}
+.heading {
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1.33em;
+  text-align: center;
+  text-wrap: balance;
+}
