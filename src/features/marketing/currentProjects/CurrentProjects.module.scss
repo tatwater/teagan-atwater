@@ -19,12 +19,23 @@
 }
 .header {
   display: grid;
+    column-gap: 0.75rem;
     grid-template-areas:
       'logo heading'
       'line subheading';
     grid-template-columns: 8% 1fr;
     grid-template-rows: 3rem 1fr;
     row-gap: 1.5rem;
+
+  @media screen and (min-width: 48rem) {
+    column-gap: 0.5rem;
+  }
+  @media screen and (min-width: 64rem) {
+    column-gap: 0.25rem;
+  }
+  @media screen and (min-width: 80rem) {
+    column-gap: 0;
+  }
 }
 .logoWrapper {
   grid-area: logo;
