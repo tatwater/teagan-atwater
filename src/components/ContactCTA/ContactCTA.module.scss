@@ -7,6 +7,7 @@ $wrap-text-width: 545px;
     gap: 3rem;
   padding: 8rem 1rem;
   position: relative;
+  z-index: 1;
 
   &::before {
     aspect-ratio: 0.50;

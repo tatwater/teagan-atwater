@@ -34,6 +34,9 @@ form button[type='submit'] {
   font-weight: 500;
   height: 1.75rem;
   letter-spacing: 0.01em;
+  transition:
+    background-color 0.2s ease-in-out,
+    border-color     0.2s ease-in-out;
   user-select: none;
 
   &.gradient {

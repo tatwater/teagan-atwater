@@ -31,7 +31,7 @@ export default function OutsideSeason({
       </div>
       <div className={ styled.sportsList }>
         { sports.map((sport) => (
-          <span className={ styled.sportLink }>
+          <span className={ styled.sportLink } key={ sport.name }>
             <div className='icon-wrapper'>
               <FontAwesomeIcon icon={ sport.icon } />
             </div>

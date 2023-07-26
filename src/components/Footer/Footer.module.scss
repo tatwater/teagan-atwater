@@ -108,7 +108,11 @@ $second-breakpoint: 66rem;
     }
   }
   span {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    letter-spacing: 0.16em;
     margin-bottom: 0.75rem;
+    text-transform: uppercase;
   }
 
   :global {
