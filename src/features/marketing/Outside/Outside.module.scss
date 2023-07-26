@@ -4,23 +4,23 @@ $indent-text-width: 45rem;
   background: radial-gradient(75% 75% at 0% 0%, var(--green-a3), transparent);
   border-top: 1px solid var(--slate-3);
   overflow: hidden;
-  padding: 10rem 2rem;
+  padding: 10rem 2rem 8rem;
   position: relative;
   z-index: 2;
 }
 .content {
   display: flex;
     flex-direction: column;
-    gap: 4rem;
+    gap: 5rem;
   margin: 0 auto;
-  max-width: 64rem;
+  max-width: 72rem;
   width: 100%;
 }
 .kicker {
   color: var(--slate-11);
   font-family: var(--font-mono);
-  font-size: 0.875rem;
-  letter-spacing: 0.16em;
+  font-weight: 300;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 
   @media (min-width: 56rem) {
@@ -123,6 +123,10 @@ $indent-text-width: 45rem;
   width: 100%;
 }
 .sportsList {
+  display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  margin-top: 0.25rem;
   margin-left: 1.25rem;
 }
 .sportLink {
@@ -150,13 +154,13 @@ $indent-text-width: 45rem;
     }
     .stat {
       color: var(--slate-9);
-      font-size: 0.75rem;
+      font-size: 0.875rem;
     }
     .text {
       display: flex;
         align-items: flex-start;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.75rem;
       margin-top: 0.5rem;
     }
   }
@@ -173,8 +177,8 @@ $indent-text-width: 45rem;
     align-items: center;
     gap: 0.75rem;
   font-family: var(--font-mono);
-  font-size: 0.875rem;
-  letter-spacing: 0.16em;
+  font-weight: 300;
+  letter-spacing: 0.12em;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
 
@@ -240,7 +244,6 @@ $indent-text-width: 45rem;
   display: flex;
     align-items: center;
     gap: 0.75rem;
-  font-size: 0.875rem;
   height: 2rem;
   padding-inline: 0.75rem;
   position: relative;

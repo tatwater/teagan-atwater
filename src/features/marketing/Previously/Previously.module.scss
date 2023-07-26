@@ -1,9 +1,4 @@
 .cardList {
-  // display: grid;
-  //   column-gap: 5%;
-  //   grid-template-columns: max-content max-content;
-  //   grid-template-rows: max-content;
-  //   row-gap: 5%;
   display: flex;
     flex-wrap: wrap;
     gap: max(4%, 2rem);
@@ -64,7 +59,7 @@
     flex-direction: column;
   margin: 0 auto;
   max-width: 68rem;
-  padding: 6rem 1rem 4rem;
+  padding: 0 1rem 4rem;
   width: 100%;
 
   @media screen and (min-width: 800px) {

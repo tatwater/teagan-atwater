@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Providers({ children }: { children: ReactNode }) {
   return (
-    <ThemeProvider>
+    <ThemeProvider defaultTheme='dark'>
       <KBarProvider>
         { children }
       </KBarProvider>
