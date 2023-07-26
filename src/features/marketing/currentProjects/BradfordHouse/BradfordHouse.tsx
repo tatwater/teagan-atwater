@@ -20,7 +20,8 @@ export default function SousSection() {
             </strong>
             { ` And the perfect opportunity to use my architecture degree. Slowly but surely it's taking shape! Standing inside a house built with my own hands, alongside my father, is a very cool experience.` }
           </p>
-          <div className={ styled.line }></div>
+          <div className={ styled.lineIn } />
+          <div className={ styled.lineOut } />
         </header>
         <div className={ sharedStyled.contentPlaceholder }>&lt;Coming timing='soon' /&gt;</div>
       </div>

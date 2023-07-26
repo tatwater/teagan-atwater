@@ -20,7 +20,8 @@ export default function SousSection() {
             </strong>
             { ` Or it was, before Sous. With the best recipe importer in the biz as its main dish, Sous is your own personally-curated cookbook first, topped with all the tasty social features you expect.` }
           </p>
-          <div className={ styled.line }></div>
+          <div className={ styled.lineIn } />
+          <div className={ styled.lineOut } />
         </header>
         <div className={ sharedStyled.contentPlaceholder }>&lt;Coming timing='soon' /&gt;</div>
       </div>

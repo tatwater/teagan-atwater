@@ -3,8 +3,16 @@
   max-width: 80rem;
   position: relative;
 }
-.line {
-  background: linear-gradient(rgba(232, 223, 205, 1), rgba(232, 223, 205, 0));
+.lineIn {
+  background: linear-gradient(rgba(209, 200, 182, 0), rgba(209, 200, 182, 1));
+  border-radius: 2px;
+  grid-area: lead-in;
+  height: 100%;
+  margin-inline: auto;
+  width: 4px;
+}
+.lineOut {
+  background: linear-gradient(rgba(209, 200, 182, 1), rgba(209, 200, 182, 0));
   border-radius: 2px;
   grid-area: line;
   height: 100%;

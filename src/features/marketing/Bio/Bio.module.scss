@@ -1,3 +1,8 @@
 .container {
-  padding: 4rem 2rem;
+  padding-inline: 1rem;
+}
+.leadingLine {
+  margin-inline: auto;
+  max-width: 80rem;
+  position: relative;
 }

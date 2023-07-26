@@ -1,39 +1,22 @@
 .container {
-  padding: 1.5rem 1rem 10rem;
-}
-.content {
-  margin-inline: auto;
-  max-width: 80rem;
-  position: relative;
-
-  &::after {
-    background: linear-gradient(rgba(242, 59, 46, 0), rgba(242, 59, 46, 1));
-    border-radius: 2px;
-    content: '';
-    height: 10rem;
-    position: absolute;
-      bottom: -10rem; left: 4%;
-    transform: translateX(-2px);
-    width: 4px;
-  }
+  padding-inline: 1rem;
 }
 .header {
   display: grid;
     column-gap: 0.75rem;
     grid-template-areas:
+      'lead-in _'
       'logo heading'
       'line subheading';
-    grid-template-columns: 8% 1fr;
-    grid-template-rows: 3rem 1fr;
+    grid-template-columns: clamp(2rem, 8%, 6rem) 1fr;
+    grid-template-rows: 10rem 3rem 1fr;
     row-gap: 1.5rem;
+  padding-block: 0.5rem;
 
   @media screen and (min-width: 48rem) {
     column-gap: 0.5rem;
   }
   @media screen and (min-width: 64rem) {
-    column-gap: 0.25rem;
-  }
-  @media screen and (min-width: 80rem) {
     column-gap: 0;
   }
 }
@@ -45,14 +28,6 @@
     max-height: 100%;
     max-width: 100%;
   }
-}
-.line {
-  background: linear-gradient(rgba(242, 59, 46, 1), rgba(242, 59, 46, 0));
-  border-radius: 2px;
-  grid-area: line;
-  height: 100%;
-  margin-inline: auto;
-  width: 4px;
 }
 .heading {
   grid-area: heading;
@@ -66,6 +41,7 @@
   color: var(--slate-11);
   font-size: 1.125rem;
   grid-area: subheading;
+  margin-right: 1rem;
   margin-bottom: 6rem;
   max-width: 32em;
 
@@ -84,4 +60,5 @@
     place-items: center;
   font-family: var(--font-mono);
   height: 50vh;
+  user-select: none;
 }
