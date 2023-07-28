@@ -21,8 +21,8 @@ $reflow-width: 23.5rem;
   i {
     display: none;
 
-    @media scren and (min-width: $reflow-width) {
-      display: block;
+    @media screen and (min-width: $reflow-width) {
+      display: inline;
     }
   }
   a {
