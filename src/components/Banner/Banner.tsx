@@ -11,7 +11,10 @@ export default function Banner() {
       <div className={ styled.content }>
         <span>I'm building in the open</span>
         <i>—</i>
-        <Link href=''>
+        <Link
+          href='https://github.com/tatwater/teagan-atwater'
+          target='_blank'
+        >
           { 'View the codebase' }
           <FontAwesomeIcon icon={ faArrowUpRight } />  
         </Link>
