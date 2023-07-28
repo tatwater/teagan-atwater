@@ -7,6 +7,7 @@ import { inter, mono } from '@/fonts';
 import '@/styles/globals.scss';
 import Navbar from '@/components/Navbar/Navbar';
 import Providers from './Providers';
+import Banner from '@/components/Banner/Banner';
 
 
 type Props = {
@@ -33,6 +34,7 @@ export default function RootLayout({ children, modal }: Props) {
     <html lang='en'>
       <body className={` ${ inter.variable } ${ mono.variable } `}>
         <Providers>
+          <Banner />
           <Navbar />
           {/* { modal } */}
           { children }

@@ -9,7 +9,9 @@ export default function SousSection() {
       <div className={ styled.content }>
         <header className={ sharedStyled.header }>
           <div className={ sharedStyled.logoWrapper }>
-            <BradfordHouseLogo />
+            <span className={ styled.borderRadius }>
+              <BradfordHouseLogo />
+            </span>
           </div>
           <div className={ sharedStyled.heading }>
             <h2>Bradford House</h2>

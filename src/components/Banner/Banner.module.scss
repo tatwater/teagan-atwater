@@ -1,0 +1,41 @@
+$reflow-width: 23.5rem;
+
+.container {
+  background: linear-gradient(to right, var(--green-9), var(--blue-8), var(--orange-9));
+  color: white;
+}
+.content {
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+  margin-inline: auto;
+  max-width: 42rem;
+  padding: 0.75rem 1rem;
+
+  span {
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  i {
+    display: none;
+
+    @media scren and (min-width: $reflow-width) {
+      display: block;
+    }
+  }
+  a {
+    display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  @media screen and (min-width: $reflow-width) {
+    flex-direction: row;
+    gap: 1rem;
+    padding-block: 0.5rem;
+  }
+}

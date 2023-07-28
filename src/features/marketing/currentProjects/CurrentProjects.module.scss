@@ -21,6 +21,8 @@
   }
 }
 .logoWrapper {
+  display: flex;
+    justify-content: center;
   grid-area: logo;
 
   svg {
