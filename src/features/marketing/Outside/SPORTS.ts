@@ -14,19 +14,19 @@ export default {
     {
       icon:       faPersonSkating,
       name:      'Nordic Skating',
-      numSeasons: 3,
+      numSeasons: 4,
       startYear:  2020,
     },
     {
       icon:       faPersonSkiingNordic,
       name:      'XC Skiing',
-      numSeasons: 3,
+      numSeasons: 4,
       startYear:  2020,
     },
     {
       icon:       faPersonSkiing,
       name:      'Alpine Skiing',
-      numSeasons: 11,
+      numSeasons: 12,
       startYear:  2004,
     },
   ],

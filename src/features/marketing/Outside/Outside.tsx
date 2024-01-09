@@ -49,14 +49,14 @@ export default function OutsideSection() {
           <div className={ styled.category }>
             <h3 className={ styled.title }>Hosting</h3>
             <span className={ styled.otherLink }>Dinner parties</span>
-            <span className={ styled.otherLink }>Game nights</span>
+            {/* <span className={ styled.otherLink }>Game nights</span> */}
           </div>
 
           <div className={ styled.category }>
             <h3 className={ styled.title }>Other</h3>
             <span className={ styled.otherLink }>Interior design</span>
-            <span className={ styled.otherLink }>Music</span>
-            <span className={ styled.otherLink }>Podcasts</span>
+            <span className={ styled.otherLink }>Making playlists</span>
+            {/* <span className={ styled.otherLink }>Podcasts</span> */}
           </div>
         </div>
       </div>
