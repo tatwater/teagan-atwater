@@ -62,8 +62,8 @@ export default function CmdkHint() {
 
 const KeyboardKey = ({ children, icon }: { children: ReactNode, icon?: boolean }) => {
   return (
-    <div className={ `${ icon ? 'text-xs' : 'text-sm' } ${ styled.key }` }>
+    <kbd className={ `${ icon ? 'text-xs' : 'text-sm' } ${ styled.key }` }>
       { children }
-    </div>
+    </kbd>
   )
 }

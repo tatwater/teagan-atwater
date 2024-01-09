@@ -10,9 +10,6 @@ const withPWA = require('next-pwa')({
 });
 
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   images: {
     remotePatterns: [
       {

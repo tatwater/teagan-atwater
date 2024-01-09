@@ -1,6 +1,7 @@
 import SousSquircle from '@/components/logos/SousSquircle';
 import sharedStyled from '../CurrentProjects.module.scss';
 import styled from './Sous.module.scss';
+import Image from 'next/image';
 
 
 export default function SousSection() {
@@ -16,14 +17,21 @@ export default function SousSection() {
           </div>
           <p className={ sharedStyled.subheading }>
             <strong>
-              { `Food is social, but a social network dedicated to passing recipes around, customizing them, and sharing the results is missing.` }
+              { `Food is social. But a focused social network, dedicated to our favorite recipes and the meals we make together, is missing.` }
             </strong>
-            { ` Or it was, before Sous. With the best recipe importer in the biz as its main dish, Sous is your own personally-curated cookbook first, topped with all the tasty social features you expect.` }
+            { ` Introducing Sous, the tool you'll reach for most in your whole kitchen. Based around a strongly type-safe recipe scraper and transformer, Sous is your own personally-curated cookbook first. But it doesn't stop there. follow your friends, discover (and trust) the recipes they depend on, share the meals you make, and tag the recipes you use so others can quickly save them for later.` }
           </p>
           <div className={ styled.lineIn } />
           <div className={ styled.lineOut } />
         </header>
-        <div className={ sharedStyled.contentPlaceholder }>&lt;Coming timing='soon' /&gt;</div>
+        {/* <div className={ sharedStyled.contentPlaceholder }>
+          <Image
+            alt='Demo recipe'
+            height={ 1521 }
+            src='/recipe.png'
+            width={ 1424 }
+          />
+        </div> */}
       </div>
     </section>
   );

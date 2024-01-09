@@ -1,0 +1,114 @@
+.container {
+  display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  grid-area: header;
+}
+.positioner {
+  display: flex;
+    flex-direction: column;
+    justify-content: center;
+  min-height: 100dvh;
+  padding-block: 5rem;
+  position: sticky;
+    bottom: 0;
+}
+.content {
+  display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.header {
+  display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.heading {
+  font-size: 4.5rem;
+  line-height: 1.2em;
+}
+.subheading {
+  color: var(--slate-12);
+  font-size: 1.25rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  max-width: 20em;
+  text-wrap: balance;
+}
+.subnavHeading {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+.subnav {
+  display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+  margin-block: 5rem 2rem;
+
+  a {
+    color: var(--slate-11);
+    cursor: pointer;
+    display: flex;
+      align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    height: 2rem;
+    transition: color 0.1s ease-in-out;
+
+    &::before {
+      background-color: var(--slate-11);
+      content: '';
+      height: 1px;
+      margin-right: 1rem;
+      transition:
+        background-color 0.1s ease-in-out,
+        width            0.1s ease-in-out;
+      width: 2rem;
+    }
+
+    &:hover {
+      color: var(--slate-12);
+
+      &::before {
+        background-color: var(--slate-12);
+        width: 3rem;
+      }
+    }
+  }
+}
+.skipButton {
+  align-self: flex-start;
+  background-color: var(--slate-3);
+  border-radius: 1rem;
+  box-shadow:
+    0 1px 0 0 inset var(--slate-a4),
+    0 1px 0 0 var(--slate-a1);
+  cursor: pointer;
+  display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  font-size: 0.875rem;
+  height: 2rem;
+  letter-spacing: 0.01em;
+  padding-inline: 1rem;
+  position: relative;
+    left: -1rem;
+  transition: background-color 0.1s ease-in-out;
+
+  span {
+    aspect-ratio: 1;
+    background-color: var(--slate-a4);
+    border-radius: 50%;
+    display: grid;
+      place-items: center;
+    height: calc(2rem - 8px);
+    margin-right: calc(-1rem + 4px);
+  }
+  
+  &:hover {
+    background-color: var(--slate-5);
+  }
+}

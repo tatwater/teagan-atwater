@@ -10,7 +10,7 @@ export default function Banner() {
     <aside className={ styled.container }>
       <div className={ styled.content }>
         <span>I'm building in the open</span>
-        <i>—</i>
+        <i />
         <Link
           href='https://github.com/tatwater/teagan-atwater'
           target='_blank'

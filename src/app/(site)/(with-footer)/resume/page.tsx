@@ -1,21 +1,32 @@
 import Link from 'next/link';
-import styles from './Resume.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLongArrowRight, faMapMarkerAlt } from '@fortawesome/sharp-regular-svg-icons';
+
+import SkillBadge from '@/features/resume/SkillBadge/SkillBadge';
 import SousLogo from '@/components/logos/sous';
+
+import styles from './Resume.module.scss';
 
 
 export default async function ResumePage() {
   return (
     <main>
       <header className={ styles.header }>
-        <h1>My Résumé</h1>
+        <h1 className='h1'>My Résumé</h1>
       </header>
       <div className={ styles.resume }>
         <aside className={ styles.sidebar }>
-          <h2>Skills</h2>
-          <h4>Programming Languages</h4>
-          <p>TypeScript/JavaScript (ES2020+), TSX/JSX (HTML5+), Sass (CSS3+), GraphQL, PostgREST</p>
+          <h2 className='h4'>Skills</h2>
+          <div className=''>
+            <h4>Programming Languages</h4>
+            <div className='flex flex-wrap gap-2 mt-2 mb-4'>
+              <SkillBadge>TypeScript</SkillBadge>
+              <SkillBadge>TSX</SkillBadge>
+              <SkillBadge>Sass</SkillBadge>
+              <SkillBadge>GraphQL</SkillBadge>
+              <SkillBadge>PostgREST</SkillBadge>
+            </div>
+          </div>
           <h4>Libraries & Frameworks</h4>
           <p>React, NextJS, Redux, Styled-Components, RadixUI, Formik & Yup, Tailwind, React-Spring, Framer Motion, Prisma, Stripe, Gatsby</p>
           <h4>Databases</h4>
@@ -36,11 +47,16 @@ export default async function ResumePage() {
           <p>English (native)<br />Spanish (intermediate, rusty)</p>
           <span className={ styles.divider } />
           <h4 className={ styles.light }>Previously</h4>
-          <p className={ styles.light }>Twig/Jade/Pug/Haml, Less/Stylus, Gulp/Grunt, Jekyll, Drupal/WordPress/SilverStripe, Angular, PHP, Ruby on Rails</p>
+          <p className={ styles.light }>
+            <SkillBadge>JavaScript</SkillBadge>
+            <SkillBadge>HTML5+</SkillBadge>
+            <SkillBadge>CSS3+</SkillBadge>
+            Twig/Jade/Pug/Haml, Less/Stylus, Gulp/Grunt, Jekyll, Drupal/WordPress/SilverStripe, Angular, PHP, Ruby on Rails
+          </p>
         </aside>
         <div className={ styles.content }>
           <section className={ styles.section }>
-            <h2>Experience</h2>
+            <h2 className='h4'>Experience</h2>
             <div className={ styles.cta }>
               <h3>&lt;Something new /&gt;</h3>
               <p>I'm looking for a post-covid fresh start at a growing company on a mission. Sound like yours? Get in touch.</p>

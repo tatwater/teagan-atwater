@@ -25,7 +25,7 @@ export default function SousSection() {
           <div className={ styled.lineIn } />
           <div className={ styled.lineOut } />
         </header>
-        <div className={ sharedStyled.contentPlaceholder }>&lt;Coming timing='soon' /&gt;</div>
+        {/* <div className={ sharedStyled.contentPlaceholder }>&lt;Coming timing='soon' /&gt;</div> */}
       </div>
     </section>
   );

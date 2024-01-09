@@ -1,19 +1,16 @@
-import Link from 'next/link';
-
 import CmdkHint from '@/components/CmdkHint';
 import ModeToggle from '@/components/ModeToggle';
+import NavLinks from './NavLinks';
 import Button from './auth/Button';
-import Logo from './Logo';
+
 import styled from './Navbar.module.scss';
 
 
 export default async function Navbar() {
   return (
     <nav className={ styled.navbar }>
-      <div className='ml-4'>
-        <Link href='/'>
-          <Logo />
-        </Link>
+      <div className='ml-4 flex align-center'>
+        <NavLinks />
       </div>
       <div className='flex gap-4 items-center'>
         <CmdkHint />

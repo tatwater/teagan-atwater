@@ -7,14 +7,19 @@
   height: 5rem;
   margin-top: 1rem;
   padding: 1.25rem 1rem;
-  position: sticky;
-    top: 0;
-    right: 0;
-    left: 0;
   user-select: none;
   z-index: 1000;
 
   @media (min-width: 800px) {
     padding: 1.25rem 1.5rem;
+  }
+
+  :global {
+    .ta-logo {
+      height: 3rem;
+      stroke: var(--slate-12);
+      stroke-width: 2;
+      transition: stroke 0.1s ease-in-out;
+    }
   }
 }

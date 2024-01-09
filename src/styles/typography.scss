@@ -1,5 +1,10 @@
 
-.h1 {}
+.h1 {
+  font-size: 4.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.2em;
+}
 .h2 {
   font-size: 1.5rem;
   font-weight: 800;
@@ -7,4 +12,10 @@
 .h3 {
   font-size: 1.25rem;
   font-weight: 600;
+}
+.h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
 }

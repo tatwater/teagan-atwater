@@ -2,11 +2,15 @@ $reflow-width: 23.5rem;
 
 .container {
   background: linear-gradient(to right, var(--green-9), var(--blue-8), var(--orange-9));
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .25);
   color: white;
+  display: flex;
+    align-items: center;
+  height: 2.5rem;
 }
 .content {
   display: flex;
-    align-items: center;
+    align-items: baseline;
     flex-direction: column;
     gap: 0.5rem;
     justify-content: center;
@@ -19,7 +23,10 @@ $reflow-width: 23.5rem;
     font-weight: 500;
   }
   i {
+    background-color: rgba(255, 255, 255, 0.8);
     display: none;
+    height: 1rem;
+    width: 1px;
 
     @media screen and (min-width: $reflow-width) {
       display: inline;

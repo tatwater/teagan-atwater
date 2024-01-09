@@ -39,6 +39,7 @@
 
 ## Content
 
+- Skip to Content links
 - Brief about / positioning statement
 - Design. Build. (Repeat.)
 - Resume

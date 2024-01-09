@@ -12,16 +12,20 @@ import styled from './HomePage.module.scss';
 export default function HomePage() {
   return (
     <main>
-      <section className='hero hero--max'>
+      {/* <section className='hero hero--max'>
         <h1 className={ `text-center text-8xl font-extrabold tracking-tight ${ styled.h1 } `}>Design. Build.<br />(Repeat.)</h1>
-      </section>
+      </section> */}
       <Bio />
-      <Sous />
-      <BradfordHouse />
+      <div id='recent-work'>
+        <Sous />
+        {/* <BradfordHouse /> */}
+      </div>
       <Previously />
       <ResumeCTA />
-      <Outside />
-      <ContactCTA />
+      <div style={{ overflow: 'hidden' }}>
+        <Outside />
+        <ContactCTA />
+      </div>
     </main>
   );
 }

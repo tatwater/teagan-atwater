@@ -48,7 +48,7 @@ export default function PreviouslySection() {
             <OslerLogo />
           </div>
           Osler Health
-          <p>A portable, structured system for electronic medical records</p>
+          <p>A portable, structured system for personal electronic medical data</p>
           <Link className='button' href=''>
             { 'Case Study' }
             <FontAwesomeIcon icon={ faLongArrowRight } />

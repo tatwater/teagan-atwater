@@ -1,8 +1,136 @@
 .container {
-  padding-inline: 1rem;
-}
-.leadingLine {
+  display: grid;
+    column-gap: 4rem;
+    grid-template-areas:
+      // 'header portrait'
+      'header about'
+      'header engineering'
+      'header architecture';
+    grid-template-columns: max-content 1fr;
+    // grid-template-rows: 100dvh max-content max-content;
+    grid-template-rows: max-content max-content;
+    // row-gap: 6rem;
   margin-inline: auto;
-  max-width: 80rem;
+  margin-top: -6rem;
+  max-width: 94rem;
+  padding-inline: 2rem;
+  width: 100%;
+
+  article p {
+    color: var(--slate-11);
+    font-size: 1.125rem;
+    margin-inline: auto;
+    max-width: 36rem;
+
+    strong {
+      color: var(--slate-12);
+      font-weight: inherit;
+    }
+    ins {
+      text-decoration: none;
+    }
+
+    & + p {
+      margin-top: 1em;
+    }
+  }
+  article pre {
+    font-size: 0.875rem;
+    margin-inline: auto;
+    margin-bottom: 1rem;
+    max-width: 36rem;
+  }
+}
+.center {
+  display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+  grid-area: portrait;
+}
+.about {
+  grid-area: about;
+  // margin-top: -4rem;
+  margin-top: calc(50dvh - 7.875rem);
+  padding-block: 4rem;
+}
+.engineering {
+  grid-area: engineering;
+  padding-block: 4rem;
+}
+.architecture {
+  grid-area: architecture;
+  padding-block: 4rem;
+}
+.portrait {
+  aspect-ratio: 1;
+  backdrop-filter: blur(2px);
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: var(--slate-9);
+  display: grid;
+    place-items: center;
+  font-family: var(--font-mono);
+  height: min(70dvh, 50rem);
+  overflow: hidden;
+  user-select: none;
+}
+.appIcons {
+  aspect-ratio: 4;
+  margin-bottom: 4rem;
   position: relative;
+}
+.appIcon {
+  aspect-ratio: 1;
+  display: grid;
+    place-items: center;
+  position: absolute;
+  width: 20%;
+  z-index: 1;
+
+  &::before {
+    backdrop-filter: blur(8px);
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    content: '';
+    filter: saturate(0.5) brightness(1.1);
+    position: absolute;
+      top: 0; right: 0; bottom: 0; left: 0;
+    z-index: -1;
+  }
+  
+
+  &:nth-of-type(1) {
+    --fill-color: rgb(41, 98, 255);
+    top: 20%; left: 27%;
+    scale: 0.90;
+  }
+  &:nth-of-type(2) {
+    --fill-color: rgb(203, 155, 81);
+    top: 10%; left: 52.5%;
+    scale: 0.95;
+  }
+  &:nth-of-type(3) {
+    --fill-color: rgb(242, 59, 46);
+    top: 0%; left: 40%;
+  }
+
+  :global {
+    .filled {
+      fill: var(--fill-color);
+    }
+  }
+}
+.logoWrapper {
+  display: grid;
+    place-items: center;
+  height: 3rem;
+
+  svg {
+    height: 100%;
+    max-height: 100%;
+    max-width: 100%;
+  }
 }

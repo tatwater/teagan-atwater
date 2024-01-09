@@ -4,7 +4,7 @@ import type { User } from '@supabase/auth-helpers-nextjs';
 import type { Database } from '@/lib/database.types';
 
 import { useCallback, useEffect, useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/sharp-regular-svg-icons';
 
@@ -53,7 +53,7 @@ export default function UserButton({ user }: Props) {
     } finally {
       setLoading(false);
     }
-  }, [user, supabase])
+  }, [user, supabase]);
 
 
   useEffect(() => {
