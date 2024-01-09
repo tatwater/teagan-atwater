@@ -2,16 +2,14 @@
   display: grid;
     column-gap: 4rem;
     grid-template-areas:
-      // 'header portrait'
-      'header about'
-      'header engineering'
-      'header architecture';
-    grid-template-columns: max-content 1fr;
-    // grid-template-rows: 100dvh max-content max-content;
-    grid-template-rows: max-content max-content;
+      'header'
+      'about'
+      'engineering'
+      'architecture';
+    grid-template-columns: auto;
+    grid-template-rows: max-content max-content max-content max-content;
     // row-gap: 6rem;
   margin-inline: auto;
-  margin-top: -6rem;
   max-width: 94rem;
   padding-inline: 2rem;
   width: 100%;
@@ -40,6 +38,18 @@
     margin-bottom: 1rem;
     max-width: 36rem;
   }
+
+  @media (min-width: 1280px) {
+    grid-template-areas:
+      // 'header portrait'
+      'header about'
+      'header engineering'
+      'header architecture';
+    grid-template-columns: max-content 1fr;
+    // grid-template-rows: 100dvh max-content max-content;
+    grid-template-rows: max-content max-content;
+    margin-top: -6rem;
+  }
 }
 .center {
   display: flex;
@@ -50,9 +60,11 @@
 }
 .about {
   grid-area: about;
-  // margin-top: -4rem;
-  margin-top: calc(50dvh - 7.875rem);
-  padding-block: 4rem;
+
+  @media (min-width: 1280px) {
+    margin-top: calc(50dvh - 7.875rem);
+    padding-block: 4rem;
+  }
 }
 .engineering {
   grid-area: engineering;

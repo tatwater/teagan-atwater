@@ -19,7 +19,7 @@ export default function BioHeader() {
             <h6 className={ styled.subnavHeading }>In Brief</h6>
             <Link href='#about-me'>As an Engineer</Link>
             <Link href='#software-engineering'>As a Founder</Link>
-            {/* <Link href='#architecture'>Physical Spaces</Link> */}
+            <Link href='#architecture'>Physical Spaces</Link>
           </nav>
           <Link
             className={ styled.skipButton }
