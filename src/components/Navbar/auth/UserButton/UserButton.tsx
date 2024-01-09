@@ -25,7 +25,7 @@ export default function UserButton({ user }: Props) {
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
 
 
-  const getProfile = useCallback(async () => {
+  const getProfile = useCallback(async (user: User) => {
     try {
       setLoading(true);
 
@@ -57,7 +57,9 @@ export default function UserButton({ user }: Props) {
 
 
   useEffect(() => {
-    getProfile()
+    if (!!user) {
+      getProfile(user);
+    }
   }, [user, getProfile]);
 
 

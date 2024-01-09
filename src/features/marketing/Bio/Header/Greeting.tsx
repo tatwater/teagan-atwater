@@ -21,7 +21,7 @@ export default function HeaderGreeting() {
     setUser(user);
   }, [supabase]);
 
-  const getProfile = useCallback(async () => {
+  const getProfile = useCallback(async (user: User) => {
     try {
       setLoading(true);
 
@@ -51,8 +51,8 @@ export default function HeaderGreeting() {
   }, [getUser]);
 
   useEffect(() => {
-    if (user) {
-      getProfile();
+    if (!!user) {
+      getProfile(user);
     }
   }, [user, getProfile]);
 
