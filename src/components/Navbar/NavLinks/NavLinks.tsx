@@ -70,13 +70,13 @@ export default function NavLinks() {
   );
 }
 
-const ListItem = forwardRef(({ children, href, title }: { children: ReactNode; href: string; title: string; }, forwardedRef) => (
-  <li>
-    <NavigationMenu.Link asChild>
-      <a className={ styled.subLink } href={ href } ref={forwardedRef}>
-        <h6>{ title }</h6>
-        <p>{ children }</p>
-      </a>
-    </NavigationMenu.Link>
-  </li>
-));
+// const ListItem = forwardRef(({ children, href, title }: { children: ReactNode; href: string; title: string; }, forwardedRef) => (
+//   <li>
+//     <NavigationMenu.Link asChild>
+//       <a className={ styled.subLink } href={ href } ref={forwardedRef}>
+//         <h6>{ title }</h6>
+//         <p>{ children }</p>
+//       </a>
+//     </NavigationMenu.Link>
+//   </li>
+// ));
