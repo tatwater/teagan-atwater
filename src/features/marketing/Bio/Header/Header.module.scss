@@ -56,6 +56,11 @@
   letter-spacing: 0.25em;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
+
+  svg {
+    color: var(--slate-6);
+    margin-inline: -1.65rem 0.25rem;
+  }
 }
 .subnav {
   display: flex;

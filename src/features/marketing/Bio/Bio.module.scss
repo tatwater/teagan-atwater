@@ -62,7 +62,8 @@
   grid-area: about;
 
   @media (min-width: 1280px) {
-    margin-top: calc(50dvh - 7.875rem);
+    // margin-top: calc(50dvh - 7.875rem);
+    margin-top: calc(50dvh + 0.8rem);
     padding-block: 4rem;
   }
 }
@@ -73,6 +74,20 @@
 .architecture {
   grid-area: architecture;
   padding-block: 4rem;
+}
+.subnavHeading {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  margin-bottom: 0.75rem;
+  margin-inline: auto;
+  max-width: 36rem;
+  text-transform: uppercase;
+
+  svg {
+    color: var(--slate-6);
+    margin-inline: -1.65rem 0.25rem;
+  }
 }
 .portrait {
   aspect-ratio: 1;

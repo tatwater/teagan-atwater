@@ -63,7 +63,7 @@ export default function PreviouslySection() {
             <FiberLogo />
           </div>
           Fiber
-          <p>Organization-wide analytics on the effects of implicit biases</p>
+          <p>Organization-wide, actionable insights on the effects of implicit biases</p>
           <Link className='button' href=''>
             { 'Case Study' }
             <FontAwesomeIcon icon={ faLongArrowRight } />
