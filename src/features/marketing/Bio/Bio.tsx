@@ -37,10 +37,10 @@ export default function BioSection() {
     <section className={ styled.container }>
       <Header />
       <article className={ styled.about } id='about-me'>
-        <p><strong>I’m a software engineer, and I've been building for the web for *checks notes* ~{ Math.round(webDays / myAgeInDays * 100) }% of my life.</strong> I started in 2007 with PHP, and I remember bad old days before HTML5 and CSS3 had broad browser support. I've been on the responsive & mobile-first bandwagon since <a href='https://ethanmarcotte.com/' target='_new'>Ethan Marcotte</a> wrote about it for my favorite weblog, <a href='https://alistapart.com/article/responsive-web-design/' target='_new'>A List Apart</a>, in 2010. I rejoiced when my agency dropped support for IE7. I spent a short time learning MVC with Ruby on Rails before returning home to a post-jQuery <del>Java</del><ins>Type</ins>Script landscape, and quickly found a home in a sea of React components.</p>
-        <p>I have been building with React for the past { reactYears } years, on top of frameworks like Meteor, Vulcan, Gatsby, and NextJS. I've built static sites and full-stack progressive web apps, and experiences that blur the lines between the two (like this one!)</p>
-        <p>After VS Code, my next most used tool is Figma. A love of good design has always been a core motivation (I was going to be an architect, more on that soon) and I design accessible user interfaces as well as build them. I've also been known to do brand & print work for select clients.</p>
-        <p>There's nothing quite like building something that enables other people accomplish their goals in ways they have not been able to before. Design and engineering are two sides of the same problem-solving coin, and I can't get enough of all of it.</p>
+        <p><strong>I’m a { myAge } year-old software engineer, and I've been building for the web for *checks notes* ~{ Math.round(webDays / myAgeInDays * 100) }% of my life.</strong> I picked up PHP in 2007, and built too many sites in the bad old days before HTML5 and CSS3 had broad browser support. I've been on the responsive & mobile-first bandwagon since <a href='https://ethanmarcotte.com/' target='_new'>Ethan Marcotte</a> wrote about it in my favorite weblog, <a href='https://alistapart.com/article/responsive-web-design/' target='_new'>A List Apart</a>, in 2010. I rejoiced when my agency finally dropped support for IE 6 & 7. I spent a short time learning MVC with Ruby on Rails, before returning to a post-jQuery <del>Java</del><ins>Type</ins>Script landscape, and quickly found myself at home in a sea of React components.</p>
+        <p>I have been building with React for the past { reactYears } years, on top of frameworks like Meteor, Vulcan, Gatsby, and Next.js. I've built static sites and full-stack progressive web apps, and experiences that blur the lines between the two (like this one!)</p>
+        <p>After VS Code, my next most beloved tool is Figma. A love of good design has always been a core motivation (I was going to be an architect, more on that in a bit) and I design accessible user interfaces as well as build them. I've also been known to do brand & print work for select clients.</p>
+        <p>There's nothing quite like building the means for other people to accomplish their goals in better ways than they've had available before. Design and engineering are two inseparable sides of the same problem-solving coin, and I can't get enough of all of it.</p>
       </article>
       <article className={ styled.engineering } id='software-engineering'>
         <div className={ styled.appIcons }>
@@ -60,7 +60,7 @@ export default function BioSection() {
             </div>
           </div>
         </div>
-        <p><strong>Since 2017 I've started three companies</strong>, building on passions for social equity, healthcare, and food.</p>
+        <p><strong>Since 2017 I've started three companies</strong>, building on passions for social equity, healthcare, and making food.</p>
         <p>...</p>
         {/* <p>More information about all three, focused on common themes and ties to personal interests.</p> */}
       </article>
