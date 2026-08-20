@@ -24,6 +24,10 @@ const allEnd = nmcItems.every((i) => i.dateEnd !== null)
 
 // Collect unique tags
 const allTags = [...new Set(nmcItems.flatMap((i) => i.tags))];
+
+// The header card already states the overall span, so per-role dates only earn
+// their place once there is more than one role to tell apart.
+const showRoleDates = nmcItems.length > 1;
 ---
 
 <Layout>
@@ -95,19 +99,21 @@ const allTags = [...new Set(nmcItems.flatMap((i) => i.tags))];
       </div>
     </div>
 
-    {/* Individual roles */}
+    {/* Role write-up */}
     {nmcItems.map((item) => (
       <div class='border border-border bg-card px-6 py-5 mb-4'>
         <div class='flex items-start justify-between gap-3 mb-3'>
           <h2 class='text-base font-semibold text-foreground'>{item.title}</h2>
-          <div class='flex flex-col items-end gap-1 shrink-0 text-right'>
-            <span class='text-xs font-mono text-muted-foreground whitespace-nowrap'>
-              {formatDateRange(item.dateStart, item.dateEnd, 'long')}
-            </span>
-            <span class='text-xs font-mono text-muted-foreground/60'>
-              {getDuration(item.dateStart, item.dateEnd)}
-            </span>
-          </div>
+          {showRoleDates && (
+            <div class='flex flex-col items-end gap-1 shrink-0 text-right'>
+              <span class='text-xs font-mono text-muted-foreground whitespace-nowrap'>
+                {formatDateRange(item.dateStart, item.dateEnd, 'long')}
+              </span>
+              <span class='text-xs font-mono text-muted-foreground/60'>
+                {getDuration(item.dateStart, item.dateEnd)}
+              </span>
+            </div>
+          )}
         </div>
         <p class='text-sm leading-loose text-foreground/80'>{item.descriptionFull}</p>
       </div>

@@ -10,41 +10,20 @@ export const experienceItems: ResumeItem[] = [
     logoShape: 'squircle',
     logoSrc: 'nmc.png',
     location: 'San Francisco, CA · Remote',
-    dateStart: '2024-05',
+    // The contract engagement that opened this role is folded in rather than
+    // split out: one entry, dated from the January 2024 start, the way the
+    // printed résumé states it.
+    dateStart: '2024-01',
     dateEnd: null,
     type: 'experience',
-    groupKey: 'nmc',
-    tags: ['TypeScript', 'React', 'Tailwind', 'Electron', 'PHP', 'Postgres', 'Design Systems', 'Monorepos', 'Startup'],
+    tags: ['TypeScript', 'React', 'Tailwind', 'Electron', 'PHP', 'Postgres', 'Design Systems', 'Monorepos', 'Full Stack', 'Startup'],
     descriptionHeadline: 'Employee #1 and sole frontend owner at a YC W24 fintech',
     descriptionSummary:
       'Employee #1 at a four-person fintech and its only frontend engineer, building every user interface on a shared design system — six production web apps and several internal dashboards serving 1,000+ users. The products I build process $250K+/month in transaction volume.',
     descriptionFull:
-      'I am employee #1 and the sole frontend engineer at The New Money Company, a four-person Y Combinator W24 fintech. Every user interface at the company is mine, built on a shared design system that keeps six production web apps and several internal dashboards — serving over a thousand users — visually consistent.\n\nThe work has ranged widely. I rebranded and rebuilt the UI of an acquired marketplace codebase, closing gaps in the inherited experience before we scaled it, and wrote the email dispatcher lambda behind our match alerts. I also built a native Electron email client with built-in AI chat, so sales reps can manage marketplace matches and trades inside their own networks.\n\nBeyond the interfaces, I set all of the frontend architecture: the monorepo structure, the boundaries between apps and shared packages, and the refactor roadmap we use to manage technical debt and centralize shared logic. At a company this size the useful instinct is to unblock yourself, so I have written SQL and PHP for endpoints and PDF templates that did not exist yet, and shipped ahead of design when a launch depended on it. As agentic tooling matured I folded it into daily delivery and code review.',
+      'I am employee #1 and the sole frontend engineer at The New Money Company, a four-person Y Combinator W24 fintech. I started on contract in January 2024, established the front-end patterns the team still works in, and came on full-time a few months later. Every user interface at the company is mine, built on a shared design system that keeps six production web apps and several internal dashboards — serving over a thousand users — visually consistent.\n\nThe work has ranged widely. I rebranded and rebuilt the UI of an acquired marketplace codebase, closing gaps in the inherited experience before we scaled it, and wrote the email dispatcher lambda behind our match alerts. I also built a native Electron email client with built-in AI chat, so sales reps can manage marketplace matches and trades inside their own networks.\n\nBeyond the interfaces, I set all of the frontend architecture: the monorepo structure, the boundaries between apps and shared packages, and the refactor roadmap we use to manage technical debt and centralize shared logic. At a company this size the useful instinct is to unblock yourself, so I have written SQL and PHP for endpoints and PDF templates that did not exist yet, and shipped ahead of design when a launch depended on it. As agentic tooling matured I folded it into daily delivery and code review.',
     descriptionPrint:
       'Employee #1 and sole frontend engineer at a four-person YC W24 fintech. Built every interface across 6 production web apps and internal dashboards serving 1,000+ users, set all frontend architecture, and shipped a native Electron client. Products I built process $250K+/month in transaction volume.',
-    detailLabel: 'Learn more',
-    detailId: 'nmc',
-  },
-  {
-    id: 'nmc-swe-contract',
-    title: 'Software Engineer (Contract)',
-    organizationName: 'The New Money Company',
-    organizationUrl: 'https://newmoneycompany.com/',
-    logoShape: 'squircle',
-    logoSrc: 'nmc.png',
-    location: 'San Francisco, CA · Remote',
-    dateStart: '2024-01',
-    dateEnd: '2024-05',
-    type: 'experience',
-    groupKey: 'nmc',
-    tags: ['TypeScript', 'React', 'Startup', 'Full Stack'],
-    descriptionHeadline: 'The contract engagement that became employee #1',
-    descriptionSummary:
-      'Joined The New Money Company on contract in January 2024 to build out early product surfaces, establishing the front-end patterns the team still works in, and came on full-time as employee #1 a few months later.',
-    descriptionFull:
-      'I started with The New Money Company as a contract engineer in January 2024. In those first months I established the front-end patterns the team still works in and built early product features in React and TypeScript, working directly with the founders to turn product intent into shipped software. The contract-to-hire path let both sides find out whether the fit was real before committing; it was, and I joined full-time as employee #1.',
-    descriptionPrint:
-      'Contract-to-hire engagement establishing the company\'s front-end patterns and shipping early product features alongside the founders.',
     detailLabel: 'Learn more',
     detailId: 'nmc',
   },
