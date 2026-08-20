@@ -39,15 +39,17 @@ export const defaultItems: SearchItem[] = [
     type: 'page',
     icon: 'resume',
   },
-  {
-    id: 'resume-print',
-    title: 'Résumé (Print / PDF)',
-    description: 'Printer-friendly one-page résumé',
-    url: '/resume/print',
-    type: 'page',
-    icon: 'print',
-    tags: ['resume', 'cv', 'print', 'pdf'],
-  },
+  // Shelved until after launch, alongside the résumé toolbar's print button —
+  // see SHOW_PRINT_BUTTON in src/islands/resume/toolbar.tsx.
+  // {
+  //   id: 'resume-print',
+  //   title: 'Résumé (Print / PDF)',
+  //   description: 'Printer-friendly one-page résumé',
+  //   url: '/resume/print',
+  //   type: 'page',
+  //   icon: 'print',
+  //   tags: ['resume', 'cv', 'print', 'pdf'],
+  // },
   // {
   //   id: 'contact',
   //   title: 'Contact',

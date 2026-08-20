@@ -14,6 +14,16 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 import { cn } from '@/lib/utils';
 
 
+/**
+ * The print résumé is shelved until after launch. Flipping this back to true
+ * restores both entry points that live in this file — the toolbar button and
+ * its Mod+P shortcut. The page itself still renders at /resume/print; the
+ * command palette's matching entry is commented out in
+ * src/islands/navbar/search.ts and has to come back with it.
+ */
+const SHOW_PRINT_BUTTON: boolean = false;
+
+
 export function ResumeToolbar(props: {
   matchCount: number;
   search: string;
@@ -38,6 +48,7 @@ export function ResumeToolbar(props: {
   });
 
   useHotkey('Mod+P', (e) => {
+    if (!SHOW_PRINT_BUTTON) return;
     e.preventDefault();
     navigate('/resume/print');
   });
@@ -211,6 +222,7 @@ export function ResumeToolbar(props: {
             </div>{/* end left button groups */}
 
             {/* Print button — tooltip only shown below sm where the text label is hidden */}
+            {SHOW_PRINT_BUTTON && (
             <Tooltip>
               <TooltipTrigger
                 render={
@@ -244,6 +256,7 @@ export function ResumeToolbar(props: {
                 {`Print`}
               </TooltipContent>
             </Tooltip>
+            )}
           </div>
         </TooltipProvider>
       </div>
