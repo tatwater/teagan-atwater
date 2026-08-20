@@ -21,7 +21,7 @@ export type SkillTag =
   // Web & Native
   | 'TypeScript' | 'React' | 'JavaScript' | 'HTML' | 'CSS' | 'CSS Modules' | 'Sass/Less'
   | 'Styled Components' | 'Tailwind' | 'Electron' | 'Expo' | 'React Native' | 'Next.js'
-  | 'Astro' | 'Angular' | 'jQuery'
+  | 'TanStack Start' | 'Astro' | 'Angular' | 'jQuery'
   // State & Data Persistence
   | 'Atomic State' | 'React Context' | 'Immutable Stores' | 'Redux' | 'Device Storage'
   | 'Offline Support' | 'Sync Engines' | 'PostgreSQL' | 'SQL' | 'MongoDB' | 'NoSQL'

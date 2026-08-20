@@ -23,25 +23,26 @@ export const projectItems: ResumeItem[] = [
     // detailLabel: 'Learn more',
   },
   {
+    // Gli is too early to stand as a résumé entry, so `hidden` keeps it off both
+    // the interactive résumé and the printed page. It lives here anyway because
+    // the home page reel resolves its entries out of the résumé data by id — see
+    // src/data/highlights.ts, which reads hidden entries deliberately. Drop the
+    // flag once there is real copy and the work can speak for itself.
     id: 'project-gli',
-    hideFromPrint: true,
+    hidden: true,
     title: 'Gli',
     organizationName: 'Gli',
     logoShape: 'squircle',
-    dateStart: '2026-08',
+    // TODO: add gli.* to src/assets/logos/ and set logoSrc.
+    dateStart: '2026-07',
     dateEnd: null,
     type: 'project',
-    // TODO: fill in once the project takes shape — tags, real copy, and a logo
-    // in src/assets/logos/. The home page pulls its own tagline from
-    // src/data/highlights.ts, so this entry only feeds the résumé.
-    tags: [],
+    tags: ['TypeScript', 'React', 'TanStack Start', 'React Native', 'Expo', 'PostgreSQL', 'Tailwind', 'Design Systems'],
     descriptionHeadline: 'An ice quality reporting platform for wild ice skaters',
-    descriptionSummary:
-      'Description coming soon',
-    descriptionFull:
-      'Coming soon',
-    descriptionPrint:
-      'Coming soon',
+    // TODO: real copy. Nothing below is written yet; the home page shows the
+    // headline above and the mockups, and needs none of these.
+    descriptionSummary: '',
+    descriptionFull: '',
     // detailLabel: 'Learn more',
   },
   {

@@ -14,6 +14,11 @@ import { resumeItems } from '@/data/resume';
  *
  * Everything else — logo, dates, tags, whether there is a detail page — still
  * comes from the résumé entry, so this file never has to be kept in sync.
+ *
+ * `hidden` entries resolve here on purpose. Work can be worth showing on the
+ * home page before it is worth putting on a résumé — `project-gli` is showcased
+ * as mockups while its résumé entry stays hidden — so the reel deliberately does
+ * not filter on that flag the way the résumé and the printed page do.
  */
 interface HighlightSource {
   id: string;  // id of a ResumeItem

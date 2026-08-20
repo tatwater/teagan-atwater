@@ -37,6 +37,7 @@ export const skillCategories: Record<SkillCategory, SkillTag[]> = {
     'Expo',
     'React Native',
     'Next.js',
+    'TanStack Start',
     'Astro',
     'Angular',
     'jQuery',
