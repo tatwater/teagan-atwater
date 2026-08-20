@@ -4,6 +4,7 @@ import type { ResumeItem } from '@/data/resume/types';
 export const projectItems: ResumeItem[] = [
   {
     id: 'project-personal-site',
+    hideFromPrint: true,
     title: 'Personal Site v11',
     organizationName: '',
     logoShape: 'squircle',
@@ -11,12 +12,12 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2026-03-14',
     dateEnd: null,
     type: 'project',
-    tags: ['Astro', 'React', 'TypeScript', 'Tailwind', 'Convex', 'Auth', 'Motion'],
-    descriptionHeadline: 'This site — Astro, React, Tailwind, Convex, Clerk',
+    tags: ['Astro', 'React', 'TypeScript', 'Tailwind', 'Convex', 'Motion'],
+    descriptionHeadline: 'This site — Astro, React, Tailwind, Convex',
     descriptionSummary:
-      'My personal website, now in its eleventh iteration. Built with Astro for static rendering, React islands for interactivity, Tailwind CSS v4 for styling, Convex as the backend, and Clerk for auth. Features a command palette, dark mode, this résumé explorer, and an interactive contact experience.',
+      'My personal website, now in its eleventh iteration. Built with Astro for server rendering, React islands for interactivity, Tailwind CSS v4 for styling, and Convex as the backend. Features a command palette, dark mode, and this résumé explorer.',
     descriptionFull:
-      'This site is a continuous personal project that I\'ve rebuilt from scratch more times than I can fully justify. Version 11 is built on Astro with React islands for interactive components, Tailwind CSS v4 for styling, Convex for the real-time backend, and Clerk for authentication. It features a ⌘K command palette powered by MiniSearch, a dark/light mode system, an admin panel for managing contact messages, and this interactive résumé explorer. Every version of this site is an opportunity to try new tools, push my design sensibilities, and build something I\'m genuinely proud of — the eleventh time is no exception.',
+      'This site is a continuous personal project that I\'ve rebuilt from scratch more times than I can fully justify. Version 11 is built on Astro with React islands for interactive components, Tailwind CSS v4 for styling, and Convex for the backend. It features a ⌘K command palette powered by MiniSearch, a dark/light mode system, and this interactive résumé explorer. Every version of this site is an opportunity to try new tools, push my design sensibilities, and build something I\'m genuinely proud of — the eleventh time is no exception.',
     descriptionPrint:
       'Personal site (v11) built with Astro, React, Tailwind CSS v4, and Convex. Features a ⌘K command palette, dark mode, and an interactive résumé explorer.',
     // detailLabel: 'Learn more',
@@ -30,18 +31,19 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2020-06',
     dateEnd: '2024-01',
     type: 'project',
-    tags: ['Startup', 'Product Strategy', 'Full Stack', 'React', 'TypeScript', 'Node.js', 'Roadmapping', 'UI Design', 'UX Design'],
-    descriptionHeadline: 'Solo-founded a consumer app startup (part-time, 3.5 yrs)',
+    tags: ['TypeScript', 'Next.js', 'Supabase', 'Styled Components', 'Tailwind', 'Electron', 'Expo', 'Figma', 'Full Stack', 'Product Strategy'],
+    descriptionHeadline: 'Founded and solo-built a social platform for home cooking',
     descriptionSummary:
-      'Solo founded Sous, a consumer product startup, and took it from idea to working product over three-plus years. Wore every hat — product, engineering, design, and early business development.',
+      'A social platform for home cooking, designed and built solo to own and learn the full stack — a git-style data model for branching and forking recipes, a canonical ingredient database, a scraping and normalization pipeline, and a live \u201cplayer\u201d that guides you through preparing several dishes at once.',
     descriptionFull:
-      'Sous was a consumer app startup I founded and ran solo on a part-time basis for three and a half years. Starting from scratch, I defined the product vision, conducted user research, designed the UX and visual identity, and built the full-stack application myself. Running a solo startup sharpened my product instincts enormously — every decision had direct consequences. I navigated the full arc from idea validation through working product, including early conversations with investors and the humbling reality of finding product-market fit. The experience made me a significantly better engineer, designer, and thinker about what products are actually for.',
+      'Sous was a social platform for home cooking that I designed and built entirely on my own over three and a half years. I took it on deliberately: I wanted to own the full stack rather than a slice of it, and a real product with real complexity was the only way to learn that honestly.\n\nThe interesting problems were in the data. Recipes want to be forked and adapted, so I built a git-style data model for branching them, backed by a canonical ingredient database and a scraping and normalization pipeline to get messy recipes from the web into a consistent shape. On top of that sat a live \u201cplayer\u201d experience that walks a cook through preparing multiple dishes at once, which turns out to be a scheduling problem as much as an interface one.\n\nAlong the way I taught myself TypeScript, Postgres, auth, Tailwind, Electron, modern rendering strategies, and Figma. That self-directed foundation is exactly what I brought with me to The New Money Company.',
     descriptionPrint:
-      'Solo founded a consumer app startup. Owned product vision, UX design, and full-stack engineering across a 3.5-year arc from zero to working product.',
+      'Designed and built a social platform for home cooking solo: a git-style data model for branching recipes, a canonical ingredient database, a scraping and normalization pipeline, and a live \u201cplayer\u201d guiding a cook through several dishes at once.',
     // detailLabel: 'Learn more',
   },
   {
     id: 'project-westgate',
+    hideFromPrint: true,
     title: 'Westgate House',
     organizationName: 'Westgate House',
     logoShape: 'squircle',
@@ -75,6 +77,7 @@ export const projectItems: ResumeItem[] = [
   },
   {
     id: 'project-car-app',
+    hideFromPrint: true,
     title: 'Car App / Gas Tracker',
     organizationName: '',
     logoShape: 'squircle',

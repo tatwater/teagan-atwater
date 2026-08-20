@@ -16,13 +16,14 @@ export const educationItems: ResumeItem[] = [
     descriptionFull:
       'Connecticut College gave me an unusual and generative education: a dual-track BA combining Computer Science with Architectural Studies. The pairing wasn\'t arbitrary — both disciplines are deeply concerned with structure, systems, and how humans inhabit and interact with designed environments. CS gave me rigorous computational thinking; Architectural Studies gave me a designer\'s eye for space, composition, and the human experience. I founded the Launch CC entrepreneurship club on campus, bringing together students interested in startups and innovation, and was an active member of the Cycling Club. The liberal arts environment encouraged me to draw unexpected connections — a habit of mind I still rely on.',
     descriptionPrint:
-      'Double major in Computer Science and Architectural Studies, pairing computational thinking with design. Co-founded the campus entrepreneurship club.',
+      'Computer Science, Honors with Distinction, and Architecture. Selected Scholar at the Ammerman Center for Arts and Technology.',
     tags: [],
     type: 'education',
   },
   {
     id: 'northfield-mount-hermon',
     title: 'High School',
+    hideFromPrint: true,
     organizationName: 'Northfield Mount Hermon',
     logoShape: 'circle',
     logoSrc: 'nmh.png',

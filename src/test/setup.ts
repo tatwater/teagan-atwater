@@ -16,12 +16,9 @@ afterEach(() => {
 
 // Mock environment variables for tests
 vi.stubEnv('PUBLIC_CONVEX_URL', 'https://test.convex.cloud');
-vi.stubEnv('PUBLIC_CLERK_PUBLISHABLE_KEY', 'pk_test_mock');
-vi.stubEnv('CLERK_SECRET_KEY', 'sk_test_mock');
 vi.stubEnv('RESEND_API_KEY', 're_mock');
 vi.stubEnv('RESEND_FROM_EMAIL', 'test@example.com');
 vi.stubEnv('ADMIN_EMAIL', 'admin@example.com');
-vi.stubEnv('ADMIN_USER_IDS', 'user_mock_admin_123');
 vi.stubEnv('PUBLIC_SITE_URL', 'http://localhost:4321');
 
 // Mock fetch globally for tests

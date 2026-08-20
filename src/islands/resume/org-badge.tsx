@@ -1,4 +1,5 @@
 import { faArrowUpRightFromSquare } from '@fortawesome/sharp-regular-svg-icons';
+import { Highlight } from '@/islands/resume/highlight';
 import { getInitials } from '@/islands/resume/helpers';
 import { Avatar } from '@/components/avatar';
 import { Icon } from '@/components/icon';
@@ -10,12 +11,14 @@ export function OrgBadge({
   logoSrc,
   organization,
   organizationUrl,
+  searchTerms = [],
   size = 'default',
 }: {
   organization: string;
   organizationUrl?: string;
   logoShape?: 'circle' | 'square' | 'squircle';
   logoSrc?: string;
+  searchTerms?: string[];
   size?: 'sm' | 'default';
 }) {
   const resolvedSrc = logoSrc
@@ -49,7 +52,7 @@ export function OrgBadge({
           'leading-none',
           size === 'sm' ? 'font-normal' : 'font-medium',
         )}>
-          {organization}
+          <Highlight terms={searchTerms} text={organization} />
         </span>
         <Icon
           className='text-[10px] opacity-0 group-hover/orglink:opacity-100 transition-opacity'
@@ -69,7 +72,7 @@ export function OrgBadge({
         src={resolvedSrc}
       />
       <span className='leading-none'>
-        {organization}
+        <Highlight terms={searchTerms} text={organization} />
       </span>
     </div>
   );

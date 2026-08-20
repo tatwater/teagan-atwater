@@ -1,39 +1,44 @@
 ---
-import type { SkillCategory } from '@/data/resume/types';
+import type { ResumeItem, SkillCategory } from '@/data/resume/types';
 
 import TALogo from '@/components/ta-brand/TA';
 import { PrintBackLink } from '@/islands/resume/print-back-link';
 import { PrintPrintButton } from '@/islands/resume/print-print-button';
 import { resumeItems } from '@/data/resume';
-import { skillCategories } from '@/data/resume/skills';
+import { groupItems } from '@/data/resume/helpers';
+import { printSkills } from '@/data/resume/skills';
 import '@/styles/global.css';
 
 
-// Items selected and ordered for the printed page
-const printExperience = resumeItems.filter(
-  (i) => i.type === 'experience' && [
-    'nmc-swe',
-    'sous-founder',
-    'emrld-cto',
-    'fiber-cto',
-    'oho-fullstack',
-    'shadow-art-founder',
-    'conn-college-intern',
-  ].includes(i.id)
-).sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
+// Items for the printed page, derived from the same data as the interactive
+// résumé so the two can never drift apart. Curation happens through the
+// `hideFromPrint` flag on each entry rather than an ID list here, so an entry can
+// never be silently dropped by a typo. The pandemic card is skipped outright — it
+// has no organisation or dates and exists only as an interactive narrative device.
+const byRecencyDesc = (a: ResumeItem, b: ResumeItem) =>
+  (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1;
 
-const printEducation = resumeItems.filter(
-  (i) => i.type === 'education' && i.id === 'conn-college-edu'
-);
+// Repeat engagements with one organisation collapse into a single entry, led by
+// the most recent role so the "Previously" rows always read backwards in time.
+const printGroups = groupItems(
+  resumeItems
+    .filter((i) => i.type === 'experience' && !i.hidden && !i.hideFromPrint && i.variant !== 'pandemic')
+    .sort(byRecencyDesc)
+)
+  .map((group) => {
+    const [lead, ...previously] = [...group.items].sort(byRecencyDesc);
+    return { lead, previously };
+  })
+  .sort((a, b) => byRecencyDesc(a.lead, b.lead));
 
-const printProjects = resumeItems.filter(
-  (i) => i.type === 'project' && [
-    'project-personal-site',
-    'project-launch-cc',
-    'project-code-school-regex',
-    'project-code-school-mongo',
-  ].includes(i.id)
-);
+const printEducation = resumeItems
+  .filter((i) => i.type === 'education' && !i.hidden && !i.hideFromPrint)
+  .sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
+
+const printProjects = resumeItems
+  .filter((i) => i.type === 'project' && !i.hidden && !i.hideFromPrint)
+  .sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
+
 
 function formatDate(dateStr: string): string {
   const [year, month] = dateStr.split('-').map(Number);
@@ -47,11 +52,15 @@ function formatDateRange(dateStart: string, dateEnd: string | null): string {
   return `${formatDate(dateStart)} – ${dateEnd ? formatDate(dateEnd) : 'Present'}`;
 }
 
+// The printed résumé shows the five craft-focused categories, in this order.
+// 'Backend & Services' and 'Product & Leadership' exist for tagging entries on
+// the site but are deliberately left off the one-page résumé.
 const selectedSkillCategories: SkillCategory[] = [
-  'Frontend',
-  'Backend',
-  'Design',
-  'Product / Leadership',
+  'Craft & Design',
+  'Web & Native',
+  'State & Data Persistence',
+  'Architecture & Rendering',
+  'Agentic Processes',
 ];
 ---
 
@@ -481,16 +490,16 @@ const selectedSkillCategories: SkillCategory[] = [
           </div>
           <h1 class="name">
             Teagan Atwater.
-            <span>Software Engineer · UX Designer · Founder</span>
+            <span>Design Engineer · Founder</span>
           </h1>
         </div>
 
         <!-- Bio -->
         <div>
           <p class="bio">
-            An engineer with an eye for design, a mind for user experience,
-            and a love of tackling projects that tie beauty, simplicity,
-            and ease of use into products that solve real problems.
+            Startup-focused design engineer building delightful interfaces and
+            design systems, and shipping products end to end. Sole frontend owner
+            at a YC-backed fintech. Building for the web since 2007.
           </p>
         </div>
 
@@ -517,7 +526,7 @@ const selectedSkillCategories: SkillCategory[] = [
             <div class="skills-category">
               <p class="skills-category-label">{cat}</p>
               <div class="skills-tags">
-                {skillCategories[cat].map((tag) => (
+                {(printSkills[cat] ?? []).map((tag) => (
                   <span class="skill-tag">{tag}</span>
                 ))}
               </div>
@@ -534,56 +543,31 @@ const selectedSkillCategories: SkillCategory[] = [
         <div class="right-section">
           <h2 class="right-section-label">Experience</h2>
 
-          <!-- NMC — group both roles -->
-          <div class="exp-item">
-            <p class="exp-org">The New Money Company (YC W24) &middot; San Francisco, CA · Remote</p>
-            <div class="exp-header">
-              <h3 class="exp-title">Software Engineer</h3>
-              <span class="exp-dates">Jan 2024 – Present</span>
-            </div>
-            <p class="exp-desc">
-              Full-stack engineer on a small, high-velocity team at a YC W24 fintech startup.
-              Shipping React UIs, Node.js services, and contributing to product strategy end-to-end.
-            </p>
-            <div class="prev-roles">
-              <p class="prev-label">Previously</p>
-              <div class="prev-role-row">
-                <span class="prev-role-title">Software Engineer (Contract)</span>
-                <span class="prev-role-dates">Jan 2024 – May 2024</span>
-              </div>
-            </div>
-          </div>
-
-          {printExperience.filter(i => i.id !== 'nmc-swe' && i.id !== 'nmc-swe-contract').map((item) => (
+          {printGroups.map((group) => (
             <div class="exp-item">
               <p class="exp-org">
-                {item.organizationName}{item.location ? ` \u00b7 ${item.location}` : ''}
+                {group.lead.organizationName}{group.lead.location ? ` \u00b7 ${group.lead.location}` : ''}
               </p>
               <div class="exp-header">
-                <h3 class="exp-title">{item.title}</h3>
-                <span class="exp-dates">{formatDateRange(item.dateStart, item.dateEnd)}</span>
+                <h3 class="exp-title">{group.lead.title}</h3>
+                <span class="exp-dates">{formatDateRange(group.lead.dateStart, group.lead.dateEnd)}</span>
               </div>
-              {(item.descriptionPrint ?? item.descriptionSummary) && (
-                <p class="exp-desc">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              {(group.lead.descriptionPrint ?? group.lead.descriptionSummary) && (
+                <p class="exp-desc">{group.lead.descriptionPrint ?? group.lead.descriptionSummary}</p>
+              )}
+              {group.previously.length > 0 && (
+                <div class="prev-roles">
+                  <p class="prev-label">Previously</p>
+                  {group.previously.map((role) => (
+                    <div class="prev-role-row">
+                      <span class="prev-role-title">{role.title}</span>
+                      <span class="prev-role-dates">{formatDateRange(role.dateStart, role.dateEnd)}</span>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           ))}
-
-          <!-- OHO previously rows -->
-          <div class="exp-item">
-            <p class="exp-org">OHO Interactive &middot; Cambridge / Somerville, MA</p>
-            <div class="prev-roles" style="margin-top:0; padding-top:0; border-top:none;">
-              <p class="prev-label">Previously</p>
-              <div class="prev-role-row">
-                <span class="prev-role-title">Web Development Intern</span>
-                <span class="prev-role-dates">Jun 2014 – Aug 2014</span>
-              </div>
-              <div class="prev-role-row">
-                <span class="prev-role-title">Freelance Web Developer</span>
-                <span class="prev-role-dates">Dec 2014 – Jan 2015</span>
-              </div>
-            </div>
-          </div>
 
         </div>
 
@@ -595,7 +579,9 @@ const selectedSkillCategories: SkillCategory[] = [
             <div class="edu-item">
               <p class="edu-school">{item.organizationName}{item.location ? ` \u00b7 ${item.location}` : ''}</p>
               <h3 class="edu-degree">{item.title}</h3>
-              <p class="edu-detail">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              {(item.descriptionPrint ?? item.descriptionSummary) && (
+                <p class="edu-detail">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              )}
             </div>
           ))}
         </div>
@@ -610,7 +596,9 @@ const selectedSkillCategories: SkillCategory[] = [
                 <h4 class="proj-title">{item.title}</h4>
                 <span class="proj-org">{item.organizationName}</span>
               </div>
-              <p class="proj-desc">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              {(item.descriptionPrint ?? item.descriptionSummary) && (
+                <p class="proj-desc">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              )}
             </div>
           ))}
         </div>

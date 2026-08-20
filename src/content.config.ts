@@ -15,9 +15,8 @@ const projects = defineCollection({
     title: z.string(),
     description: z.string(),
 
-    // Visibility & access control
+    // Visibility
     published: z.boolean().default(false),
-    groups: z.array(z.string()).optional(), // Clerk groups with access
 
     // Categorization
     tags: z.array(z.string()).default([]),

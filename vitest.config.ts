@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import { fileURLToPath } from 'node:url';
 
 
 export default defineConfig({
@@ -18,7 +18,6 @@ export default defineConfig({
         'src/test/',
         '**/*.d.ts',
         '**/*.config.*',
-        '**/mockData.ts',
         'dist/',
         '.astro/',
       ],
@@ -26,7 +25,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@/': resolve(__dirname, './src/'),
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
 });

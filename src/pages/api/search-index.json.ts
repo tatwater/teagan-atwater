@@ -1,32 +1,18 @@
 import type { APIRoute } from 'astro';
-import { buildSearchIndex, filterIndexByPermissions } from '../../lib/search-index';
-import { getUserInfo } from '../../lib/auth';
+
+import { buildSearchIndex } from '@/lib/search-index';
 
 /**
  * Search Index API Endpoint
- * 
- * Returns the search index filtered by user permissions.
- * This endpoint is called by the CommandPalette to load searchable content.
+ *
+ * Returns the search index consumed by the command palette. The site has no
+ * authentication, so the whole index is public.
  */
-export const GET: APIRoute = async ({ locals }) => {
+export const GET: APIRoute = async () => {
   try {
-    // Build the full search index
-    const fullIndex = await buildSearchIndex();
+    const index = await buildSearchIndex();
 
-    // Get user info to filter by permissions
-    const userInfo = getUserInfo(locals);
-    const isAuthenticated = userInfo.isAuthenticated;
-    const userGroups = userInfo.userGroups || [];
-
-    // Filter index based on user permissions
-    const filteredIndex = filterIndexByPermissions(
-      fullIndex,
-      userGroups,
-      isAuthenticated
-    );
-
-    // Return as JSON
-    return new Response(JSON.stringify(filteredIndex), {
+    return new Response(JSON.stringify(index), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
@@ -38,17 +24,15 @@ export const GET: APIRoute = async ({ locals }) => {
     });
   } catch (error) {
     console.error('Failed to build search index:', error);
-    
+
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         error: 'Failed to build search index',
-        message: error instanceof Error ? error.message : 'Unknown error'
+        message: error instanceof Error ? error.message : 'Unknown error',
       }),
       {
         status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
       }
     );
   }

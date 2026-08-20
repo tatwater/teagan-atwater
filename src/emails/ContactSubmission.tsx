@@ -12,77 +12,50 @@ import {
 import * as React from 'react';
 
 interface ContactSubmissionEmailProps {
-  userName: string;
-  userEmail: string;
-  userPhone?: string;
-  userOrganization?: string;
-  subjectLabel: string;
-  groupLabel: string | null;
-  formFields: Array<{ label: string; value: string }>;
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
   submittedAt: string;
 }
 
 export const ContactSubmissionEmail = ({
-  userName,
-  userEmail,
-  userPhone,
-  userOrganization,
-  subjectLabel,
-  groupLabel,
-  formFields,
+  name,
+  email,
+  subject,
+  message,
   submittedAt,
-}: ContactSubmissionEmailProps) => {
-  const context = groupLabel ? `${groupLabel} › ${subjectLabel}` : subjectLabel;
-  const previewText = `New website contact: ${subjectLabel} from ${userName}`;
+}: ContactSubmissionEmailProps) => (
+  <Html>
+    <Head />
+    <Preview>{`New website contact from ${name}: ${subject}`}</Preview>
+    <Body style={main}>
+      <Container style={container}>
+        <Heading style={h1}>{subject}</Heading>
 
-  return (
-    <Html>
-      <Head />
-      <Preview>{previewText}</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          <Heading style={h1}>
-            {subjectLabel} inquiry from {userName}
-          </Heading>
+        <Text style={meta}>{submittedAt}</Text>
 
-          <Text style={meta}>{context} · {submittedAt}</Text>
+        <Section style={cardSection}>
+          <Text style={cardRow}>
+            <span style={cardLabel}>Name</span>
+            <span style={cardValue}>{name}</span>
+          </Text>
+          <Text style={cardRow}>
+            <span style={cardLabel}>Email</span>
+            <span style={cardValue}>{email}</span>
+          </Text>
+        </Section>
 
-          <Section style={cardSection}>
-            <Text style={cardRow}>
-              <span style={cardLabel}>Name</span>
-              <span style={cardValue}>{userName}</span>
-            </Text>
-            <Text style={cardRow}>
-              <span style={cardLabel}>Email</span>
-              <span style={cardValue}>{userEmail}</span>
-            </Text>
-            {userPhone && (
-              <Text style={cardRow}>
-                <span style={cardLabel}>Phone</span>
-                <span style={cardValue}>{userPhone}</span>
-              </Text>
-            )}
-            {userOrganization && (
-              <Text style={cardRow}>
-                <span style={cardLabel}>Organization</span>
-                <span style={cardValue}>{userOrganization}</span>
-              </Text>
-            )}
-          </Section>
+        <Hr style={hr} />
 
-          <Hr style={hr} />
-
-          {formFields.map((field) => (
-            <Section key={field.label} style={fieldSection}>
-              <Text style={fieldLabel}>{field.label}</Text>
-              <Text style={fieldValue}>{field.value}</Text>
-            </Section>
-          ))}
-        </Container>
-      </Body>
-    </Html>
-  );
-};
+        <Section style={fieldSection}>
+          <Text style={fieldLabel}>Message</Text>
+          <Text style={fieldValue}>{message}</Text>
+        </Section>
+      </Container>
+    </Body>
+  </Html>
+);
 
 export default ContactSubmissionEmail;
 

@@ -1,29 +1,45 @@
-
+/**
+ * Skill taxonomy follows the printed résumé's grouping. The five categories the
+ * résumé itself shows come first; the last two hold the parts of Teagan's
+ * history the one-page résumé leaves out but the site still tags entries with.
+ */
 export type SkillCategory =
-  | 'Frontend'
-  | 'Backend'
-  | 'Data / Infra'
-  | 'Design'
-  | 'Product / Leadership'
-  | 'Misc'
+  | 'Craft & Design'
+  | 'Web & Native'
+  | 'State & Data Persistence'
+  | 'Architecture & Rendering'
+  | 'Agentic Processes'
+  | 'Backend & Services'
+  | 'Product & Leadership'
 ;
 
 export type SkillTag =
-  // Frontend
-  | 'React' | 'TypeScript' | 'JavaScript' | 'HTML' | 'CSS' | 'Tailwind' | 'Motion' | 'Next.js'
-  | 'Astro' | 'Angular' | 'Styled Components' | 'Sass/Less'
-  // Backend
-  | 'Node.js' | 'Ruby' | 'PHP' | 'Java' | 'Python' | 'REST APIs' | 'GraphQL' | 'Auth'
-  // Data / Infra
-  | 'MongoDB' | 'PostgreSQL' | 'Convex' | 'Vercel' | 'Git' | 'CI/CD' | 'React Email'
-  // Design
-  | 'UI Design' | 'UX Design' | 'Figma' | 'Adobe XD' | 'Design Systems' | 'Responsive Design'
-  | 'Information Architecture' | 'Prototyping'
-  // Product / Leadership
-  | 'Product Strategy' | 'Agile/Scrum' | 'Team Leadership' | 'Mentorship' | 'Startup'
-  | 'Fundraising' | 'Roadmapping' | 'Technical Writing'
-  // Misc
-  | 'Full Stack' | 'Web Performance' | 'Accessibility' | 'SEO' | 'Content Strategy' | 'Freelance'
+  // Craft & Design
+  | 'Figma' | 'Adobe XD' | 'Design Systems' | 'Design Tokens' | 'UI Design' | 'UX Design'
+  | 'Motion' | 'Responsive Design' | 'Semantic Markup' | 'Information Architecture'
+  | 'Prototyping' | 'Accessibility' | 'Keyboard Navigation' | 'Screen Readers'
+  // Web & Native
+  | 'TypeScript' | 'React' | 'JavaScript' | 'HTML' | 'CSS' | 'CSS Modules' | 'Sass/Less'
+  | 'Styled Components' | 'Tailwind' | 'Electron' | 'Expo' | 'React Native' | 'Next.js'
+  | 'Astro' | 'Angular' | 'jQuery'
+  // State & Data Persistence
+  | 'Atomic State' | 'React Context' | 'Immutable Stores' | 'Redux' | 'Device Storage'
+  | 'Offline Support' | 'Sync Engines' | 'PostgreSQL' | 'SQL' | 'MongoDB' | 'NoSQL'
+  | 'Key-Value Stores' | 'Vector Databases' | 'Convex' | 'Supabase'
+  // Architecture & Rendering
+  | 'Monorepos' | 'Server-Side Rendering' | 'React Server Components' | 'Partial Pre-Rendering'
+  | 'Incremental Static Regeneration' | 'Static Site Generation' | 'Web Performance'
+  | 'Vercel' | 'CI/CD' | 'Git'
+  // Agentic Processes
+  | 'Claude Code' | 'Codex' | 'Agent Skills' | 'Sub-agent Orchestration' | 'Automated Testing'
+  | 'Code Review'
+  // Backend & Services
+  | 'Node.js' | 'REST APIs' | 'GraphQL' | 'Auth' | 'PHP' | 'Ruby' | 'Java' | 'Python'
+  | 'Meteor' | 'Drupal' | 'React Email' | 'Full Stack'
+  // Product & Leadership
+  | 'Product Strategy' | 'Roadmapping' | 'Team Leadership' | 'Mentorship' | 'Startup'
+  | 'Fundraising' | 'Agile/Scrum' | 'Technical Writing' | 'Freelance' | 'Content Strategy'
+  | 'SEO'
 ;
 
 export interface OrgGroup {
@@ -59,8 +75,8 @@ export interface ResumeItem {
   detailLabel?: string;  // When present, a button with this text linking to /resume/{id} will be shown; omit to hide entirely
   groupKey?: string;
   hidden?: boolean;  // Hide from resume list but still generate a /resume/{id} page
+  hideFromPrint?: boolean;  // Keep on the site, omit from the print-friendly resume
   hideDates?: boolean;
-  isInternship?: boolean;
   location?: string;
   logoShape?: 'circle' | 'square' | 'squircle';
   logoSrc?: string;  // Path relative to src/assets/logos/

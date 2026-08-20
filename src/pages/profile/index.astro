@@ -1,7 +1,0 @@
----
-import { getUserInfo } from '@/lib/auth';
-
-const userInfo = getUserInfo(Astro.locals);
-if (!userInfo.isAuthenticated) return Astro.redirect('/sign-in?redirect_url=/profile/contact', 302);
-return Astro.redirect('/profile/contact', 302);
----

@@ -1,131 +1,104 @@
 import type { APIRoute } from 'astro';
-import { getConvexClient } from '../../../lib/convex';
-import { sendContactSubmission } from '../../../lib/email';
+
+import { getConvexClient } from '@/lib/convex';
+import { sendContactSubmission } from '@/lib/email';
+import { verifyTurnstileToken } from '@/lib/turnstile';
 import { api } from '../../../../convex/_generated/api';
-import { findSubject } from '../../../data/contact';
 
-export const POST: APIRoute = async ({ request, locals }) => {
+
+export const prerender = false;
+
+const LIMITS = {
+  email: 320,
+  message: 5000,
+  name: 200,
+  subject: 200,
+};
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+function json(body: unknown, status: number) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+}
+
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
   try {
-    const auth = (locals as any).auth?.();
-    const userId = auth?.userId;
+    const body = await request.json().catch(() => null);
 
-    if (!userId) {
-      return new Response(
-        JSON.stringify({ error: 'Authentication required' }),
-        { status: 401, headers: { 'Content-Type': 'application/json' } }
-      );
+    if (!body || typeof body !== 'object') {
+      return json({ error: 'Invalid request body.' }, 400);
     }
 
-    const body = await request.json();
-    const { subjectSlug, group, formValues } = body;
+    const name = String((body as any).name ?? '').trim();
+    const email = String((body as any).email ?? '').trim();
+    const subject = String((body as any).subject ?? '').trim() || 'Website enquiry';
+    const message = String((body as any).message ?? '').trim();
+    const turnstileToken = (body as any).turnstileToken as string | undefined;
 
-    if (!subjectSlug) {
-      return new Response(
-        JSON.stringify({ error: 'Subject is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+    if (!name) return json({ error: 'Please enter your name.' }, 400);
+    if (!email) return json({ error: 'Please enter your email address.' }, 400);
+    if (!EMAIL_PATTERN.test(email)) return json({ error: 'Please enter a valid email address.' }, 400);
+    if (!message) return json({ error: 'Please enter a message.' }, 400);
+
+    if (
+      name.length > LIMITS.name
+      || email.length > LIMITS.email
+      || subject.length > LIMITS.subject
+      || message.length > LIMITS.message
+    ) {
+      return json({ error: 'One or more fields exceed the maximum length.' }, 400);
     }
 
-    // Get user info from Clerk
-    let userEmail = '';
-    let userName = '';
+    const captcha = await verifyTurnstileToken(turnstileToken, clientAddress);
+
+    if (!captcha.success) {
+      return json({ error: captcha.error ?? 'Captcha verification failed.' }, 400);
+    }
+
+    const submittedAt = new Date();
+
+    // Record and notify independently — the message survives if either path works.
+    let threadId = `thread_${submittedAt.getTime()}`;
+    let recorded = false;
+
     try {
-      const currentUser = await (locals as any).currentUser?.();
-      if (currentUser) {
-        userEmail =
-          currentUser.emailAddresses?.find(
-            (e: any) => e.id === currentUser.primaryEmailAddressId
-          )?.emailAddress ?? '';
-        userName = currentUser.fullName || currentUser.firstName || '';
-      }
-    } catch {
-      // handled below
+      const convex = getConvexClient();
+      const result = await convex.mutation(api.contacts.submitContactMessage, {
+        name,
+        email,
+        subject,
+        message,
+      });
+      threadId = result.threadId;
+      recorded = true;
+    } catch (error) {
+      console.error('Failed to record contact message in Convex:', error);
     }
 
-    if (!userEmail) {
-      return new Response(
-        JSON.stringify({ error: 'Could not retrieve user email' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Look up subject config for email formatting
-    const found = findSubject(group ?? null, subjectSlug);
-    const subjectLabel = found?.subject.label ?? subjectSlug;
-    const groupLabel = found?.group.label ?? null;
-
-    // Build a human-readable subject line for the contacts record
-    const subjectLine = groupLabel
-      ? `${groupLabel} · ${subjectLabel} inquiry`
-      : `${subjectLabel} inquiry`;
-
-    // Extract the message field (present in all forms)
-    const message = (formValues?.message as string) ?? '';
-
-    // Build flat form fields for email (label → value pairs)
-    const emailFields: Array<{ label: string; value: string }> = [];
-    if (found?.subject.formFields) {
-      for (const field of found.subject.formFields) {
-        const val = formValues?.[field.name];
-        if (val) emailFields.push({ label: field.label, value: String(val) });
-      }
-    }
-
-    // Submit to Convex
-    const convex = getConvexClient();
-    const result = await convex.mutation(api.contacts.submitContactMessage, {
-      userId,
-      userEmail,
-      userName: userName || undefined,
-      subject: subjectLine,
-      message,
-      subjectSlug,
-      group: group ?? undefined,
-      formData: formValues ?? {},
-    });
-
-    // Get user profile for email enrichment
-    let userPhone: string | undefined;
-    let userOrganization: string | undefined;
-    try {
-      const profile = await convex.query(api.userProfile.getUserProfile, { clerkId: userId });
-      userPhone = profile?.phone ?? undefined;
-      userOrganization = profile?.organization ?? undefined;
-      if (!userName && profile?.displayName) userName = profile.displayName;
-    } catch {
-      // non-fatal
-    }
-
-    // Send submission email
     const emailResult = await sendContactSubmission({
-      userName: userName || userEmail,
-      userEmail,
-      userPhone,
-      userOrganization,
-      subjectLabel,
-      groupLabel: groupLabel ?? null,
-      formFields: emailFields,
-      threadId: result.threadId,
-      submittedAt: new Date(),
+      name,
+      email,
+      subject,
+      message,
+      threadId,
+      submittedAt,
     });
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        contactId: result.contactId,
-        threadId: result.threadId,
-        emailSent: emailResult.success,
-        emailError: emailResult.error,
-      }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
+    if (!recorded && !emailResult.success) {
+      return json(
+        { error: 'We could not deliver your message. Please email desk@teaganatwater.com directly.' },
+        502,
+      );
+    }
+
+    return json({ success: true }, 200);
   } catch (error) {
     console.error('Contact submission error:', error);
-    return new Response(
-      JSON.stringify({
-        error: error instanceof Error ? error.message : 'Failed to submit message',
-      }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    return json({ error: 'Something went wrong. Please try again.' }, 500);
   }
 };

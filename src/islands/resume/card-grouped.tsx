@@ -1,11 +1,12 @@
 import type { Verbosity } from '@/islands/resume/types';
-import type { OrgGroup, SkillTag } from '@/data/resume/types';
+import type { OrgGroup } from '@/data/resume/types';
 
 import { faChevronRight } from '@fortawesome/sharp-regular-svg-icons';
 import { CardBase } from '@/islands/resume/card-base';
 import { PandemicCard } from '@/islands/resume/card-pandemic';
 import { OrgBadge } from '@/islands/resume/org-badge';
 import { TagPill } from '@/islands/resume/tag-pill';
+import { textMatchesTerms } from '@/islands/resume/highlight';
 import { formatDateRange, getDuration } from '@/islands/resume/helpers';
 import { Icon } from '@/components/icon';
 import { cn } from '@/lib/utils';
@@ -14,15 +15,14 @@ import { cn } from '@/lib/utils';
 export function GroupedCard(props: {
   group: OrgGroup;
   verbosity: Verbosity;
-  activeTags: Set<SkillTag>;
-  onTagClick: (tag: SkillTag) => void;
+  searchTerms?: string[];
 }) {
   // Pandemic card renders with its own custom component in any view mode
   if (props.group.items[0]?.variant === 'pandemic') {
     return (
       <PandemicCard
-        activeTags={props.activeTags}
         item={props.group.items[0]}
+        searchTerms={props.searchTerms}
         verbosity={props.verbosity}
       />
     );
@@ -78,8 +78,7 @@ export function GroupedCard(props: {
         {commonTags.map((tag) => (
           <TagPill
             key={tag}
-            active={props.activeTags.has(tag)}
-            onClick={() => props.onTagClick(tag)}
+            highlighted={textMatchesTerms(tag, props.searchTerms ?? [])}
             small
             tag={tag}
           />
@@ -124,10 +123,9 @@ export function GroupedCard(props: {
             return (
               <CardBase
                 key={item.id}
-                activeTags={props.activeTags}
                 item={item}
                 nestingMode='shared-page'
-                onTagClick={props.onTagClick}
+                searchTerms={props.searchTerms}
                 showDuration={true}
                 showTagFooter={uniqueTags.length > 0}
                 tagsOverride={uniqueTags}
@@ -156,10 +154,9 @@ export function GroupedCard(props: {
                 )}
               >
                 <CardBase
-                  activeTags={props.activeTags}
                   item={item}
                   nestingMode='own-page'
-                  onTagClick={props.onTagClick}
+                  searchTerms={props.searchTerms}
                   showDuration={true}
                   showTagFooter={uniqueTags.length > 0 || !!item.detailLabel}
                   tagsOverride={uniqueTags}

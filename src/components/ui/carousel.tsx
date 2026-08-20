@@ -5,9 +5,10 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
 
+import { Icon } from "@/components/icon"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { faChevronRight } from '@fortawesome/sharp-regular-svg-icons';
+import { faChevronLeft, faChevronRight } from '@fortawesome/sharp-regular-svg-icons';
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
@@ -195,7 +196,7 @@ function CarouselPrevious({
       onClick={scrollPrev}
       {...props}
     >
-      <ChevronLeftIcon />
+      <Icon icon={faChevronLeft} />
       <span className="sr-only">Previous slide</span>
     </Button>
   )
@@ -225,7 +226,7 @@ function CarouselNext({
       onClick={scrollNext}
       {...props}
     >
-      <ChevronRightIcon />
+      <Icon icon={faChevronRight} />
       <span className="sr-only">Next slide</span>
     </Button>
   )

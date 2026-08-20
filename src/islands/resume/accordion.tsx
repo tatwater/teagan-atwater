@@ -1,5 +1,5 @@
 import type { Verbosity, ViewMode } from '@/islands/resume/types';
-import type { ResumeItem, SkillTag } from '@/data/resume/types';
+import type { ResumeItem } from '@/data/resume/types';
 
 import { useMemo } from 'react';
 import { faChevronDown, faChevronRight } from '@fortawesome/sharp-regular-svg-icons';
@@ -16,11 +16,9 @@ import { groupItems } from '@/data/resume/helpers';
 
 
 function SectionContent(props: {
-  activeTags: Set<SkillTag>;
-  allItems: ResumeItem[];
   groups: ReturnType<typeof groupItems> | null;
   items: ResumeItem[];
-  onTagClick: (tag: SkillTag) => void;
+  searchTerms?: string[];
   showTimeline: boolean;
   type: ResumeItem['type'];
   verbosity: Verbosity;
@@ -29,10 +27,8 @@ function SectionContent(props: {
   if (props.showTimeline) {
     return (
       <ExperienceTimeline
-        activeTags={props.activeTags}
-        allItems={props.allItems}
         items={props.items}
-        onTagClick={props.onTagClick}
+        searchTerms={props.searchTerms}
         verbosity={props.verbosity}
       />
     );
@@ -46,18 +42,16 @@ function SectionContent(props: {
             ? (
                 <GroupedCard
                   key={group.key}
-                  activeTags={props.activeTags}
                   group={group}
-                  onTagClick={props.onTagClick}
+                  searchTerms={props.searchTerms}
                   verbosity={props.verbosity}
                 />
               )
             : (
                 <ExperienceCard
                   key={group.key}
-                  activeTags={props.activeTags}
                   item={group.items[0]}
-                  onTagClick={props.onTagClick}
+                  searchTerms={props.searchTerms}
                   verbosity={props.verbosity}
                 />
               )
@@ -73,6 +67,7 @@ function SectionContent(props: {
           <EducationCard
             key={item.id}
             item={item}
+            searchTerms={props.searchTerms}
             verbosity={props.verbosity}
           />
         ))}
@@ -86,9 +81,8 @@ function SectionContent(props: {
         {props.items.map((item) => (
           <ProjectCard
             key={item.id}
-            activeTags={props.activeTags}
             item={item}
-            onTagClick={props.onTagClick}
+            searchTerms={props.searchTerms}
             verbosity={props.verbosity}
           />
         ))}
@@ -101,9 +95,8 @@ function SectionContent(props: {
       {props.items.map((item) => (
         <ExperienceCard
           key={item.id}
-          activeTags={props.activeTags}
           item={item}
-          onTagClick={props.onTagClick}
+          searchTerms={props.searchTerms}
           verbosity={props.verbosity}
         />
       ))}
@@ -113,15 +106,13 @@ function SectionContent(props: {
 
 
 export function ResumeAccordion(props: {
-  activeTags: Set<SkillTag>;
   collapsed: boolean;
   items: ResumeItem[];
-  onTagClick: (tag: SkillTag) => void;
   onToggleCollapse: () => void;
+  searchTerms?: string[];
   type: ResumeItem['type'];
   verbosity: Verbosity;
   viewMode: ViewMode;
-  allItems?: ResumeItem[];  // Full unfiltered list for this section — used for gap detection in timeline
 }) {
   const groups = useMemo(
     () => (props.viewMode === 'grouped' ? groupItems(props.items) : null),
@@ -160,18 +151,16 @@ export function ResumeAccordion(props: {
       <AnimatePresence initial={false}>
         {!props.collapsed && (
           <motion.div
-            className='overflow-y-clip'  // clips the height animation without forcing overflow-x:auto (unlike overflow:hidden), so horizontal bleed from the pandemic card is visibl
+            className='overflow-y-clip'  // clips the height animation without forcing overflow-x:auto (unlike overflow:hidden), so horizontal bleed from the pandemic card is visible
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeInOut' }}
           >
             <SectionContent
-              activeTags={props.activeTags}
-              allItems={props.allItems ?? props.items}
               groups={groups}
               items={props.items}
-              onTagClick={props.onTagClick}
+              searchTerms={props.searchTerms}
               showTimeline={showTimeline}
               type={props.type}
               verbosity={props.verbosity}
