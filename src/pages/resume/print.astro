@@ -6,7 +6,7 @@ import { PrintBackLink } from '@/islands/resume/print-back-link';
 import { PrintPrintButton } from '@/islands/resume/print-print-button';
 import { resumeItems } from '@/data/resume';
 import { groupItems } from '@/data/resume/helpers';
-import { skillCategories } from '@/data/resume/skills';
+import { printSkills } from '@/data/resume/skills';
 import '@/styles/global.css';
 
 
@@ -52,11 +52,15 @@ function formatDateRange(dateStart: string, dateEnd: string | null): string {
   return `${formatDate(dateStart)} – ${dateEnd ? formatDate(dateEnd) : 'Present'}`;
 }
 
+// The printed résumé shows the five craft-focused categories, in this order.
+// 'Backend & Services' and 'Product & Leadership' exist for tagging entries on
+// the site but are deliberately left off the one-page résumé.
 const selectedSkillCategories: SkillCategory[] = [
-  'Frontend',
-  'Backend',
-  'Design',
-  'Product / Leadership',
+  'Craft & Design',
+  'Web & Native',
+  'State & Data Persistence',
+  'Architecture & Rendering',
+  'Agentic Processes',
 ];
 ---
 
@@ -486,16 +490,16 @@ const selectedSkillCategories: SkillCategory[] = [
           </div>
           <h1 class="name">
             Teagan Atwater.
-            <span>Software Engineer · UX Designer · Founder</span>
+            <span>Design Engineer · Founder</span>
           </h1>
         </div>
 
         <!-- Bio -->
         <div>
           <p class="bio">
-            An engineer with an eye for design, a mind for user experience,
-            and a love of tackling projects that tie beauty, simplicity,
-            and ease of use into products that solve real problems.
+            Startup-focused design engineer building delightful interfaces and
+            design systems, and shipping products end to end. Sole frontend owner
+            at a YC-backed fintech. Building for the web since 2007.
           </p>
         </div>
 
@@ -522,7 +526,7 @@ const selectedSkillCategories: SkillCategory[] = [
             <div class="skills-category">
               <p class="skills-category-label">{cat}</p>
               <div class="skills-tags">
-                {skillCategories[cat].map((tag) => (
+                {(printSkills[cat] ?? []).map((tag) => (
                   <span class="skill-tag">{tag}</span>
                 ))}
               </div>
