@@ -1,0 +1,45 @@
+{
+  // Suppressions for findings we have reviewed and deliberately keep. Everything
+  // here is a decision, not a workaround — re-check them if the reasons change.
+  "ignoreExports": [
+    {
+      // shadcn components are vendored and hand-styled to match this codebase.
+      // The unused sub-components stay so the UI can grow without re-adding and
+      // re-styling them from upstream.
+      "file": "src/components/ui/**",
+      "exports": ["*"]
+    }
+  ],
+
+  "overrides": [
+    {
+      // Same reasoning: whole shadcn components we have not adopted yet.
+      "files": ["src/components/ui/**"],
+      "rules": {
+        "unused-files": "off",
+        "unused-types": "off"
+      }
+    },
+    {
+      // Convex writes this directory; its internal imports are not ours to fix.
+      "files": ["convex/_generated/**"],
+      "rules": {
+        "unresolved-imports": "off"
+      }
+    }
+  ],
+
+  "rules": {
+    // @astrojs/react, @astrojs/sitemap, and @astrojs/vercel are used in
+    // astro.config.mjs, which fallow does not trace, so it reads them as
+    // test-only. They are genuine production dependencies.
+    "test-only-dependencies": "off",
+
+    // `components/avatar.tsx` deliberately re-exports the name `Avatar` over
+    // `ui/avatar.tsx`; call sites want the wrapper, not the primitive. This is a
+    // cross-file rule, so it cannot be scoped to one path via `overrides`. The
+    // codebase has no barrel files, which is the ambiguity this rule guards
+    // against — turn it back on if that changes.
+    "duplicate-exports": "off"
+  }
+}

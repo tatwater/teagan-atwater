@@ -31,3 +31,9 @@ pnpm-debug.log*
 # internal docs (not for public repo)
 SPEC.md
 docs/
+
+# pnpm 10 writes this locally to ask which packages may run install scripts.
+# Deploys resolve pnpm 9 from lockfileVersion 9.0 and neither need nor produce
+# it, and its presence would read as a workspace marker there. Keep it local:
+# run `pnpm approve-builds` if you want to answer the prompt on this machine.
+pnpm-workspace.yaml
