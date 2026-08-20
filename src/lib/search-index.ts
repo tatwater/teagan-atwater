@@ -46,19 +46,3 @@ export function buildSearchIndex(): SearchIndexItem[] {
       };
     });
 }
-
-
-/**
- * Create a lightweight search index for MiniSearch
- * Returns the index in a format optimized for MiniSearch
- */
-export function createMiniSearchIndex(items: SearchIndexItem[]) {
-  return items.map((item) => ({
-    id: item.id,
-    title: item.title,
-    description: item.description || '',
-    tags: item.tags?.join(' ') || '',
-    type: item.type,
-    url: item.url,
-  }));
-}

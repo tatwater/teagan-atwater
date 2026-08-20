@@ -9,11 +9,6 @@
 const VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 
-export function isTurnstileEnabled(): boolean {
-  return Boolean(import.meta.env.TURNSTILE_SECRET_KEY);
-}
-
-
 export async function verifyTurnstileToken(
   token: string | undefined,
   remoteIp?: string | null,

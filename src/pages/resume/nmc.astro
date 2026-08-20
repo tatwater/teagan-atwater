@@ -3,6 +3,7 @@ import { faArrowLeft, faArrowUpRightFromSquare } from '@fortawesome/sharp-regula
 import Layout from '@/layouts/Layout.astro';
 import { Icon } from '@/components/icon';
 import { resumeItems } from '@/data/resume';
+import { formatDateRange, getDuration } from '@/data/resume/dates';
 import { logoUrl } from '@/lib/logos';
 
 export const prerender = true;
@@ -14,31 +15,6 @@ const accentColor = 'var(--color-chart-4)';
 
 const logoSrcResolved = logoUrl('nmc.png');
 
-function formatDate(dateStr: string): string {
-  const [year, month] = dateStr.split('-').map(Number);
-  return new Date(year, month - 1).toLocaleDateString('en-US', {
-    month: 'long',
-    year: 'numeric',
-  });
-}
-
-function formatDateRange(dateStart: string, dateEnd: string | null): string {
-  return `${formatDate(dateStart)} – ${dateEnd ? formatDate(dateEnd) : 'Present'}`;
-}
-
-function getDuration(dateStart: string, dateEnd: string | null): string {
-  const start = new Date(dateStart);
-  const end = dateEnd ? new Date(dateEnd) : new Date();
-  const months =
-    (end.getFullYear() - start.getFullYear()) * 12 +
-    (end.getMonth() - start.getMonth());
-  const years = Math.floor(months / 12);
-  const rem = months % 12;
-  const parts: string[] = [];
-  if (years > 0) parts.push(`${years} yr${years !== 1 ? 's' : ''}`);
-  if (rem > 0) parts.push(`${rem} mo${rem !== 1 ? 's' : ''}`);
-  return parts.join(' ') || '< 1 mo';
-}
 
 // Overall date span across all roles
 const allStart = nmcItems.map((i) => i.dateStart).sort()[0];
@@ -110,7 +86,7 @@ const allTags = [...new Set(nmcItems.flatMap((i) => i.tags))];
 
         <div class='flex items-center gap-3 mt-3'>
           <span class='text-xs font-mono text-muted-foreground'>
-            {formatDateRange(allStart, allEnd)}
+            {formatDateRange(allStart, allEnd, 'long')}
           </span>
           <span class='text-xs font-mono text-muted-foreground/50 border border-border px-1.5 py-0.5'>
             {getDuration(allStart, allEnd)}
@@ -126,7 +102,7 @@ const allTags = [...new Set(nmcItems.flatMap((i) => i.tags))];
           <h2 class='text-base font-semibold text-foreground'>{item.title}</h2>
           <div class='flex flex-col items-end gap-1 shrink-0 text-right'>
             <span class='text-xs font-mono text-muted-foreground whitespace-nowrap'>
-              {formatDateRange(item.dateStart, item.dateEnd)}
+              {formatDateRange(item.dateStart, item.dateEnd, 'long')}
             </span>
             <span class='text-xs font-mono text-muted-foreground/60'>
               {getDuration(item.dateStart, item.dateEnd)}

@@ -6,6 +6,7 @@ import { PrintBackLink } from '@/islands/resume/print-back-link';
 import { PrintPrintButton } from '@/islands/resume/print-print-button';
 import { resumeItems } from '@/data/resume';
 import { groupItems } from '@/data/resume/helpers';
+import { formatDateRange } from '@/data/resume/dates';
 import { printSkills } from '@/data/resume/skills';
 import '@/styles/global.css';
 
@@ -40,17 +41,6 @@ const printProjects = resumeItems
   .sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
 
 
-function formatDate(dateStr: string): string {
-  const [year, month] = dateStr.split('-').map(Number);
-  return new Date(year, month - 1).toLocaleDateString('en-US', {
-    month: 'short',
-    year: 'numeric',
-  });
-}
-
-function formatDateRange(dateStart: string, dateEnd: string | null): string {
-  return `${formatDate(dateStart)} – ${dateEnd ? formatDate(dateEnd) : 'Present'}`;
-}
 
 // The printed résumé shows the five craft-focused categories, in this order.
 // 'Backend & Services' and 'Product & Leadership' exist for tagging entries on

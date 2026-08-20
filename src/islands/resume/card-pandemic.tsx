@@ -1,5 +1,5 @@
 import type { Verbosity } from '@/islands/resume/types';
-import type { ResumeItem } from '@/data/resume/types';
+import type { ResumeItem, SubCard } from '@/data/resume/types';
 
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { faBiohazard, faChevronRight, faLocationDot } from '@fortawesome/sharp-regular-svg-icons';
@@ -12,6 +12,78 @@ import { logoUrl } from '@/lib/logos';
 import { Highlight } from '@/islands/resume/highlight';
 import { Avatar } from '@/components/avatar';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+
+
+function subCardClassName(primary: boolean, linkable: boolean): string {
+  return cn(
+    'flex flex-col gap-1 border p-3 transition-all duration-200 w-72',
+    primary ? 'border-border bg-card' : 'border-border/40',
+    linkable
+      ? cn('hover:border-emerald-800/28 cursor-pointer', primary ? 'hover:bg-card' : 'hover:bg-muted/32')
+      : 'cursor-default',
+  );
+}
+
+
+/**
+ * One entry in the pandemic card's carousel. Primary sub-cards read at full
+ * strength; the rest are muted. Only entries with a detail page are clickable.
+ */
+function SubCardLink({
+  subCard,
+  searchTerms,
+  verbosity,
+}: {
+  subCard: SubCard;
+  searchTerms: string[];
+  verbosity: Verbosity;
+}) {
+  const ref = resumeItems.find((i) => i.id === subCard.id);
+
+  if (!ref)
+    return null;
+
+  const linkable = Boolean(ref.detailLabel);
+
+  return (
+    <CarouselItem className="basis-auto pl-0">
+      <a
+        className={subCardClassName(subCard.primary, linkable)}
+        href={linkable ? `/resume/${subCard.id}` : undefined}
+        onClick={linkable ? undefined : (e) => e.preventDefault()}
+      >
+        <div className='flex items-center justify-between gap-2'>
+          <div className='flex items-center gap-1.5 min-w-0'>
+            <Avatar
+              alt={ref.organizationName ?? ''}
+              fallback={getInitials(ref.organizationName || ref.title)}
+              shape={ref.logoShape ?? 'squircle'}
+              size='sm'
+              src={logoUrl(ref.logoSrc)}
+            />
+            <span className={cn(
+              'text-sm font-medium leading-snug truncate',
+              subCard.primary ? 'text-foreground' : 'text-foreground/70',
+            )}>
+              <Highlight terms={searchTerms} text={ref.organizationName} />
+            </span>
+          </div>
+          {linkable && (
+            <Icon
+              className='text-[10px] text-muted-foreground/64 shrink-0'
+              icon={faChevronRight}
+            />
+          )}
+        </div>
+        {verbosity !== 'headline' && (
+          <p className='text-xs text-muted-foreground leading-snug line-clamp-2'>
+            <Highlight terms={searchTerms} text={ref.descriptionHeadline} />
+          </p>
+        )}
+      </a>
+    </CarouselItem>
+  );
+}
 
 
 export function PandemicCard({
@@ -103,63 +175,14 @@ export function PandemicCard({
                     isTimeline ? 'pl-13 md:pl-15' : 'pl-4 md:pl-6',
                   )}
                 >
-                  {allSubs.map((sc) => {
-                    const ref = resumeItems.find((i) => i.id === sc.id);
-
-                    if (!ref)
-                      return null;
-
-                    return (
-                      <CarouselItem
-                        key={sc.id}
-                        className="basis-auto pl-0"
-                      >
-                        <a
-                          className={cn(
-                            'flex flex-col gap-1 border p-3 transition-all duration-200 w-72',
-                            sc.primary
-                              ? ref.detailLabel
-                                ? 'border-border bg-card hover:border-emerald-800/28 hover:bg-card cursor-pointer'
-                                : 'border-border bg-card cursor-default'
-                              : ref.detailLabel
-                                ? 'border-border/40 hover:border-emerald-800/28 hover:bg-muted/32 cursor-pointer'
-                                : 'border-border/40 cursor-default',
-                          )}
-                          href={ref.detailLabel ? `/resume/${sc.id}` : undefined}
-                          onClick={ref.detailLabel ? undefined : (e) => e.preventDefault()}
-                        >
-                          <div className='flex items-center justify-between gap-2'>
-                            <div className='flex items-center gap-1.5 min-w-0'>
-                              <Avatar
-                                alt={ref.organizationName ?? ''}
-                                fallback={getInitials(ref.organizationName || ref.title)}
-                                shape={ref.logoShape ?? 'squircle'}
-                                size='sm'
-                                src={logoUrl(ref.logoSrc)}
-                              />
-                              <span className={cn(
-                                'text-sm font-medium leading-snug truncate',
-                                sc.primary ? 'text-foreground' : 'text-foreground/70',
-                              )}>
-                                <Highlight terms={searchTerms} text={ref.organizationName} />
-                              </span>
-                            </div>
-                            {ref.detailLabel && (
-                              <Icon
-                                className='text-[10px] text-muted-foreground/64 shrink-0'
-                                icon={faChevronRight}
-                              />
-                            )}
-                          </div>
-                          {verbosity !== 'headline' && (
-                            <p className='text-xs text-muted-foreground leading-snug line-clamp-2'>
-                              <Highlight terms={searchTerms} text={ref.descriptionHeadline} />
-                            </p>
-                          )}
-                        </a>
-                      </CarouselItem>
-                    );
-                  })}
+                  {allSubs.map((sc) => (
+                    <SubCardLink
+                      key={sc.id}
+                      searchTerms={searchTerms}
+                      subCard={sc}
+                      verbosity={verbosity}
+                    />
+                  ))}
 
                   {/*
                     Empty spacer: accounts for the right padding (16px mobile / 24px desktop) minus

@@ -19,7 +19,7 @@ interface ContactSubmissionEmailProps {
   submittedAt: string;
 }
 
-export const ContactSubmissionEmail = ({
+const ContactSubmissionEmail = ({
   name,
   email,
   subject,

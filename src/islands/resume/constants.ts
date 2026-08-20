@@ -4,12 +4,6 @@ import type { Verbosity } from '@/islands/resume/types';
 import { faBuilding, faFolder, faGraduationCap, faEllipsisStroke, faGrip, faGrid } from '@fortawesome/sharp-regular-svg-icons';
 
 
-export const SECTION_BAR: Record<ResumeItem['type'], string> = {
-  education: 'bg-chart-2',
-  experience: 'bg-chart-4',
-  project: 'bg-chart-3',
-};
-
 export const SECTION_COLOR: Record<ResumeItem['type'], string> = {
   education: 'text-emerald-800',
   experience: 'text-emerald-800',

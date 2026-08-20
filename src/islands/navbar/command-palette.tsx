@@ -1,10 +1,11 @@
+import type { SearchItem } from '@/islands/navbar/search';
+
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { navigate } from 'astro:transitions/client';
 import { detectPlatform, MAC_MODIFIER_SYMBOLS } from '@tanstack/react-hotkeys';
 import {
   Command,
   CommandDialog,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -12,86 +13,73 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from '@/components/ui/command';
-import { faFile, faHouse, faEnvelope, faUser, faFolder, faRightToBracket, faRightFromBracket, faSun, faMoon, faDisplay, faFileUser, faPrint } from '@fortawesome/sharp-regular-svg-icons';
 import { Icon } from '@/components/icon';
 import { Kbd, KbdGroup } from '@/components/ui/kbd';
+import { applyTheme } from '@/islands/navbar/theme';
+import {
+  defaultItems,
+  filterSearchItems,
+  iconFor,
+  themeActions,
+  THEME_BY_ACTION_ID,
+} from '@/islands/navbar/search';
 import MiniSearch from 'minisearch';
 
-interface SearchItem {
-  id: string;
-  title: string;
-  description?: string;
-  url: string;
-  type: 'page' | 'project' | 'action';
-  tags?: string[];
-  icon?: string;
+
+interface ResultItemProps {
+  item: SearchItem;
+  onSelect: (url: string, itemId?: string) => void;
+  showTags?: boolean;
 }
 
-const defaultItems: SearchItem[] = [
-  // {
-  //   id: 'home',
-  //   title: 'Home',
-  //   description: 'Go to homepage',
-  //   url: '/',
-  //   type: 'page',
-  //   icon: 'home',
-  // },
-  {
-    id: 'resume',
-    title: 'Résumé',
-    description: 'View my résumé',
-    url: '/resume',
-    type: 'page',
-    icon: 'resume',
-  },
-  {
-    id: 'resume-print',
-    title: 'Résumé (Print / PDF)',
-    description: 'Printer-friendly one-page résumé',
-    url: '/resume/print',
-    type: 'page',
-    icon: 'print',
-    tags: ['resume', 'cv', 'print', 'pdf'],
-  },
-  // {
-  //   id: 'contact',
-  //   title: 'Contact',
-  //   description: 'Get in touch',
-  //   url: '/contact',
-  //   type: 'page',
-  //   icon: 'mail',
-  // },
-];
 
-const themeActions: SearchItem[] = [
-  {
-    id: 'theme-light',
-    title: 'Light Mode',
-    description: 'Switch to light theme',
-    url: '#',
-    type: 'action',
-    icon: 'sun',
-    tags: ['light', 'theme', 'mode'],
-  },
-  {
-    id: 'theme-dark',
-    title: 'Dark Mode',
-    description: 'Switch to dark theme',
-    url: '#',
-    type: 'action',
-    icon: 'moon',
-    tags: ['dark', 'theme', 'mode'],
-  },
-  {
-    id: 'theme-system',
-    title: 'System Theme',
-    description: 'Follow system color scheme',
-    url: '#',
-    type: 'action',
-    icon: 'system',
-    tags: ['system', 'theme', 'mode', 'auto'],
-  },
-];
+function ResultItem({ item, onSelect, showTags }: ResultItemProps) {
+  return (
+    <CommandItem
+      value={item.title}
+      onSelect={() => onSelect(item.url, item.id)}
+    >
+      <Icon icon={iconFor(item.icon)} />
+      <div className="flex flex-col">
+        <span>{item.title}</span>
+        {item.description && (
+          <span className="text-muted-foreground text-xs">
+            {item.description}
+          </span>
+        )}
+      </div>
+      {showTags && item.tags && item.tags.length > 0 && (
+        <CommandShortcut>
+          {item.tags.slice(0, 2).join(', ')}
+        </CommandShortcut>
+      )}
+    </CommandItem>
+  );
+}
+
+
+interface ResultGroupProps extends Omit<ResultItemProps, 'item'> {
+  heading: string;
+  items: SearchItem[];
+  separator: boolean;
+}
+
+
+function ResultGroup({ heading, items, separator, ...itemProps }: ResultGroupProps) {
+  if (items.length === 0) return null;
+
+  return (
+    <>
+      <CommandGroup heading={heading}>
+        {items.map((item) => (
+          <ResultItem key={item.id} item={item} {...itemProps} />
+        ))}
+      </CommandGroup>
+      {separator && <CommandSeparator />}
+    </>
+  );
+}
+
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
@@ -112,11 +100,7 @@ export function CommandPalette() {
   useEffect(() => {
     if (!open) return;
     const stored = localStorage.getItem('theme');
-    if (stored) {
-      setCurrentTheme(stored);
-    } else {
-      setCurrentTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    }
+    setCurrentTheme(stored ?? (document.documentElement.classList.contains('dark') ? 'dark' : 'light'));
   }, [open]);
 
   useEffect(() => {
@@ -185,95 +169,28 @@ export function CommandPalette() {
   }, [open, miniSearch, loadSearchIndex]);
 
   useEffect(() => {
-    if (!search) {
-      setFilteredItems(allItems);
-      return;
-    }
-
-    if (!miniSearch) {
-      const searchLower = search.toLowerCase();
-      const filtered = allItems.filter((item) => {
-        const titleMatch = item.title.toLowerCase().includes(searchLower);
-        const descMatch = item.description?.toLowerCase().includes(searchLower);
-        const tagMatch = item.tags?.some((tag) =>
-          tag.toLowerCase().includes(searchLower)
-        );
-        return titleMatch || descMatch || tagMatch;
-      });
-      setFilteredItems(filtered);
-      return;
-    }
-
-    const results = miniSearch.search(search);
-    const filtered = results
-      .map((result) => {
-        const item = allItems.find((i) => i.id === result.id);
-        return item;
-      })
-      .filter((item): item is SearchItem => item !== undefined);
-
-    setFilteredItems(filtered);
+    setFilteredItems(filterSearchItems(allItems, search, miniSearch));
   }, [search, allItems, miniSearch]);
 
-  const handleSelect = async (url: string, itemId?: string) => {
+  const handleSelect = (url: string, itemId?: string) => {
     setOpen(false);
     setSearch('');
 
-    if (itemId === 'theme-light') {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-      setCurrentTheme('light');
-      return;
-    }
-    if (itemId === 'theme-dark') {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-      setCurrentTheme('dark');
-      return;
-    }
-    if (itemId === 'theme-system') {
-      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      document.documentElement.classList.toggle('dark', isDark);
-      localStorage.setItem('theme', 'system');
-      setCurrentTheme('system');
+    const theme = itemId ? THEME_BY_ACTION_ID[itemId] : undefined;
+    if (theme) {
+      applyTheme(theme);
+      setCurrentTheme(theme);
       return;
     }
 
     navigate(url);
   };
 
-  const getIcon = (iconName?: string) => {
-    switch (iconName) {
-      case 'home':
-        return <Icon icon={faHouse} />;
-      case 'resume':
-        return <Icon icon={faFileUser} />;
-      case 'print':
-        return <Icon icon={faPrint} />;
-      case 'mail':
-        return <Icon icon={faEnvelope} />;
-      case 'user':
-        return <Icon icon={faUser} />;
-      case 'folder':
-        return <Icon icon={faFolder} />;
-      case 'login':
-        return <Icon icon={faRightToBracket} />;
-      case 'logout':
-        return <Icon icon={faRightFromBracket} />;
-      case 'sun':
-        return <Icon icon={faSun} />;
-      case 'moon':
-        return <Icon icon={faMoon} />;
-      case 'system':
-        return <Icon icon={faDisplay} />;
-      default:
-        return <Icon icon={faFile} />;
-    }
-  };
-
   const pageItems = filteredItems.filter((item) => item.type === 'page');
   const projectItems = filteredItems.filter((item) => item.type === 'project');
   const actionItems = filteredItems.filter((item) => item.type === 'action');
+  const hasNoResults =
+    pageItems.length === 0 && projectItems.length === 0 && actionItems.length === 0;
 
   return (
     <>
@@ -304,66 +221,24 @@ export function CommandPalette() {
               <div className="py-6 text-center text-xs">
                 <span>Loading search index...</span>
               </div>
-            ) : search && pageItems.length === 0 && projectItems.length === 0 && actionItems.length === 0 ? (
+            ) : search && hasNoResults ? (
               <div className="py-6 text-center text-sm">No results found.</div>
             ) : null}
 
-            {pageItems.length > 0 && (
-              <>
-                <CommandGroup heading="Pages">
-                  {pageItems.map((item) => (
-                    <CommandItem
-                      key={item.id}
-                      value={item.title}
-                      onSelect={() => handleSelect(item.url, item.id)}
-                    >
-                      {getIcon(item.icon)}
-                      <div className="flex flex-col">
-                        <span>{item.title}</span>
-                        {item.description && (
-                          <span className="text-muted-foreground text-xs">
-                            {item.description}
-                          </span>
-                        )}
-                      </div>
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-                {(projectItems.length > 0 || actionItems.length > 0) && (
-                  <CommandSeparator />
-                )}
-              </>
-            )}
+            <ResultGroup
+              heading="Pages"
+              items={pageItems}
+              onSelect={handleSelect}
+              separator={projectItems.length > 0 || actionItems.length > 0}
+            />
 
-            {projectItems.length > 0 && (
-              <>
-                <CommandGroup heading="Projects">
-                  {projectItems.map((item) => (
-                    <CommandItem
-                      key={item.id}
-                      value={item.title}
-                      onSelect={() => handleSelect(item.url, item.id)}
-                    >
-                      {getIcon(item.icon)}
-                      <div className="flex flex-col">
-                        <span>{item.title}</span>
-                        {item.description && (
-                          <span className="text-muted-foreground text-xs">
-                            {item.description}
-                          </span>
-                        )}
-                      </div>
-                      {item.tags && item.tags.length > 0 && (
-                        <CommandShortcut>
-                          {item.tags.slice(0, 2).join(', ')}
-                        </CommandShortcut>
-                      )}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-                {actionItems.length > 0 && <CommandSeparator />}
-              </>
-            )}
+            <ResultGroup
+              heading="Projects"
+              items={projectItems}
+              onSelect={handleSelect}
+              showTags
+              separator={actionItems.length > 0}
+            />
 
             {actionItems.length > 0 && (
               <CommandGroup heading="Actions">
@@ -373,7 +248,7 @@ export function CommandPalette() {
                     value={item.title}
                     onSelect={() => handleSelect(item.url, item.id)}
                   >
-                    {getIcon(item.icon)}
+                    <Icon icon={iconFor(item.icon)} />
                     <span>{item.title}</span>
                   </CommandItem>
                 ))}
