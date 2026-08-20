@@ -142,10 +142,23 @@ is ignoring the credential in the project `.npmrc` — see Environment above and
 set it in your user-level config. A `[WARN] Ignored project-level auth setting`
 line earlier in the output confirms this is the cause.
 
-**`Ignored build scripts: esbuild, msw, sharp`**: harmless. pnpm 10 blocks
-install scripts by default; all three resolve prebuilt platform binaries, and
-the build does not need them. Run `pnpm approve-builds` if you want to silence
-it — the answer is written to a gitignored `pnpm-workspace.yaml`.
+**`ERR_PNPM_IGNORED_BUILDS: Ignored build scripts: esbuild, msw, sharp`**: pnpm
+blocks dependency install scripts until you answer for each one. On pnpm 10 this
+is a warning; on pnpm 11 it fails the install, and because `pnpm run` verifies
+dependencies first, it takes `pnpm dev` down with it. Answer with
+`pnpm approve-builds`, or edit the gitignored `pnpm-workspace.yaml` directly:
+
+```yaml
+allowBuilds:
+  esbuild: true
+  sharp: true
+  msw: false
+```
+
+pnpm 11 seeds that file with `set this to true or false` placeholders — those
+count as unanswered, so the install keeps failing until they are real booleans.
+Corepack resolves the newest pnpm when `package.json` has no `packageManager`
+field, so a machine can land on pnpm 11 without anything in the repo changing.
 
 ## Specification
 
