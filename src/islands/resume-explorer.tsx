@@ -92,9 +92,6 @@ export default function ResumeExplorer() {
             <aside className='flex-1 overflow-y-auto min-h-0 p-4 pb-8'>
               <SkillsPanel searchTerms={searchTerms} />
             </aside>
-            <div className='relative'>
-              <div className='absolute -top-8 inset-x-0 h-8 bg-linear-to-t from-background to-transparent pointer-events-none' />
-            </div>
           </motion.div>
         </div>
 
