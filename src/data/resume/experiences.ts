@@ -195,14 +195,14 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: '2015-01',
     type: 'experience',
     groupKey: 'oho',
-    tags: ['Freelance', 'JavaScript', 'HTML', 'CSS', 'PHP'],
-    descriptionHeadline: 'First engagement with OHO Interactive, as a freelance developer',
-    descriptionSummary:
-      'Completed a short freelance contract with OHO Interactive in Cambridge, contributing to client web projects and beginning a working relationship that continued for years.',
-    descriptionFull:
-      'My first engagement with OHO Interactive was a brief freelance contract with the team in Cambridge. It was my earliest direct exposure to OHO\'s working style and standards — high expectations for code quality, and a genuinely collaborative studio culture. I contributed to client-facing web projects and got my first taste of professional agency workflows. It began a relationship with OHO that I returned to repeatedly over the following years.',
-    descriptionPrint:
-      'Brief freelance contract contributing to client web projects — the start of a multi-year working relationship with the studio.',
+    // Deliberately blank, the way Northfield Mount Hermon is in education.ts: a
+    // one-month engagement from a decade ago earns a line on the timeline and
+    // nothing more. Empty descriptions render no paragraph at any verbosity, and
+    // no tags keeps it out of skill filtering and search results.
+    tags: [],
+    descriptionHeadline: '',
+    descriptionSummary: '',
+    descriptionFull: '',
     // detailLabel: 'Learn more',
   },
 ];
