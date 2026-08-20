@@ -11,11 +11,14 @@ export type SkillCategory =
 export type SkillTag =
   // Frontend
   | 'React' | 'TypeScript' | 'JavaScript' | 'HTML' | 'CSS' | 'Tailwind' | 'Motion' | 'Next.js'
-  | 'Astro' | 'Angular' | 'Styled Components' | 'Sass/Less'
+  | 'Astro' | 'Angular' | 'Styled Components' | 'Sass/Less' | 'Electron' | 'Expo' | 'Redux'
+  | 'jQuery'
   // Backend
   | 'Node.js' | 'Ruby' | 'PHP' | 'Java' | 'Python' | 'REST APIs' | 'GraphQL' | 'Auth'
+  | 'Meteor' | 'Drupal'
   // Data / Infra
   | 'MongoDB' | 'PostgreSQL' | 'Convex' | 'Vercel' | 'Git' | 'CI/CD' | 'React Email'
+  | 'Supabase' | 'Monorepos'
   // Design
   | 'UI Design' | 'UX Design' | 'Figma' | 'Adobe XD' | 'Design Systems' | 'Responsive Design'
   | 'Information Architecture' | 'Prototyping'
@@ -59,6 +62,7 @@ export interface ResumeItem {
   detailLabel?: string;  // When present, a button with this text linking to /resume/{id} will be shown; omit to hide entirely
   groupKey?: string;
   hidden?: boolean;  // Hide from resume list but still generate a /resume/{id} page
+  hideFromPrint?: boolean;  // Keep on the site, omit from the print-friendly resume
   hideDates?: boolean;
   location?: string;
   logoShape?: 'circle' | 'square' | 'squircle';

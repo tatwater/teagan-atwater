@@ -4,7 +4,7 @@ import type { ResumeItem } from '@/data/resume/types';
 export const experienceItems: ResumeItem[] = [
   {
     id: 'nmc-swe',
-    title: 'Software Engineer',
+    title: 'Founding Software Engineer',
     organizationName: 'The New Money Company',
     organizationUrl: 'https://newmoneycompany.com/',
     logoShape: 'squircle',
@@ -14,14 +14,14 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: null,
     type: 'experience',
     groupKey: 'nmc',
-    tags: ['React', 'TypeScript', 'Full Stack', 'Startup', 'Node.js', 'Product Strategy'],
-    descriptionHeadline: 'Full-stack engineer at a YC W24 fintech startup',
+    tags: ['TypeScript', 'React', 'Tailwind', 'Electron', 'PHP', 'PostgreSQL', 'Design Systems', 'Monorepos', 'Startup'],
+    descriptionHeadline: 'Employee #1 and sole frontend owner at a YC W24 fintech',
     descriptionSummary:
-      'Building full-stack features at The New Money Company, a Y Combinator W24 fintech startup. Shipping across the entire product surface — from React UIs to backend APIs — in a fast-moving, high-trust environment.',
+      'Employee #1 at a four-person fintech and its only frontend engineer, building every user interface on a shared design system — six production web apps and several internal dashboards serving 1,000+ users. The products I build process $250K+/month in transaction volume.',
     descriptionFull:
-      'At The New Money Company, a Y Combinator W24 fintech startup based in San Francisco, I work as a full-stack software engineer on a small, high-velocity team. My work spans the entire product — designing and building React-based interfaces, developing Node.js backend services, and contributing to product strategy conversations. The YC environment demands rapid iteration, clear thinking about what to build and why, and the ability to own problems end-to-end. I\'ve leaned into all of that, deepening my TypeScript fluency and my instincts for building systems that are both resilient and a joy to use.',
+      'I am employee #1 and the sole frontend engineer at The New Money Company, a four-person Y Combinator W24 fintech. Every user interface at the company is mine, built on a shared design system that keeps six production web apps and several internal dashboards — serving over a thousand users — visually consistent.\n\nThe work has ranged widely. I rebranded and rebuilt the UI of an acquired marketplace codebase, closing gaps in the inherited experience before we scaled it, and wrote the email dispatcher lambda behind our match alerts. I also built a native Electron email client with built-in AI chat, so sales reps can manage marketplace matches and trades inside their own networks.\n\nBeyond the interfaces, I set all of the frontend architecture: the monorepo structure, the boundaries between apps and shared packages, and the refactor roadmap we use to manage technical debt and centralize shared logic. At a company this size the useful instinct is to unblock yourself, so I have written SQL and PHP for endpoints and PDF templates that did not exist yet, and shipped ahead of design when a launch depended on it. As agentic tooling matured I folded it into daily delivery and code review.',
     descriptionPrint:
-      'Full-stack engineer on a small, high-velocity team at a YC W24 fintech startup. Shipping React UIs, Node.js services, and contributing to product strategy end-to-end.',
+      'Employee #1 and sole frontend engineer at a four-person YC W24 fintech. Built every interface across 6 production web apps and internal dashboards serving 1,000+ users, set all frontend architecture, and shipped a native Electron client. Products I built process $250K+/month in transaction volume.',
     detailLabel: 'Learn more',
     detailId: 'nmc',
   },
@@ -37,14 +37,14 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: '2024-05',
     type: 'experience',
     groupKey: 'nmc',
-    tags: ['React', 'TypeScript', 'Full Stack', 'Startup'],
-    descriptionHeadline: 'Contract engineer prior to joining full-time',
+    tags: ['TypeScript', 'React', 'Startup', 'Full Stack'],
+    descriptionHeadline: 'The contract engagement that became employee #1',
     descriptionSummary:
-      'Brought on as a contractor to help build out early product features before transitioning to a full-time role. Established front-end patterns and collaborated closely with the founding team.',
+      'Joined The New Money Company on contract in January 2024 to build out early product surfaces, establishing the front-end patterns the team still works in, and came on full-time as employee #1 a few months later.',
     descriptionFull:
-      'Before joining The New Money Company full-time, I worked with the team as a contract software engineer. During this period I helped establish early front-end architecture, built key product features in React and TypeScript, and worked directly with the founders to translate product vision into shipped code. The contract-to-hire path let me deeply understand the codebase and culture before committing fully — and clearly it was a good fit on both sides.',
+      'I started with The New Money Company as a contract engineer in January 2024. In those first months I established the front-end patterns the team still works in and built early product features in React and TypeScript, working directly with the founders to turn product intent into shipped software. The contract-to-hire path let both sides find out whether the fit was real before committing; it was, and I joined full-time as employee #1.',
     descriptionPrint:
-      'Contract-to-hire engagement establishing front-end architecture and shipping early product features alongside the founding team.',
+      'Contract-to-hire engagement establishing the company\'s front-end patterns and shipping early product features alongside the founders.',
     detailLabel: 'Learn more',
     detailId: 'nmc',
   },
@@ -95,7 +95,7 @@ export const experienceItems: ResumeItem[] = [
   },
   {
     id: 'oho-react-contract',
-    title: 'React Consultant (Contract)',
+    title: 'Frontend Engineer (Contract)',
     organizationName: 'OHO Interactive',
     organizationUrl: 'https://oho.com',
     logoShape: 'squircle',
@@ -105,16 +105,20 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: '2023-03',
     type: 'experience',
     groupKey: 'oho',
-    tags: ['React', 'TypeScript', 'JavaScript', 'Freelance'],
-    descriptionHeadline: 'Helped OHO build their first reusable React component for a next gen component library',
-    descriptionSummary: 'Coming soon',
-    descriptionFull: 'Coming soon',
+    tags: ['React', 'TypeScript', 'Design Systems', 'Freelance'],
+    descriptionHeadline: 'Returned to OHO to help modernize their component library',
+    descriptionSummary:
+      'Came back to OHO Interactive on contract to help the team adopt React and TypeScript, building toward a better developer experience in their reusable frontend component library.',
+    descriptionFull:
+      'Years after my last stint at OHO Interactive, the team brought me back on contract to help them move their reusable frontend component library toward React and TypeScript. The goal was a more modern developer experience for the engineers building client sites on top of it — typed, composable components in place of patterns the agency had outgrown. It was a satisfying return: the same studio, the same standards, a decade of my own experience to bring to it.',
+    descriptionPrint:
+      'Contract engagement helping the agency adopt React and TypeScript in their reusable frontend component library.',
     // detailLabel: 'Learn more',
   },
   {
     id: 'osler-cto',
-    title: 'CTO and Co-founder',
-    organizationName: 'Osler Health (now EMRLD)',
+    title: 'Co-founder',
+    organizationName: 'ScopeAI (now EMRLD)',
     organizationUrl: 'https://emrld.health/',
     location: 'Hanover, NH',
     logoShape: 'squircle',
@@ -122,19 +126,19 @@ export const experienceItems: ResumeItem[] = [
     dateStart: '2018-12',
     dateEnd: '2020-04',
     type: 'experience',
-    tags: ['Startup', 'Team Leadership', 'Full Stack', 'Product Strategy', 'Fundraising', 'Agile/Scrum', 'React', 'Node.js', 'MongoDB'],
-    descriptionHeadline: 'CTO & co-founder of an early-stage startup',
+    tags: ['Startup', 'Team Leadership', 'Product Strategy', 'Next.js', 'Redux', 'GraphQL', 'MongoDB', 'Styled Components', 'Adobe XD', 'UI Design'],
+    descriptionHeadline: 'Co-founded a clinical software startup and led its design and engineering',
     descriptionSummary:
-      'Co-founded Osler Health and served as CTO, leading all technical decisions and early engineering. Built the initial product, hired early engineers, and worked alongside my co-founder on fundraising and strategy.',
+      'Co-founded ScopeAI and built an interactive electronic medical record demo for primary care doctors, mapping exams and diagnoses onto a representative patient avatar. Hired and managed a team of eight, and led the company rebrand to Osler.',
     descriptionFull:
-      'Osler Health was an early-stage startup I co-founded and led as CTO. I was responsible for the full technical vision — architecture decisions, stack choices, early hiring, and building the first version of the product from the ground up. Beyond pure engineering, I was a full partner in the business: pitching investors, setting company strategy, and navigating the classic co-founder challenges of early startup life. Building EMRLD taught me what it actually means to lead a technical team under pressure, to make irreversible decisions with incomplete information, and to keep shipping when everything feels uncertain.',
+      'ScopeAI — later Osler, and now EMRLD — was a clinical software startup I co-founded in Hanover, New Hampshire. Our product was an interactive electronic medical record demo built for primary care doctors: a heavily structured data model that mapped exams and diagnoses onto a representative patient avatar, iterated toward an MVP alongside practicing clinicians.\n\nElectronic medical records are an entrenched market, so we made great design our competitive advantage. I did that work in Adobe XD, and in my final months led a full company rebrand to Osler, covering naming, identity, and UI.\n\nI also hired and managed a team of eight: another full-time design engineer, two backend engineering interns, and five data interns. The avatar-driven diagnostic tool I architected outlived my tenure — it is the company\'s core product today, used for medical education and training.',
     descriptionPrint:
-      'Co-founded and led as CTO — defined architecture, built v1, made early hires, and partnered on fundraising and company strategy.',
+      'Co-founded a clinical software startup. Architected an avatar-driven EMR demo iterated with practicing clinicians, made design the competitive advantage in an entrenched market, and hired and managed a team of eight. The tool is the company\'s core product today.',
     // detailLabel: 'Learn more',
   },
   {
     id: 'fiber-cto',
-    title: 'CTO and Co-founder',
+    title: 'Co-founder',
     organizationName: 'Fiber',
     logoShape: 'squircle',
     logoSrc: 'fiber.jpeg',
@@ -142,19 +146,19 @@ export const experienceItems: ResumeItem[] = [
     dateStart: '2017-07',
     dateEnd: '2018-09',
     type: 'experience',
-    tags: ['Startup', 'Team Leadership', 'Full Stack', 'Product Strategy', 'React', 'Node.js'],
-    descriptionHeadline: 'CTO & co-founder, built the technical foundation from zero',
+    tags: ['Startup', 'Team Leadership', 'Product Strategy', 'Meteor', 'MongoDB', 'React', 'Node.js', 'Full Stack'],
+    descriptionHeadline: 'Co-founded Fiber and built its products end to end',
     descriptionSummary:
-      'Co-founded Fiber and served as CTO, building the product and technical team from nothing. Defined the architecture, wrote the early codebase, and wore every technical hat in the company.',
+      'Co-founded Fiber and built two Meteor/MERN applications as the business evolved — a video-centric education platform and a data analytics dashboard — plus a Gatsby marketing site. Defined the target market and scope, and hired the company\'s first engineer.',
     descriptionFull:
-      'Fiber was a startup I co-founded in Somerville, MA, where I served as CTO. I joined at the very beginning, which meant building everything from first principles: choosing the stack, writing the foundational code, setting up infrastructure, and eventually hiring and leading engineers. As the company\'s technical leader I was the bridge between the product vision and what was actually possible to build — a translation challenge I found genuinely exciting. The experience at Fiber was my first time truly owning a technical organization, and it shaped my understanding of how great software teams operate.',
+      'Fiber was a startup I co-founded in Somerville, Massachusetts. As the business found its shape I built two Meteor/MERN applications to match it: first a video-centric education platform, then a data analytics dashboard, alongside a Gatsby marketing site.\n\nMy work was not only technical. I helped define the target market and scope the product, iterating closely with design to decide what was worth building. I also interviewed and hired the company\'s first engineer. Fiber was the first time I owned both what to build and how to build it, and it shaped how I think about the relationship between the two.',
     descriptionPrint:
-      'Co-founded and served as CTO — built the stack from scratch, set technical direction, and bridged product vision with engineering execution.',
+      'Co-founded Fiber. Built two Meteor/MERN apps as the business evolved — a video-centric education platform and a data analytics dashboard — plus a Gatsby marketing site. Defined target market and scope, and hired the first engineer.',
     // detailLabel: 'Learn more',
   },
   {
     id: 'oho-fullstack',
-    title: 'Full Stack Web Developer',
+    title: 'Frontend Engineer',
     organizationName: 'OHO Interactive',
     organizationUrl: 'https://oho.com',
     logoShape: 'squircle',
@@ -164,14 +168,14 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: '2017-06',
     type: 'experience',
     groupKey: 'oho',
-    tags: ['Full Stack', 'JavaScript', 'HTML', 'CSS', 'PHP', 'React', 'Responsive Design', 'Agile/Scrum'],
-    descriptionHeadline: 'Full-stack developer at a digital agency',
+    tags: ['Drupal', 'PHP', 'jQuery', 'JavaScript', 'HTML', 'CSS', 'Responsive Design', 'Agile/Scrum'],
+    descriptionHeadline: 'Joined a Boston digital agency full-time after graduation',
     descriptionSummary:
-      'Built and maintained full-stack web projects for clients at OHO Interactive, a digital agency. Worked across the stack in a fast-paced agency environment delivering responsive, high-quality web experiences.',
+      'Worked across teams at OHO Interactive to build and ship large-scale Drupal PHP/jQuery sites for the agency\'s clients, having first arrived there as an intern and then on contract.',
     descriptionFull:
-      'At OHO Interactive I worked as a full-stack web developer, building client websites and web applications across a variety of industries. The agency environment meant juggling multiple projects simultaneously, each with different technical requirements and client expectations. I built in PHP, JavaScript, and React, always with a strong eye toward responsive design and performance. OHO had high standards for code quality and a collaborative culture — both of which pushed me to level up quickly. This role gave me a strong appreciation for the craft of web development in a production, client-facing context.',
+      'OHO Interactive is a Boston digital agency I kept returning to — first as an intern, then on contract, and after graduation as a full-time engineer. In this role I worked across teams to build and ship large-scale Drupal sites in PHP and jQuery, the kind of projects where the content model matters as much as the interface.\n\nAgency work meant several clients at once, each with its own requirements and expectations, and OHO held high standards for code quality alongside a genuinely collaborative culture. It is where I learned the craft of shipping client work in production, and the reason I came back twice more.',
     descriptionPrint:
-      'Built full-stack client web projects across multiple industries in a fast-paced agency environment, with a strong focus on responsive design and code quality.',
+      'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern, then on contract, then full-time after graduation.',
     // detailLabel: 'Learn more',
   },
   {
