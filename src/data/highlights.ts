@@ -56,12 +56,14 @@ const HIGHLIGHT_SOURCES: HighlightSource[] = [
     name: 'Car App',
     tagline: 'A lifetime cost-of-ownership tracker for personal vehicles',
   },
-  {
-    accent: 'var(--reel-osler)',
-    id: 'osler-cto',
-    name: 'Osler',
-    tagline: 'Structured, predictive EMR mapping exams and diagnoses to a representative patient avatar',
-  },
+  // Shelved for now, copy kept — uncomment to bring the tab back. Its résumé
+  // entry and its --reel-osler accent both stay where they are.
+  // {
+  //   accent: 'var(--reel-osler)',
+  //   id: 'osler-cto',
+  //   name: 'Osler',
+  //   tagline: 'Structured, predictive EMR mapping exams and diagnoses to a representative patient avatar',
+  // },
 ];
 
 export interface Highlight extends HighlightSource {
