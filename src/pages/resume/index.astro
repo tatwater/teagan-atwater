@@ -1,6 +1,11 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import ResumeExplorer from '@/islands/resume-explorer';
+
+// Built entirely from local data with nothing request-specific, so it is
+// prerendered at build time and served as a static file rather than invoked as a
+// serverless function on every request.
+export const prerender = true;
 ---
 
 <Layout>
