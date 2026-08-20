@@ -49,7 +49,10 @@ export const experienceItems: ResumeItem[] = [
     detailId: 'nmc',
   },
   {
+    // Shelved for now, data kept — drop `hidden` to bring the card back. Its
+    // sub-cards are commented out below and come back separately.
     id: 'pandemic',
+    hidden: true,
     title: 'COVID-19 Pandemic',
     organizationName: '',
     location: 'New Hampshire',
@@ -65,13 +68,15 @@ export const experienceItems: ResumeItem[] = [
       'The pandemic became an unlikely creative window. I built Sous, a consumer app, from idea to product. My family gutted and renovated a century-old house in New Hampshire. Eventually after the world re-opened, I started picking up shifts serving and bartending at Worthy Kitchen. Throughout, I stayed active outdoors — skiing, cycling, running — and took my health seriously.',
     descriptionFull:
       'The pandemic years were disorienting for everyone, but they turned into a strangely generative stretch for me. I\'d already been working on Sous — a consumer app I was building solo — but the sudden stillness gave the project real room to breathe. I went deep on product, design, and engineering in parallel, building something I was genuinely proud of over three-plus years.\n\nAt the same time, my family took on an ambitious renovation: The Westgate House, a century-old New Hampshire property that we designed and rebuilt largely from scratch as a shared project. It was equal parts creative exercise and logistical grind — and one of the most hands-on, satisfying things I\'ve ever done.\n\nI also spent time behind the bar at Worthy Kitchen in Woodstock, Vermont, which turned out to be a grounding and surprisingly fun chapter. And I leaned hard into the outdoors — skiing, cycling, running — making physical health a genuine priority for the first time.',
+    // Commented-out rows are shelved rather than gone — each one's entry still
+    // carries its write-up and a matching `hidden` flag. Uncomment a row and
+    // clear that flag to bring it back.
     subCards: [
       { id: 'project-sous', primary: true },
-      // Shelved — see the `hidden` flags in src/data/resume/projects.ts.
       // { id: 'project-westgate', primary: true },
       // { id: 'project-opengate', primary: true },
       { id: 'oho-react-contract', primary: true },
-      { id: 'worthy-kitchen', primary: false },
+      // { id: 'worthy-kitchen', primary: false },
     ],
   },
   {
