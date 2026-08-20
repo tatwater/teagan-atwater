@@ -1,0 +1,29 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { BackHomeButton } from '@/islands/BackHomeButton';
+---
+
+<Layout>
+	<div class='flex flex-col items-center justify-center min-h-[calc(100vh-69px)] py-12 px-4 md:px-6 pb-20 text-center gap-6'>
+		<p class='font-mono text-[10px] tracking-[0.48em] uppercase text-muted-foreground'>
+		  Not Found
+		</p>
+
+		<h1 class='font-glyph text-[6rem] text-foreground leading-none mb-1'>
+			404
+		</h1>
+
+		<div class='w-16 border-t border-muted-foreground/48 mb-4'></div>
+
+		<div class='flex flex-col gap-2 max-w-[16rem]'>
+			<p class='text-base text-muted-foreground'>
+				How embarrassing!
+			</p>
+			<p class='text-sm text-muted-foreground/64 text-pretty'>
+				The page you're looking for may have been moved or removed.
+			</p>
+		</div>
+
+		<BackHomeButton client:load />
+	</div>
+</Layout>

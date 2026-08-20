@@ -1,0 +1,10 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { SignUpForm } from '@/islands/SignUpForm';
+---
+
+<Layout title='Sign Up'>
+  <main class='flex items-center justify-center min-h-[calc(100vh-4rem)] p-8'>
+    <SignUpForm client:load />
+  </main>
+</Layout>

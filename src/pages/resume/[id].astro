@@ -1,0 +1,196 @@
+---
+import type { ResumeItem } from '@/data/resume/types';
+
+import { faArrowLeft, faArrowUpRightFromSquare } from '@fortawesome/sharp-regular-svg-icons';
+import Layout from '@/layouts/Layout.astro';
+import { Icon } from '@/components/icon';
+import { resumeItems } from '@/data/resume';
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  // Only generate pages for items that have a detailLabel (i.e. opt-in to a detail page)
+  return resumeItems
+    .filter((item) => item.detailLabel)
+    .map((item) => ({
+      params: { id: item.id },
+      props: { item },
+    }));
+}
+
+interface Props {
+  item: ResumeItem;
+}
+
+
+const { item } = Astro.props;
+
+const SECTION_LABEL = {
+  education: 'Education',
+  experience: 'Experience',
+  project: 'Project',
+};
+
+function formatDate(dateStr: string): string {
+  const [year, month] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1).toLocaleDateString('en-US', {
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+function formatDateRange(dateStart: string, dateEnd: string | null): string {
+  return `${formatDate(dateStart)} – ${dateEnd ? formatDate(dateEnd) : 'Present'}`;
+}
+
+function getDuration(dateStart: string, dateEnd: string | null): string {
+  const start = new Date(dateStart);
+  const end = dateEnd ? new Date(dateEnd) : new Date();
+  const months =
+    (end.getFullYear() - start.getFullYear()) * 12 +
+    (end.getMonth() - start.getMonth());
+  const years = Math.floor(months / 12);
+  const rem = months % 12;
+  const parts: string[] = [];
+  if (years > 0) parts.push(`${years} yr${years !== 1 ? 's' : ''}`);
+  if (rem > 0) parts.push(`${rem} mo${rem !== 1 ? 's' : ''}`);
+  return parts.join(' ') || '< 1 mo';
+}
+
+const accentColor =
+  item.type === 'experience'
+    ? 'var(--color-chart-4)'
+    : item.type === 'education'
+    ? 'var(--color-chart-2)'
+    : 'var(--color-chart-3)';
+
+const logoSrcResolved = item.logoSrc
+  ? `/src/assets/logos/${item.logoSrc}`
+  : null;
+---
+
+<Layout>
+  <div class="max-w-3xl mx-auto px-6 py-12">
+
+    {/* Back link */}
+    <a
+      href="/"
+      class="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors mb-8 group"
+    >
+      <Icon
+        className='size-3 group-hover:-translate-x-0.5 transition-transform'
+        icon={faArrowLeft}
+      />
+      Back to résumé
+    </a>
+
+    {/* Header card */}
+    <div class="border border-border bg-card relative overflow-hidden mb-6">
+      {/* Accent bar */}
+      <div
+        class="absolute left-0 top-0 bottom-0 w-1"
+        style={`background: ${accentColor};`}
+      />
+
+      <div class="pl-6 pr-6 pt-6 pb-5">
+        {/* Section badge */}
+        <div class="flex items-center gap-1.5 mb-3">
+          <span
+            class="text-[10px] font-mono uppercase tracking-widest px-1.5 py-0.5 border"
+            style={`color: ${accentColor}; border-color: ${accentColor}; background: color-mix(in oklch, ${accentColor} 10%, transparent);`}
+          >
+            {SECTION_LABEL[item.type]}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h1 class="text-2xl font-bold text-foreground leading-tight mb-3">
+          {item.title}
+        </h1>
+
+        {/* Org row */}
+        <div class="flex items-center gap-3 flex-wrap">
+          {logoSrcResolved && (
+            <img
+              src={logoSrcResolved}
+              alt={item.organizationName}
+              class="size-6 object-contain"
+            />
+          )}
+          {item.organizationUrl ? (
+            <a
+              href={item.organizationUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-primary transition-colors"
+            >
+              {item.organizationName}
+              <Icon
+                className='size-3'
+                icon={faArrowUpRightFromSquare}
+              />
+            </a>
+          ) : (
+            <span class="text-sm text-muted-foreground">{item.organizationName}</span>
+          )}
+
+          {item.location && (
+            <>
+              <span class="text-muted-foreground/30 text-sm">·</span>
+              <span class="text-sm text-muted-foreground/70">{item.location}</span>
+            </>
+          )}
+        </div>
+
+        {/* Date range + duration */}
+        <div class="flex items-center gap-3 mt-3">
+          <span class="text-xs font-mono text-muted-foreground">
+            {formatDateRange(item.dateStart, item.dateEnd)}
+          </span>
+          <span class="text-xs font-mono text-muted-foreground/50 border border-border px-1.5 py-0.5">
+            {getDuration(item.dateStart, item.dateEnd)}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    {/* Full description */}
+    <div class="border border-border bg-card px-6 py-5 mb-6">
+      <p class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-3">
+        About this role
+      </p>
+      <p class="text-sm leading-loose text-foreground/80">
+        {item.descriptionFull}
+      </p>
+    </div>
+
+    {/* Tags */}
+    <div class="border border-border bg-card px-6 py-5 mb-6">
+      <p class="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-3">
+        Skills &amp; technologies
+      </p>
+      <div class="flex flex-wrap gap-1.5">
+        {item.tags.map((tag) => (
+          <a
+            href={`/?tag=${encodeURIComponent(tag)}`}
+            class="inline-flex items-center px-2 py-1 text-xs font-mono border border-border bg-muted/50 text-muted-foreground hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
+          >
+            {tag}
+          </a>
+        ))}
+      </div>
+    </div>
+
+    {/* Coming soon content area */}
+    <div class="border border-dashed border-border px-6 py-10 text-center">
+      <p class="text-xs font-mono text-muted-foreground/50 uppercase tracking-widest mb-2">
+        Deep dive coming soon
+      </p>
+      <p class="text-sm text-muted-foreground/70">
+        This page will be home to a full project exploration —
+        case studies, screenshots, lessons learned, and more.
+      </p>
+    </div>
+
+  </div>
+</Layout>

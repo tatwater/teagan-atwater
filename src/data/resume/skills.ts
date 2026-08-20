@@ -1,0 +1,63 @@
+import type { SkillCategory, SkillTag } from "@/data/resume/types";
+
+
+export const skillCategories: Record<SkillCategory, SkillTag[]> = {
+  'Frontend': [
+    'Angular',
+    'Astro',
+    'CSS',
+    'HTML',
+    'JavaScript',
+    'Next.js',
+    'React',
+    'Sass/Less',
+    'Styled Components',
+    'Tailwind',
+    'TypeScript',
+  ],
+  'Backend': [
+    'GraphQL',
+    'Java',
+    'Node.js',
+    'PHP',
+    'Python',
+    'REST APIs',
+    'Ruby',
+  ],
+  'Data / Infra': [
+    'CI/CD',
+    'Convex',
+    'Git',
+    'MongoDB',
+    'PostgreSQL',
+    'Vercel',
+  ],
+  'Design': [
+    'UI Design',
+    'UX Design',
+    'Figma',
+    'Adobe XD',
+    'Design Systems',
+    'Responsive Design',
+    'Information Architecture',
+    'Prototyping',
+  ],
+  'Product / Leadership': [
+    'Product Strategy',
+    'Agile/Scrum',
+    'Team Leadership',
+    'Mentorship',
+    'Startup',
+    'Fundraising',
+    'Roadmapping',
+    'Technical Writing',
+  ],
+  'Misc': [
+    'Full Stack',
+    'Web Performance',
+    'Accessibility',
+    'SEO',
+    'Content Strategy',
+    'Freelance',
+  ],
+};

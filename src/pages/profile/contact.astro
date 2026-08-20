@@ -1,0 +1,59 @@
+---
+import ProfileLayout from '@/layouts/ProfileLayout.astro';
+import { ContactSection } from '@/islands/profile/ContactSection';
+import { getUserInfo } from '@/lib/auth';
+import { getConvexClient } from '@/lib/convex';
+import { api } from '../../../convex/_generated/api';
+
+const userInfo = getUserInfo(Astro.locals);
+if (!userInfo.isAuthenticated) return Astro.redirect('/sign-in?redirect_url=/profile/contact', 302);
+
+let clerkEmail = '';
+let clerkImageUrl: string | undefined;
+
+try {
+  const currentUser = await Astro.locals.currentUser();
+  if (currentUser) {
+    clerkEmail =
+      currentUser.emailAddresses?.find(
+        (e) => e.id === currentUser.primaryEmailAddressId
+      )?.emailAddress ?? '';
+    clerkImageUrl = currentUser.imageUrl ?? undefined;
+  }
+} catch {
+  // non-fatal
+}
+
+let savedFirstName: string | undefined;
+let savedLastName: string | undefined;
+let savedPhone: string | undefined;
+let savedOrganization: string | undefined;
+
+try {
+  const convex = getConvexClient();
+  const profile = await convex.query(api.userProfile.getUserProfile, { clerkId: userInfo.userId! });
+  if (profile) {
+    savedFirstName = profile.firstName;
+    savedLastName = profile.lastName;
+    savedPhone = profile.phone;
+    savedOrganization = profile.organization;
+  }
+} catch {
+  // non-fatal
+}
+---
+
+<ProfileLayout title="Contact info — Profile Settings">
+  <h2 class="font-glyph text-xl mb-1">Contact info</h2>
+  <p class="text-xs text-muted-foreground mb-6">This appears in your contact card when reaching out.</p>
+
+  <ContactSection
+    client:load
+    clerkEmail={clerkEmail}
+    clerkImageUrl={clerkImageUrl}
+    savedFirstName={savedFirstName}
+    savedLastName={savedLastName}
+    savedPhone={savedPhone}
+    savedOrganization={savedOrganization}
+  />
+</ProfileLayout>

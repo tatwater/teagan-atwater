@@ -1,0 +1,57 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { AdminAvailability } from '@/islands/AdminAvailability';
+import { getConvexClient } from '@/lib/convex';
+import { api } from '../../../convex/_generated/api';
+import { CONTACT_GROUPS } from '@/data/contact';
+
+const convex = getConvexClient();
+const availabilityRecords = await convex.query(api.availability.getAllAvailability, {});
+
+// Build initial state: for any subject without a record, default to available
+const availabilityMap = new Map(
+  availabilityRecords.map((r) => {
+    const key = r.group ? `${r.group}/${r.subject}` : r.subject;
+    return [key, r.isAvailable];
+  })
+);
+
+const initialAvailability = CONTACT_GROUPS.flatMap((g) =>
+  g.subjects
+    .filter((s) => !s.alwaysAvailable)
+    .map((s) => {
+      const key = g.slug ? `${g.slug}/${s.slug}` : s.slug;
+      return {
+        group: g.slug,
+        subject: s.slug,
+        label: s.label,
+        groupLabel: g.label,
+        isAvailable: availabilityMap.get(key) ?? true,
+      };
+    })
+);
+---
+
+<Layout title="Availability Settings — Admin">
+  <div class="max-w-2xl mx-auto px-6 py-10">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="font-glyph text-3xl">Availability</h1>
+        <p class="text-xs text-muted-foreground mt-1">
+          Toggle which subjects you're currently accepting inquiries for.
+        </p>
+      </div>
+      <a
+        href="/admin"
+        class="text-xs text-muted-foreground underline underline-offset-2"
+      >
+        ← Admin
+      </a>
+    </div>
+
+    <AdminAvailability
+      client:load
+      initialAvailability={initialAvailability}
+    />
+  </div>
+</Layout>

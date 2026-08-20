@@ -1,0 +1,12 @@
+---
+import ProfileLayout from '@/layouts/ProfileLayout.astro';
+import { AccountSection } from '@/islands/profile/AccountSection';
+import { getUserInfo } from '@/lib/auth';
+
+const userInfo = getUserInfo(Astro.locals);
+if (!userInfo.isAuthenticated) return Astro.redirect('/sign-in?redirect_url=/profile/account', 302);
+---
+
+<ProfileLayout title="Account — Profile Settings">
+  <AccountSection client:load />
+</ProfileLayout>

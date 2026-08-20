@@ -1,0 +1,13 @@
+---
+import { AuthenticateWithRedirectCallback } from '@clerk/astro/components';
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout title='Signing in…'>
+  <main class='flex items-center justify-center min-h-[calc(100vh-4rem)] p-8'>
+    <p class='text-xs text-muted-foreground'>
+      {`Completing sign in…`}
+    </p>
+    <AuthenticateWithRedirectCallback />
+  </main>
+</Layout>

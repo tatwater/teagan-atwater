@@ -1,0 +1,622 @@
+---
+import type { SkillCategory } from '@/data/resume/types';
+
+import TALogo from '@/components/ta-brand/TA';
+import { PrintBackLink } from '@/islands/resume/print-back-link';
+import { PrintPrintButton } from '@/islands/resume/print-print-button';
+import { resumeItems } from '@/data/resume';
+import { skillCategories } from '@/data/resume/skills';
+import '@/styles/global.css';
+
+
+// Items selected and ordered for the printed page
+const printExperience = resumeItems.filter(
+  (i) => i.type === 'experience' && [
+    'nmc-swe',
+    'sous-founder',
+    'emrld-cto',
+    'fiber-cto',
+    'oho-fullstack',
+    'shadow-art-founder',
+    'conn-college-intern',
+  ].includes(i.id)
+).sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
+
+const printEducation = resumeItems.filter(
+  (i) => i.type === 'education' && i.id === 'conn-college-edu'
+);
+
+const printProjects = resumeItems.filter(
+  (i) => i.type === 'project' && [
+    'project-personal-site',
+    'project-launch-cc',
+    'project-code-school-regex',
+    'project-code-school-mongo',
+  ].includes(i.id)
+);
+
+function formatDate(dateStr: string): string {
+  const [year, month] = dateStr.split('-').map(Number);
+  return new Date(year, month - 1).toLocaleDateString('en-US', {
+    month: 'short',
+    year: 'numeric',
+  });
+}
+
+function formatDateRange(dateStart: string, dateEnd: string | null): string {
+  return `${formatDate(dateStart)} – ${dateEnd ? formatDate(dateEnd) : 'Present'}`;
+}
+
+const selectedSkillCategories: SkillCategory[] = [
+  'Frontend',
+  'Backend',
+  'Design',
+  'Product / Leadership',
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Teagan Atwater — Résumé</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
+
+      *, *::before, *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --ink: #0a0a0a;
+        --ink-mid: #3a3a3a;
+        --ink-muted: #6b6b6b;
+        --ink-faint: #a8a8a8;
+        --border: #d4d4d4;
+        --bg: #ffffff;
+        --accent: oklch(0.60 0.13 163);
+        --accent-light: oklch(0.94 0.04 163);
+        --page-w: 210mm;
+        --page-h: 297mm;
+        --col-left: 52mm;
+        --gap: 6mm;
+        --col-right: calc(var(--page-w) - var(--col-left) - var(--gap) - 20mm);
+      }
+
+      html, body {
+        font-family: 'Geist', 'Helvetica Neue', Arial, sans-serif;
+        font-size: 9pt;
+        line-height: 1.45;
+        color: var(--ink);
+        background: var(--bg);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .canvas {
+        padding-top: 4rem;
+      }
+
+      .page {
+        width: var(--page-w);
+        min-height: var(--page-h);
+        margin: 0 auto;
+        padding: 12mm 10mm 12mm 10mm;
+        display: grid;
+        grid-template-columns: var(--col-left) var(--col-right);
+        column-gap: var(--gap);
+        align-items: start;
+      }
+
+      /* ── Left column ──────────────────────────────── */
+
+      .col-left {
+        grid-column: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 7mm;
+      }
+
+      .logo-wrap {
+        width: 36px;
+        height: auto;
+        margin-bottom: 2mm;
+      }
+
+      .name {
+        font-size: 18pt;
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+      }
+
+      .name span {
+        display: block;
+        font-size: 10pt;
+        font-weight: 400;
+        color: var(--ink-muted);
+        letter-spacing: 0;
+        margin-top: 1mm;
+      }
+
+      .bio {
+        font-size: 8pt;
+        line-height: 1.55;
+        color: var(--ink-mid);
+      }
+
+      .left-section-label {
+        font-family: 'Geist Mono', monospace;
+        font-size: 6.5pt;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--ink-faint);
+        margin-bottom: 2mm;
+        padding-bottom: 1mm;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .contact-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5mm;
+      }
+
+      .contact-list li {
+        font-size: 7.5pt;
+        color: var(--ink-mid);
+        display: flex;
+        align-items: center;
+        gap: 2mm;
+      }
+
+      .contact-list li .label {
+        font-family: 'Geist Mono', monospace;
+        font-size: 6pt;
+        color: var(--ink-faint);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        min-width: 10mm;
+      }
+
+      .contact-list a {
+        color: var(--ink-mid);
+        text-decoration: none;
+      }
+
+      .skills-category {
+        margin-bottom: 3mm;
+      }
+
+      .skills-category-label {
+        font-size: 7pt;
+        font-weight: 600;
+        color: var(--ink-mid);
+        margin-bottom: 1mm;
+      }
+
+      .skills-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1mm;
+      }
+
+      .skill-tag {
+        font-family: 'Geist Mono', monospace;
+        font-size: 6.5pt;
+        padding: 0.6mm 1.5mm;
+        border: 0.5px solid var(--border);
+        color: var(--ink-mid);
+        background: transparent;
+        white-space: nowrap;
+      }
+
+      /* ── Right column ─────────────────────────────── */
+
+      .col-right {
+        grid-column: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 5mm;
+      }
+
+      .right-section {
+        display: flex;
+        flex-direction: column;
+        gap: 3mm;
+      }
+
+      .right-section-label {
+        font-size: 9pt;
+        font-weight: 700;
+        color: var(--ink);
+        padding-bottom: 1.5mm;
+        border-bottom: 1.5px dotted var(--border);
+        margin-bottom: 1mm;
+      }
+
+      /* ── Experience item ──────────────────────────── */
+
+      .exp-item {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        padding-left: 2.5mm;
+        border-left: 1.5px solid var(--accent);
+        page-break-inside: avoid;
+      }
+
+      .exp-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 4mm;
+        margin-bottom: 0.5mm;
+      }
+
+      .exp-org {
+        font-size: 7.5pt;
+        color: var(--ink-muted);
+        margin-bottom: 0.5mm;
+      }
+
+      .exp-title {
+        font-size: 9.5pt;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1.2;
+      }
+
+      .exp-dates {
+        font-family: 'Geist Mono', monospace;
+        font-size: 6.5pt;
+        color: var(--ink-faint);
+        white-space: nowrap;
+        flex-shrink: 0;
+        margin-top: 1mm;
+      }
+
+      .exp-desc {
+        font-size: 7.5pt;
+        color: var(--ink-mid);
+        line-height: 1.5;
+        margin-top: 1mm;
+      }
+
+      /* ── Previously rows (grouped roles) ─────────── */
+
+      .prev-roles {
+        margin-top: 1.5mm;
+        padding-top: 1.5mm;
+        border-top: 0.5px dashed var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 0.8mm;
+      }
+
+      .prev-label {
+        font-family: 'Geist Mono', monospace;
+        font-size: 6pt;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--ink-faint);
+        margin-bottom: 0.5mm;
+      }
+
+      .prev-role-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 4mm;
+      }
+
+      .prev-role-title {
+        font-size: 8pt;
+        font-weight: 600;
+        color: var(--ink-mid);
+      }
+
+      .prev-role-dates {
+        font-family: 'Geist Mono', monospace;
+        font-size: 6.5pt;
+        color: var(--ink-faint);
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      /* ── Education item ───────────────────────────── */
+
+      .edu-item {
+        padding-left: 2.5mm;
+        border-left: 1.5px solid var(--accent-light);
+        page-break-inside: avoid;
+      }
+
+      .edu-degree {
+        font-size: 9.5pt;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1.2;
+      }
+
+      .edu-school {
+        font-size: 7.5pt;
+        color: var(--ink-muted);
+        margin-bottom: 0.5mm;
+      }
+
+      .edu-detail {
+        font-size: 7.5pt;
+        color: var(--ink-mid);
+        line-height: 1.5;
+        margin-top: 1mm;
+      }
+
+      /* ── Project item ─────────────────────────────── */
+
+      .proj-item {
+        padding-left: 2.5mm;
+        border-left: 1.5px solid var(--border);
+        page-break-inside: avoid;
+      }
+
+      .proj-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 4mm;
+      }
+
+      .proj-title {
+        font-size: 8.5pt;
+        font-weight: 600;
+        color: var(--ink);
+      }
+
+      .proj-org {
+        font-size: 7pt;
+        color: var(--ink-faint);
+        font-family: 'Geist Mono', monospace;
+      }
+
+      .proj-desc {
+        font-size: 7.5pt;
+        color: var(--ink-mid);
+        line-height: 1.5;
+        margin-top: 0.8mm;
+      }
+
+      /* ── Tags row (right col) ─────────────────────── */
+
+      .item-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1mm;
+        margin-top: 1.5mm;
+      }
+
+      .item-tag {
+        font-family: 'Geist Mono', monospace;
+        font-size: 6pt;
+        padding: 0.4mm 1.2mm;
+        border: 0.5px solid var(--border);
+        color: var(--ink-faint);
+      }
+
+      /* ── Print-only screen banner ─────────────────── */
+
+      .screen-banner {
+        background: oklch(0.94 0.04 163);
+        border-bottom: 1px solid oklch(0.80 0.08 163);
+        color: oklch(0.30 0.08 163);
+        display: flex;
+          align-items: center;
+          gap: 12px;
+          justify-content: space-between;
+        font-family: 'Geist Mono', monospace;
+        font-size: 11px;
+        height: 4rem;
+        padding: 10px 16px;
+        position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+      }
+
+      @media print {
+        .screen-banner { display: none !important; }
+
+        html, body { font-size: 8.5pt; }
+
+        .page {
+          width: 100%;
+          padding: 8mm 8mm 8mm 8mm;
+        }
+
+        a { color: inherit !important; text-decoration: none !important; }
+
+        @page {
+          size: A4;
+          margin: 0;
+        }
+      }
+
+      @media screen {
+        body {
+          background: #f0f0f0;
+          display: flow-root;
+        }
+        .page {
+          background: white;
+          box-shadow: 0 4px 32px rgba(0,0,0,0.12);
+          margin: 0 auto 24px;
+        }
+      }
+    </style>
+  </head>
+  <body class="canvas">
+
+    <!-- Screen-only banner -->
+    <div class="screen-banner">
+      <PrintBackLink client:load />
+      <PrintPrintButton client:load />
+    </div>
+
+    <div class="page">
+
+      <!-- ── Left column ──────────────────────────────────────────────────── -->
+      <div class="col-left">
+
+        <!-- Logo + name -->
+        <div>
+          <div class="logo-wrap">
+            <TALogo color="#0a0a0a" strokeWidth={1.5} />
+          </div>
+          <h1 class="name">
+            Teagan Atwater.
+            <span>Software Engineer · UX Designer · Founder</span>
+          </h1>
+        </div>
+
+        <!-- Bio -->
+        <div>
+          <p class="bio">
+            An engineer with an eye for design, a mind for user experience,
+            and a love of tackling projects that tie beauty, simplicity,
+            and ease of use into products that solve real problems.
+          </p>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <p class="left-section-label">Contact</p>
+          <ul class="contact-list">
+            <!-- TODO Phone and email if signed in as user with permissions (or admin) -->
+            <li>
+              <span class="label">Web</span>
+              <a href="https://teaganatwater.com">teaganatwater.com</a>
+            </li>
+            <li>
+              <span class="label">in</span>
+              <a href="https://linkedin.com/in/teaganatwater">linkedin.com/in/teaganatwater</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Skills -->
+        <div>
+          <p class="left-section-label">Skills</p>
+          {selectedSkillCategories.map((cat) => (
+            <div class="skills-category">
+              <p class="skills-category-label">{cat}</p>
+              <div class="skills-tags">
+                {skillCategories[cat].map((tag) => (
+                  <span class="skill-tag">{tag}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+
+      <!-- ── Right column ─────────────────────────────────────────────────── -->
+      <div class="col-right">
+
+        <!-- Experience -->
+        <div class="right-section">
+          <h2 class="right-section-label">Experience</h2>
+
+          <!-- NMC — group both roles -->
+          <div class="exp-item">
+            <p class="exp-org">The New Money Company (YC W24) &middot; San Francisco, CA · Remote</p>
+            <div class="exp-header">
+              <h3 class="exp-title">Software Engineer</h3>
+              <span class="exp-dates">Jan 2024 – Present</span>
+            </div>
+            <p class="exp-desc">
+              Full-stack engineer on a small, high-velocity team at a YC W24 fintech startup.
+              Shipping React UIs, Node.js services, and contributing to product strategy end-to-end.
+            </p>
+            <div class="prev-roles">
+              <p class="prev-label">Previously</p>
+              <div class="prev-role-row">
+                <span class="prev-role-title">Software Engineer (Contract)</span>
+                <span class="prev-role-dates">Jan 2024 – May 2024</span>
+              </div>
+            </div>
+          </div>
+
+          {printExperience.filter(i => i.id !== 'nmc-swe' && i.id !== 'nmc-swe-contract').map((item) => (
+            <div class="exp-item">
+              <p class="exp-org">
+                {item.organizationName}{item.location ? ` \u00b7 ${item.location}` : ''}
+              </p>
+              <div class="exp-header">
+                <h3 class="exp-title">{item.title}</h3>
+                <span class="exp-dates">{formatDateRange(item.dateStart, item.dateEnd)}</span>
+              </div>
+              {(item.descriptionPrint ?? item.descriptionSummary) && (
+                <p class="exp-desc">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              )}
+            </div>
+          ))}
+
+          <!-- OHO previously rows -->
+          <div class="exp-item">
+            <p class="exp-org">OHO Interactive &middot; Cambridge / Somerville, MA</p>
+            <div class="prev-roles" style="margin-top:0; padding-top:0; border-top:none;">
+              <p class="prev-label">Previously</p>
+              <div class="prev-role-row">
+                <span class="prev-role-title">Web Development Intern</span>
+                <span class="prev-role-dates">Jun 2014 – Aug 2014</span>
+              </div>
+              <div class="prev-role-row">
+                <span class="prev-role-title">Freelance Web Developer</span>
+                <span class="prev-role-dates">Dec 2014 – Jan 2015</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Education -->
+        <div class="right-section">
+          <h2 class="right-section-label">Education</h2>
+
+          {printEducation.map((item) => (
+            <div class="edu-item">
+              <p class="edu-school">{item.organizationName}{item.location ? ` \u00b7 ${item.location}` : ''}</p>
+              <h3 class="edu-degree">{item.title}</h3>
+              <p class="edu-detail">{item.descriptionPrint ?? item.descriptionSummary}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Projects -->
+        <div class="right-section">
+          <h2 class="right-section-label">Selected Projects</h2>
+
+          {printProjects.map((item) => (
+            <div class="proj-item">
+              <div class="proj-header">
+                <h4 class="proj-title">{item.title}</h4>
+                <span class="proj-org">{item.organizationName}</span>
+              </div>
+              <p class="proj-desc">{item.descriptionPrint ?? item.descriptionSummary}</p>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+
+  </body>
+</html>

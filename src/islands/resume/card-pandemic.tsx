@@ -1,0 +1,184 @@
+import type { Verbosity } from '@/islands/resume/types';
+import type { ResumeItem, SkillTag } from '@/data/resume/types';
+
+import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
+import { faBiohazard, faChevronRight, faLocationDot } from '@fortawesome/sharp-regular-svg-icons';
+import { resumeItems } from '@/data/resume';
+import { DynamicDescription } from '@/islands/resume/dynamic-description';
+import { Icon } from '@/components/icon';
+import { cn } from '@/lib/utils';
+import { getInitials, isSubCardEnabled } from '@/islands/resume/helpers';
+import { Avatar } from '@/components/avatar';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
+
+
+export function PandemicCard({
+  activeTags,
+  item,
+  verbosity,
+  isTimeline = false,
+}: {
+  activeTags: Set<SkillTag>;
+  item: ResumeItem;
+  verbosity: Verbosity;
+  isTimeline?: boolean;
+}) {
+  const allSubs = item.subCards ?? [];
+
+  return (
+    <article
+      className={cn(
+        'relative border-t border-b border-dashed border-border/70 transition-all duration-200 backdrop-blur-[1.5px] -mx-4 md:-mx-6 z-0',
+        'bg-muted/20',
+      )}
+      style={{
+        backgroundImage: `
+          conic-gradient(at calc(100% - 2px) calc(100% - 2px), color-mix(in srgb, var(--border) 8%, transparent) 270deg, #0000 0),
+          conic-gradient(at calc(100% - 1px) calc(100% - 1px), color-mix(in srgb, var(--border) 8%, transparent) 270deg, #0000 0)
+        `,
+        backgroundSize: '60px 60px, 12px 12px',
+      }}
+    >
+      <div className={cn(
+        'pt-7.5 pb-5',
+        isTimeline ? 'pl-13 pr-4 md:pl-15 md:pr-6' : 'px-4 md:px-6',
+      )}>
+        <div className='flex items-start gap-3'>
+          <div className='flex-1 min-w-0'>
+            <div className='flex items-center gap-1.5 text-base'>
+              <Icon icon={faBiohazard} />
+              <h3 className='font-semibold text-foreground leading-snug'>
+                {item.title}
+              </h3>
+            </div>
+            {item.location && (
+              <div className='flex items-center gap-1 mt-1 text-xs text-muted-foreground/64'>
+                <Icon icon={faLocationDot} />
+                <span>
+                  {item.location}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Animated description */}
+        <DynamicDescription verbosity={verbosity} item={item} />
+
+        {/* Sub-cards carousel */}
+        {allSubs.length > 0 && (
+          <div className='mt-4'>
+            <div className="flex items-center gap-2">
+              <span className='text-[10px] font-mono uppercase tracking-widest text-muted-foreground'>
+                {`Projects during this time`}
+              </span>
+              <div className="flex-1 h-px bg-border ml-2" />
+            </div>
+
+            <div
+              className={cn(
+                'mt-2',
+                isTimeline
+                  ? '-ml-13 -mr-4 md:-ml-15 md:-mr-6'
+                  : '-mx-4 md:-mx-6',
+              )}
+              style={{
+                maskImage: 'linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent)',
+              }}
+            >
+              <Carousel
+                opts={{
+                  align: 'start',
+                  containScroll: 'trimSnaps',
+                  dragFree: true,
+                  duration: 15,
+                }}
+                plugins={[WheelGesturesPlugin()]}
+              >
+                <CarouselContent
+                  className={cn(
+                    'ml-0 gap-3',
+                    isTimeline ? 'pl-13 md:pl-15' : 'pl-4 md:pl-6',
+                  )}
+                >
+                  {allSubs.map((sc) => {
+                    const ref = resumeItems.find((i) => i.id === sc.id);
+                    const enabled = isSubCardEnabled(sc.id, activeTags);
+
+                    if (!ref)
+                      return null;
+
+                    return (
+                      <CarouselItem
+                        key={sc.id}
+                        className="basis-auto pl-0"
+                      >
+                        <a
+                          className={cn(
+                            'flex flex-col gap-1 border p-3 transition-all duration-200 w-72',
+                            sc.primary
+                              ? enabled
+                                ? ref.detailLabel
+                                  ? 'border-border bg-card hover:border-emerald-800/28 hover:bg-card cursor-pointer'
+                                  : 'border-border bg-card cursor-default'
+                                : 'border-border/40 bg-card/30 opacity-40 cursor-not-allowed'
+                              : enabled
+                                ? ref.detailLabel
+                                  ? 'border-border/40 hover:border-emerald-800/28 hover:bg-muted/32 cursor-pointer'
+                                  : 'border-border/40 cursor-default'
+                                : 'border-border/30 opacity-40 cursor-not-allowed',
+                          )}
+                          href={enabled && ref.detailLabel ? `/resume/${sc.id}` : undefined}
+                          onClick={enabled && ref.detailLabel ? undefined : (e) => e.preventDefault()}
+                        >
+                          <div className='flex items-center justify-between gap-2'>
+                            <div className='flex items-center gap-1.5 min-w-0'>
+                              <Avatar
+                                alt={ref.organizationName ?? ''}
+                                fallback={getInitials(ref.organizationName || ref.title)}
+                                shape={ref.logoShape ?? 'squircle'}
+                                size='sm'
+                                src={ref.logoSrc ? `/src/assets/logos/${ref.logoSrc}` : undefined}
+                              />
+                              <span className={cn(
+                                'text-sm font-medium leading-snug truncate',
+                                sc.primary ? 'text-foreground' : 'text-foreground/70',
+                              )}>
+                                {ref.organizationName}
+                              </span>
+                            </div>
+                            {enabled && ref.detailLabel && (
+                              <Icon
+                                className='text-[10px] text-muted-foreground/64 shrink-0'
+                                icon={faChevronRight}
+                              />
+                            )}
+                          </div>
+                          {verbosity !== 'headline' && (
+                            <p className='text-xs text-muted-foreground leading-snug line-clamp-2'>
+                              {ref.descriptionHeadline}
+                            </p>
+                          )}
+                        </a>
+                      </CarouselItem>
+                    );
+                  })}
+
+                  {/*
+                    Empty spacer: accounts for the right padding (16px mobile / 24px desktop) minus
+                    the 8px gap that precedes it, so the last card's right edge lines up with the
+                    content area's right edge
+                  */}
+                  <CarouselItem
+                    aria-hidden
+                    className="basis-auto pl-0 w-1 md:w-3 shrink-0"
+                  />
+                </CarouselContent>
+              </Carousel>
+            </div>
+          </div>
+        )}
+      </div>
+    </article>
+  );
+}

@@ -1,0 +1,39 @@
+---
+import '@fontsource/faculty-glyphic';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import { Navbar } from '@/islands/navbar';
+import { ClientRouter } from 'astro:transitions';
+import '@/styles/global.css';
+---
+
+<!doctype html>
+<html lang='en'>
+	<head>
+		<meta charset='UTF-8' />
+		<meta name='viewport' content='width=device-width' />
+		<link rel='icon' type='image/png' sizes='32x32' href='/icons/favicon-32x32.png' />
+		<link rel='icon' type='image/png' sizes='16x16' href='/icons/favicon-16x16.png' />
+		<link rel='apple-touch-icon' sizes='180x180' href='/icons/apple-touch-icon.png' />
+		<meta name='generator' content={Astro.generator} />
+		<title>Teagan Atwater</title>
+		<ClientRouter />
+		<script is:inline>
+			(function () {
+				var stored = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
+				var isDark =
+					stored === 'dark' ||
+					(stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+				document.documentElement.classList.toggle('dark', isDark);
+			})();
+		</script>
+	</head>
+	<body>
+	  <Navbar client:only="react" transition:persist="navbar" />
+		<div class='px-5 md:px-8 lg:px-10'>
+		  <div class='max-w-7xl mx-auto border-x border-border-light min-h-full'>
+				<slot />
+			</div>
+		</div>
+	</body>
+</html>

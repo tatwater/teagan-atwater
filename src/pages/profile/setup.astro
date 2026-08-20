@@ -1,0 +1,53 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import { ProfileSetup } from '@/islands/ProfileSetup';
+import { getUserInfo } from '@/lib/auth';
+import { getConvexClient } from '@/lib/convex';
+import { api } from '../../../convex/_generated/api';
+
+const userInfo = getUserInfo(Astro.locals);
+if (!userInfo.isAuthenticated) return Astro.redirect('/sign-in?redirect_url=/profile/setup', 302);
+
+const redirectTo = Astro.url.searchParams.get('redirect_url') ?? '/contact/hire';
+
+let clerkFirstName: string | undefined;
+let clerkLastName: string | undefined;
+let clerkImageUrl: string | undefined;
+let alreadyComplete = false;
+
+try {
+  const currentUser = await Astro.locals.currentUser();
+  if (currentUser) {
+    clerkFirstName = currentUser.firstName || undefined;
+    clerkLastName = currentUser.lastName || undefined;
+    clerkImageUrl = currentUser.imageUrl ?? undefined;
+  }
+} catch {
+  // non-fatal
+}
+
+// If profile is already complete, skip setup
+try {
+  const convex = getConvexClient();
+  const profile = await convex.query(api.userProfile.getUserProfile, {
+    clerkId: userInfo.userId!,
+  });
+  if (profile?.profileComplete) alreadyComplete = true;
+} catch {
+  // non-fatal
+}
+
+if (alreadyComplete) return Astro.redirect(redirectTo, 302);
+---
+
+<Layout title="Set up your profile">
+  <div class="min-h-[calc(100vh-4rem-1px)] flex items-center justify-center px-4">
+    <ProfileSetup
+      client:load
+      redirectTo={redirectTo}
+      clerkFirstName={clerkFirstName}
+      clerkLastName={clerkLastName}
+      clerkImageUrl={clerkImageUrl}
+    />
+  </div>
+</Layout>

@@ -1,0 +1,30 @@
+---
+import ProfileLayout from '@/layouts/ProfileLayout.astro';
+import { NotificationsSection } from '@/islands/profile/NotificationsSection';
+import { getUserInfo } from '@/lib/auth';
+import { getConvexClient } from '@/lib/convex';
+import { api } from '../../../convex/_generated/api';
+
+const userInfo = getUserInfo(Astro.locals);
+if (!userInfo.isAuthenticated) return Astro.redirect('/sign-in?redirect_url=/profile/notifications', 302);
+
+let notifications: Array<{ subject: string; group?: string; isActive: boolean }> = [];
+
+try {
+  const convex = getConvexClient();
+  const notifs = await convex.query(api.notifications.getUserNotifications, { userId: userInfo.userId! });
+  notifications = notifs.map((n) => ({
+    subject: n.subject,
+    group: n.group,
+    isActive: n.isActive,
+  }));
+} catch {
+  // non-fatal
+}
+---
+
+<ProfileLayout title="Notifications — Profile Settings">
+  <h2 class="font-glyph text-xl mb-1">Notifications</h2>
+
+  <NotificationsSection client:load notifications={notifications} />
+</ProfileLayout>
