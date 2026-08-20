@@ -23,6 +23,28 @@ export const projectItems: ResumeItem[] = [
     // detailLabel: 'Learn more',
   },
   {
+    id: 'project-gli',
+    hideFromPrint: true,
+    title: 'Gli',
+    organizationName: 'Gli',
+    logoShape: 'squircle',
+    dateStart: '2026-08',
+    dateEnd: null,
+    type: 'project',
+    // TODO: fill in once the project takes shape — tags, real copy, and a logo
+    // in src/assets/logos/. The home page pulls its own tagline from
+    // src/data/highlights.ts, so this entry only feeds the résumé.
+    tags: [],
+    descriptionHeadline: 'An ice quality reporting platform for wild ice skaters',
+    descriptionSummary:
+      'Description coming soon',
+    descriptionFull:
+      'Coming soon',
+    descriptionPrint:
+      'Coming soon',
+    // detailLabel: 'Learn more',
+  },
+  {
     id: 'project-sous',
     title: 'Sous',
     organizationName: 'Sous',
@@ -86,7 +108,7 @@ export const projectItems: ResumeItem[] = [
     dateEnd: null,
     type: 'project',
     tags: ['Product Strategy', 'Full Stack', 'React', 'TypeScript', 'Node.js', 'UI Design', 'UX Design'],
-    descriptionHeadline: 'Car App / Gas Tracker',
+    descriptionHeadline: 'A lifetime cost-of-ownership tracker for personal vehicles',
     descriptionSummary:
       'Description coming soon',
     descriptionFull:
