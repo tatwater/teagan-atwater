@@ -17,6 +17,53 @@ const PLACEHOLDER_COUNT = 3;
 
 
 /**
+ * A mockup that happens to move.
+ *
+ * Two things need doing by hand. React does not serialise `muted` into the SSR
+ * markup — it is a property, not an attribute — so Chrome sees an unmuted
+ * autoplaying video in the first paint and refuses to start it; setting the
+ * property on mount and asking again fixes that. And the reel's own rule is
+ * that readers who prefer reduced motion never see it move, which a looping
+ * clip would otherwise ignore: they get the same frame, paused, with controls
+ * if they want to play it themselves.
+ */
+function MockupVideo({ alt, src }: { alt: string; src: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setReducedMotion(true);
+      return;
+    }
+
+    const video = ref.current;
+    if (!video) return;
+
+    video.muted = true;
+    // Rejects when the browser blocks playback anyway; the poster frame stands
+    // in and there is nothing useful to do about it.
+    void video.play().catch(() => {});
+  }, []);
+
+  return (
+    <video
+      ref={ref}
+      aria-label={alt}
+      autoPlay={!reducedMotion}
+      className='w-full border border-border-light'
+      controls={reducedMotion}
+      loop
+      muted
+      playsInline
+      preload='metadata'
+      src={src}
+    />
+  );
+}
+
+
+/**
  * The home page reel.
  *
  * Picking a project in the sidebar swaps the photoset beside it rather than
@@ -203,13 +250,23 @@ export default function HomeReel(props: {
         >
             {active.shots.length > 0
               ? active.shots.map((shot) => (
-                  <img
-                    key={shot.src}
-                    alt={shot.alt}
-                    className='w-full border border-border-light'
-                    loading='lazy'
-                    src={shot.src}
-                  />
+                  shot.kind === 'video'
+                    ? (
+                        <MockupVideo
+                          key={shot.src}
+                          alt={shot.alt}
+                          src={shot.src}
+                        />
+                      )
+                    : (
+                        <img
+                          key={shot.src}
+                          alt={shot.alt}
+                          className='w-full border border-border-light'
+                          loading='lazy'
+                          src={shot.src}
+                        />
+                      )
                 ))
               : Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
                   <div
