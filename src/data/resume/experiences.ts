@@ -14,7 +14,7 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: null,
     type: 'experience',
     groupKey: 'nmc',
-    tags: ['TypeScript', 'React', 'Tailwind', 'Electron', 'PHP', 'PostgreSQL', 'Design Systems', 'Monorepos', 'Startup'],
+    tags: ['TypeScript', 'React', 'Tailwind', 'Electron', 'PHP', 'Postgres', 'Design Systems', 'Monorepos', 'Startup'],
     descriptionHeadline: 'Employee #1 and sole frontend owner at a YC W24 fintech',
     descriptionSummary:
       'Employee #1 at a four-person fintech and its only frontend engineer, building every user interface on a shared design system — six production web apps and several internal dashboards serving 1,000+ users. The products I build process $250K+/month in transaction volume.',
@@ -67,8 +67,9 @@ export const experienceItems: ResumeItem[] = [
       'The pandemic years were disorienting for everyone, but they turned into a strangely generative stretch for me. I\'d already been working on Sous — a consumer app I was building solo — but the sudden stillness gave the project real room to breathe. I went deep on product, design, and engineering in parallel, building something I was genuinely proud of over three-plus years.\n\nAt the same time, my family took on an ambitious renovation: The Westgate House, a century-old New Hampshire property that we designed and rebuilt largely from scratch as a shared project. It was equal parts creative exercise and logistical grind — and one of the most hands-on, satisfying things I\'ve ever done.\n\nI also spent time behind the bar at Worthy Kitchen in Woodstock, Vermont, which turned out to be a grounding and surprisingly fun chapter. And I leaned hard into the outdoors — skiing, cycling, running — making physical health a genuine priority for the first time.',
     subCards: [
       { id: 'project-sous', primary: true },
-      { id: 'project-westgate', primary: true },
-      { id: 'project-opengate', primary: true },
+      // Shelved — see the `hidden` flags in src/data/resume/projects.ts.
+      // { id: 'project-westgate', primary: true },
+      // { id: 'project-opengate', primary: true },
       { id: 'oho-react-contract', primary: true },
       { id: 'worthy-kitchen', primary: false },
     ],

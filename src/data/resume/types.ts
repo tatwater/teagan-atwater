@@ -21,10 +21,10 @@ export type SkillTag =
   // Web & Native
   | 'TypeScript' | 'React' | 'JavaScript' | 'HTML' | 'CSS' | 'CSS Modules' | 'Sass/Less'
   | 'Styled Components' | 'Tailwind' | 'Electron' | 'Expo' | 'React Native' | 'Next.js'
-  | 'TanStack Start' | 'Astro' | 'Angular' | 'jQuery'
+  | 'Astro' | 'Angular' | 'jQuery'
   // State & Data Persistence
   | 'Atomic State' | 'React Context' | 'Immutable Stores' | 'Redux' | 'Device Storage'
-  | 'Offline Support' | 'Sync Engines' | 'PostgreSQL' | 'SQL' | 'MongoDB' | 'NoSQL'
+  | 'Offline Support' | 'Sync Engines' | 'Postgres' | 'SQL' | 'MongoDB' | 'NoSQL'
   | 'Key-Value Stores' | 'Vector Databases' | 'Convex' | 'Supabase'
   // Architecture & Rendering
   | 'Monorepos' | 'Server-Side Rendering' | 'React Server Components' | 'Partial Pre-Rendering'

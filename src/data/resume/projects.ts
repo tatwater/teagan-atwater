@@ -37,7 +37,7 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2026-07',
     dateEnd: null,
     type: 'project',
-    tags: ['TypeScript', 'React', 'TanStack Start', 'React Native', 'Expo', 'PostgreSQL', 'Tailwind', 'Design Systems'],
+    tags: ['TypeScript', 'React', 'React Native', 'Expo', 'Postgres', 'Tailwind', 'Design Systems'],
     descriptionHeadline: 'An ice quality reporting platform for wild ice skaters',
     // TODO: real copy. Nothing below is written yet; the home page shows the
     // headline above and the mockups, and needs none of these.
@@ -65,7 +65,10 @@ export const projectItems: ResumeItem[] = [
     // detailLabel: 'Learn more',
   },
   {
+    // Shelved for now, data kept — drop `hidden` and restore its row in the
+    // pandemic card's subCards to bring it back.
     id: 'project-westgate',
+    hidden: true,
     hideFromPrint: true,
     title: 'Westgate House',
     organizationName: 'Westgate House',
@@ -83,6 +86,8 @@ export const projectItems: ResumeItem[] = [
     // detailLabel: 'Learn more',
   },
   {
+    // Shelved for now, data kept — drop `hidden` and restore its row in the
+    // pandemic card's subCards to bring it back.
     id: 'project-opengate',
     title: 'OpenGate Wellness',
     organizationName: 'OpenGate Wellness',
