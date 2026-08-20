@@ -8,6 +8,7 @@ import { DynamicDescription } from '@/islands/resume/dynamic-description';
 import { Icon } from '@/components/icon';
 import { cn } from '@/lib/utils';
 import { getInitials } from '@/islands/resume/helpers';
+import { logoUrl } from '@/lib/logos';
 import { Highlight } from '@/islands/resume/highlight';
 import { Avatar } from '@/components/avatar';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
@@ -134,7 +135,7 @@ export function PandemicCard({
                                 fallback={getInitials(ref.organizationName || ref.title)}
                                 shape={ref.logoShape ?? 'squircle'}
                                 size='sm'
-                                src={ref.logoSrc ? `/src/assets/logos/${ref.logoSrc}` : undefined}
+                                src={logoUrl(ref.logoSrc)}
                               />
                               <span className={cn(
                                 'text-sm font-medium leading-snug truncate',

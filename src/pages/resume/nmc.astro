@@ -3,6 +3,7 @@ import { faArrowLeft, faArrowUpRightFromSquare } from '@fortawesome/sharp-regula
 import Layout from '@/layouts/Layout.astro';
 import { Icon } from '@/components/icon';
 import { resumeItems } from '@/data/resume';
+import { logoUrl } from '@/lib/logos';
 
 export const prerender = true;
 
@@ -11,7 +12,7 @@ const nmcItems = resumeItems.filter((item) => item.detailId === 'nmc' || item.id
 
 const accentColor = 'var(--color-chart-4)';
 
-const logoSrcResolved = '/src/assets/logos/nmc.png';
+const logoSrcResolved = logoUrl('nmc.png');
 
 function formatDate(dateStr: string): string {
   const [year, month] = dateStr.split('-').map(Number);

@@ -1,6 +1,7 @@
 import { faArrowUpRightFromSquare } from '@fortawesome/sharp-regular-svg-icons';
 import { Highlight } from '@/islands/resume/highlight';
 import { getInitials } from '@/islands/resume/helpers';
+import { logoUrl } from '@/lib/logos';
 import { Avatar } from '@/components/avatar';
 import { Icon } from '@/components/icon';
 import { cn } from '@/lib/utils';
@@ -21,9 +22,7 @@ export function OrgBadge({
   searchTerms?: string[];
   size?: 'sm' | 'default';
 }) {
-  const resolvedSrc = logoSrc
-    ? `/src/assets/logos/${logoSrc}`
-    : undefined;
+  const resolvedSrc = logoUrl(logoSrc);
 
   if (organizationUrl) {
     return (

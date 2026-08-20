@@ -7,6 +7,7 @@ import { Highlight, textMatchesTerms } from '@/islands/resume/highlight';
 import { OrgBadge } from '@/islands/resume/org-badge';
 import { TagPill } from '@/islands/resume/tag-pill';
 import { formatDateRange, getDuration, getInitials } from '@/islands/resume/helpers';
+import { logoUrl } from '@/lib/logos';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/avatar';
 import { Icon } from '@/components/icon';
@@ -29,8 +30,8 @@ export function CardBase(props: {
   showTagFooter?: boolean;
   tagsOverride?: SkillTag[];  // When provided, overrides the tags shown in the tag footer
 }) {
-  const resolvedSrc = props.showLogoInTitle && props.item.logoSrc
-    ? `/src/assets/logos/${props.item.logoSrc}`
+  const resolvedSrc = props.showLogoInTitle
+    ? logoUrl(props.item.logoSrc)
     : undefined;
 
   const displayTags = props.tagsOverride ?? props.item.tags;
