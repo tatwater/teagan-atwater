@@ -8,10 +8,7 @@
  * @module
  */
 
-import type * as availability from "../availability.js";
 import type * as contacts from "../contacts.js";
-import type * as notifications from "../notifications.js";
-import type * as userProfile from "../userProfile.js";
 
 import type {
   ApiFromModules,
@@ -20,10 +17,7 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  availability: typeof availability;
   contacts: typeof contacts;
-  notifications: typeof notifications;
-  userProfile: typeof userProfile;
 }>;
 
 /**

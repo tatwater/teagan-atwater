@@ -195,49 +195,6 @@ export const experienceItems: ResumeItem[] = [
     // detailLabel: 'Learn more',
   },
   {
-    id: 'moove-it-intern',
-    title: 'Web Development Intern',
-    organizationName: 'Moove-it (now Qubika)',
-    organizationUrl: 'https://qubika.com/',
-    location: 'Montevideo, Uruguay',
-    logoShape: 'squircle',
-    logoSrc: 'moove-it.png',
-    dateStart: '2015-06',
-    dateEnd: '2015-07',
-    type: 'experience',
-    isInternship: true,
-    tags: ['JavaScript', 'HTML', 'CSS', 'Full Stack', 'Agile/Scrum'],
-    descriptionHeadline: 'International internship at a software consultancy in Uruguay',
-    descriptionSummary:
-      'Completed a web development internship at Moove-it, a software consultancy in Montevideo, Uruguay. Contributed to client projects in an international, Agile team environment.',
-    descriptionFull:
-      'My internship at Moove-it in Montevideo, Uruguay was a deliberately adventurous choice — I wanted to experience software development in an international context. Working at a professional software consultancy gave me exposure to real client projects, disciplined Agile processes, and the humbling experience of collaborating across language and cultural barriers. It was a short stint but a formative one, expanding my sense of what software teams can look like and deepening my appreciation for clear communication in engineering.',
-    descriptionPrint:
-      'Web development internship at a professional software consultancy in Uruguay — contributed to client projects within an international Agile team.',
-  },
-  {
-    id: 'conn-college-intern',
-    title: 'Web Development Intern',
-    organizationName: 'Connecticut College',
-    organizationUrl: 'https://conncoll.org/',
-    logoShape: 'circle',
-    logoSrc: 'cc.png',
-    location: 'New London, CT',
-    dateStart: '2013-08',
-    dateEnd: '2015-05',
-    type: 'experience',
-    isInternship: true,
-    groupKey: 'conn-college-work',
-    tags: ['JavaScript', 'HTML', 'CSS', 'Responsive Design', 'Accessibility'],
-    descriptionHeadline: 'Built web tools and redesigned intranet for my college',
-    descriptionSummary:
-      'Designed and developed a slideshow widget for the college website and participated in an intranet redesign initiative. Also served as a CS tutor through the Academic Resource Center.',
-    descriptionFull:
-      'During my time at Connecticut College I worked as a web development intern for the college itself, contributing to real projects that affected the student and faculty experience. I built a custom slideshow widget for the college\'s main website and was part of the committee working to redesign the college intranet. Separately, I was selected by the Computer Science faculty to serve as a tutor at the Academic Resource Center, where I helped fellow students with CS concepts and homework in both one-on-one and group settings. These parallel roles — builder and teacher — defined a duality I still carry.',
-    descriptionPrint:
-      'Built a slideshow widget for the college website, participated in the intranet redesign committee, and tutored CS students at the Academic Resource Center.',
-  },
-  {
     id: 'oho-freelance',
     title: 'Freelance Web Developer',
     organizationName: 'OHO Interactive',
@@ -250,56 +207,13 @@ export const experienceItems: ResumeItem[] = [
     type: 'experience',
     groupKey: 'oho',
     tags: ['Freelance', 'JavaScript', 'HTML', 'CSS', 'PHP'],
-    descriptionHeadline: 'Short freelance engagement with OHO ahead of interning there',
+    descriptionHeadline: 'First engagement with OHO Interactive, as a freelance developer',
     descriptionSummary:
-      'Completed a short freelance contract with OHO Interactive before my internship there, contributing to client web projects.',
+      'Completed a short freelance contract with OHO Interactive in Cambridge, contributing to client web projects and beginning a working relationship that continued for years.',
     descriptionFull:
-      'Before my formal internship at OHO Interactive, I completed a brief freelance contract with the team in Cambridge. This was my first direct exposure to OHO\'s working style and standards, and it served as an informal audition for the internship that followed. I contributed to client-facing web projects and got a taste of professional agency workflows.',
+      'My first engagement with OHO Interactive was a brief freelance contract with the team in Cambridge. It was my earliest direct exposure to OHO\'s working style and standards — high expectations for code quality, and a genuinely collaborative studio culture. I contributed to client-facing web projects and got my first taste of professional agency workflows. It began a relationship with OHO that I returned to repeatedly over the following years.',
     descriptionPrint:
-      'Brief freelance contract contributing to client web projects — served as an informal introduction ahead of the internship.',
+      'Brief freelance contract contributing to client web projects — the start of a multi-year working relationship with the studio.',
     // detailLabel: 'Learn more',
-  },
-  {
-    id: 'oho-intern',
-    title: 'Web Development Intern',
-    organizationName: 'OHO Interactive',
-    organizationUrl: 'https://oho.com',
-    logoShape: 'squircle',
-    logoSrc: 'oho.jpeg',
-    location: 'Cambridge, MA',
-    dateStart: '2014-06',
-    dateEnd: '2014-08',
-    type: 'experience',
-    isInternship: true,
-    groupKey: 'oho',
-    tags: ['JavaScript', 'HTML', 'CSS', 'PHP', 'Responsive Design', 'Agile/Scrum'],
-    descriptionHeadline: 'Summer internship at OHO Interactive',
-    descriptionSummary:
-      'Interned at OHO Interactive in Cambridge, MA, contributing to client web projects in a professional agency environment.',
-    descriptionFull:
-      'My summer internship at OHO Interactive in Cambridge was one of my most formative early experiences. I worked on client websites alongside full-time developers, writing HTML, CSS, JavaScript, and PHP in a real production environment with real clients. The agency\'s high standards for code quality and its collaborative culture set a benchmark for me early on. I returned to OHO multiple times throughout my career — a testament to the relationships and professional foundation I built there.',
-    descriptionPrint:
-      'Worked on client websites in a professional agency environment, writing HTML, CSS, JS, and PHP alongside full-time developers.',
-  },
-  {
-    id: 'bluehouse-intern',
-    title: 'Web Development Intern',
-    organizationName: 'Bluehouse Group',
-    organizationUrl: 'https://bluehouse.group/',
-    logoShape: 'squircle',
-    logoSrc: 'bluehouse.jpeg',
-    location: 'Richmond, VT',
-    dateStart: '2013-06',
-    dateEnd: '2013-08',
-    type: 'experience',
-    isInternship: true,
-    tags: ['JavaScript', 'HTML', 'CSS', 'PHP', 'Responsive Design', 'Web Performance'],
-    descriptionHeadline: 'First professional internship — built themes from Photoshop designs',
-    descriptionSummary:
-      'Performed quality assurance testing on website themes and created full website themes from Photoshop designs. My first professional software role.',
-    descriptionFull:
-      'Bluehouse Group in Richmond, Vermont was the site of my first professional software experience. I performed quality assurance testing on website themes and, crucially, learned to build complete website themes from Photoshop design files — a pixel-perfect process that built deep muscle memory for translating design intent into code. It was unglamorous work in the best possible sense: concrete, correctness-oriented, and a solid foundation for everything that followed.',
-    descriptionPrint:
-      'First professional role — QA tested website themes and built complete themes from Photoshop designs, developing a strong eye for design-to-code fidelity.',
   },
 ];

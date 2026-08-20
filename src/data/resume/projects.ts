@@ -11,12 +11,12 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2026-03-14',
     dateEnd: null,
     type: 'project',
-    tags: ['Astro', 'React', 'TypeScript', 'Tailwind', 'Convex', 'Auth', 'Motion'],
-    descriptionHeadline: 'This site — Astro, React, Tailwind, Convex, Clerk',
+    tags: ['Astro', 'React', 'TypeScript', 'Tailwind', 'Convex', 'Motion'],
+    descriptionHeadline: 'This site — Astro, React, Tailwind, Convex',
     descriptionSummary:
-      'My personal website, now in its eleventh iteration. Built with Astro for static rendering, React islands for interactivity, Tailwind CSS v4 for styling, Convex as the backend, and Clerk for auth. Features a command palette, dark mode, this résumé explorer, and an interactive contact experience.',
+      'My personal website, now in its eleventh iteration. Built with Astro for server rendering, React islands for interactivity, Tailwind CSS v4 for styling, and Convex as the backend. Features a command palette, dark mode, and this résumé explorer.',
     descriptionFull:
-      'This site is a continuous personal project that I\'ve rebuilt from scratch more times than I can fully justify. Version 11 is built on Astro with React islands for interactive components, Tailwind CSS v4 for styling, Convex for the real-time backend, and Clerk for authentication. It features a ⌘K command palette powered by MiniSearch, a dark/light mode system, an admin panel for managing contact messages, and this interactive résumé explorer. Every version of this site is an opportunity to try new tools, push my design sensibilities, and build something I\'m genuinely proud of — the eleventh time is no exception.',
+      'This site is a continuous personal project that I\'ve rebuilt from scratch more times than I can fully justify. Version 11 is built on Astro with React islands for interactive components, Tailwind CSS v4 for styling, and Convex for the backend. It features a ⌘K command palette powered by MiniSearch, a dark/light mode system, and this interactive résumé explorer. Every version of this site is an opportunity to try new tools, push my design sensibilities, and build something I\'m genuinely proud of — the eleventh time is no exception.',
     descriptionPrint:
       'Personal site (v11) built with Astro, React, Tailwind CSS v4, and Convex. Features a ⌘K command palette, dark mode, and an interactive résumé explorer.',
     // detailLabel: 'Learn more',

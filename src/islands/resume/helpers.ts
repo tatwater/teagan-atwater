@@ -1,8 +1,3 @@
-import type { SkillTag } from '@/data/resume/types';
-
-import { resumeItems } from '@/data/resume';
-
-
 export function formatDate(dateStr: string): string {
   const [year, month] = dateStr.split('-').map(Number);
 
@@ -42,17 +37,4 @@ export function getInitials(org: string): string {
     .slice(0, 2)
     .map((w) => w[0]?.toUpperCase() ?? '')
     .join('');
-}
-
-
-export function isSubCardEnabled(subCardId: string, activeTags: Set<SkillTag>): boolean {
-  if (activeTags.size === 0)
-    return true;
-
-  const ref = resumeItems.find((i) => i.id === subCardId);
-
-  if (!ref)
-    return false;
-
-  return [...activeTags].every((tag) => ref.tags.includes(tag));
 }

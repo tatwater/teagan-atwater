@@ -102,7 +102,6 @@ export function CommandPalette() {
   const [miniSearch, setMiniSearch] = useState<MiniSearch | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(false);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [currentTheme, setCurrentTheme] = useState<string | null>(null);
 
   useEffect(() => {
@@ -119,33 +118,6 @@ export function CommandPalette() {
       setCurrentTheme(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     }
   }, [open]);
-
-  useEffect(() => {
-    const checkAuth = () => {
-      const clerk = (window as any).Clerk;
-      if (clerk) {
-        const checkSession = async () => {
-          try {
-            const session = await clerk.session;
-            setIsAuthenticated(!!session);
-          } catch {
-            setIsAuthenticated(false);
-          }
-        };
-        checkSession();
-      } else {
-        const hasSessionCookie = document.cookie.includes('__session');
-        setIsAuthenticated(hasSessionCookie);
-      }
-    };
-
-    checkAuth();
-
-    if (document.readyState === 'loading') {
-      window.addEventListener('load', checkAuth);
-      return () => window.removeEventListener('load', checkAuth);
-    }
-  }, []);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -198,58 +170,13 @@ export function CommandPalette() {
     }
   }, []);
 
-  const authActions = useMemo<SearchItem[]>(() => {
-    if (isAuthenticated === null) return [];
-
-    if (isAuthenticated) {
-      return [
-        {
-          id: 'sign-out',
-          title: 'Sign Out',
-          description: 'Sign out of your account',
-          url: '#',
-          type: 'action',
-          icon: 'logout',
-          tags: ['sign out', 'log out', 'logout', 'signout'],
-        },
-      ];
-    } else {
-      return [
-        {
-          id: 'sign-in',
-          title: 'Sign In',
-          description: 'Sign in to your account',
-          url: '/sign-in',
-          type: 'action',
-          icon: 'login',
-          tags: ['sign in', 'log in', 'login', 'signin'],
-        },
-      ];
-    }
-  }, [isAuthenticated]);
-
   const availableThemeActions = useMemo(() => {
     return themeActions.filter((a) => a.id !== `theme-${currentTheme}`);
   }, [currentTheme]);
 
   const allItems = useMemo(() => {
-    return [...items, ...authActions, ...availableThemeActions];
-  }, [items, authActions, availableThemeActions]);
-
-  useEffect(() => {
-    if (miniSearch && authActions.length > 0) {
-      authActions.forEach((action) => {
-        try {
-          miniSearch.add({
-            ...action,
-            tags: action.tags?.join(' ') || '',
-          });
-        } catch {
-          // Item might already exist, ignore error
-        }
-      });
-    }
-  }, [miniSearch, authActions]);
+    return [...items, ...availableThemeActions];
+  }, [items, availableThemeActions]);
 
   useEffect(() => {
     if (open && !miniSearch) {
@@ -285,14 +212,8 @@ export function CommandPalette() {
       })
       .filter((item): item is SearchItem => item !== undefined);
 
-    const authMatches = authActions.filter((item) => {
-      const titleMatch = item.title.toLowerCase().includes(search.toLowerCase());
-      const descMatch = item.description?.toLowerCase().includes(search.toLowerCase());
-      return titleMatch || descMatch;
-    });
-
-    setFilteredItems([...filtered, ...authMatches]);
-  }, [search, allItems, miniSearch, authActions]);
+    setFilteredItems(filtered);
+  }, [search, allItems, miniSearch]);
 
   const handleSelect = async (url: string, itemId?: string) => {
     setOpen(false);
@@ -315,29 +236,6 @@ export function CommandPalette() {
       document.documentElement.classList.toggle('dark', isDark);
       localStorage.setItem('theme', 'system');
       setCurrentTheme('system');
-      return;
-    }
-
-    if (itemId === 'sign-in') {
-      const current = window.location.pathname + window.location.search;
-      const skip = current.startsWith('/sign-in') || current.startsWith('/sign-up');
-      navigate(skip ? '/sign-in' : `/sign-in?redirect_url=${encodeURIComponent(current)}`);
-      return;
-    }
-
-    if (itemId === 'sign-out') {
-      try {
-        const clerk = (window as any).Clerk;
-        if (clerk && clerk.signOut) {
-          await clerk.signOut();
-          navigate('/');
-        } else {
-          navigate('/sign-in');
-        }
-      } catch (error) {
-        console.error('Sign out error:', error);
-        navigate('/sign-in');
-      }
       return;
     }
 

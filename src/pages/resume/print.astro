@@ -9,31 +9,21 @@ import { skillCategories } from '@/data/resume/skills';
 import '@/styles/global.css';
 
 
-// Items selected and ordered for the printed page
-const printExperience = resumeItems.filter(
-  (i) => i.type === 'experience' && [
-    'nmc-swe',
-    'sous-founder',
-    'emrld-cto',
-    'fiber-cto',
-    'oho-fullstack',
-    'shadow-art-founder',
-    'conn-college-intern',
-  ].includes(i.id)
-).sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
+// Items for the printed page, derived from the same data as the interactive
+// résumé so the two can never drift apart. The pandemic card is skipped — it has
+// no organisation or dates and exists only as an interactive narrative device.
+const printExperience = resumeItems
+  .filter((i) => i.type === 'experience' && !i.hidden && i.variant !== 'pandemic')
+  .sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
 
-const printEducation = resumeItems.filter(
-  (i) => i.type === 'education' && i.id === 'conn-college-edu'
-);
+const printEducation = resumeItems
+  .filter((i) => i.type === 'education' && !i.hidden)
+  .sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
 
-const printProjects = resumeItems.filter(
-  (i) => i.type === 'project' && [
-    'project-personal-site',
-    'project-launch-cc',
-    'project-code-school-regex',
-    'project-code-school-mongo',
-  ].includes(i.id)
-);
+const printProjects = resumeItems
+  .filter((i) => i.type === 'project' && !i.hidden)
+  .sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
+
 
 function formatDate(dateStr: string): string {
   const [year, month] = dateStr.split('-').map(Number);
@@ -595,7 +585,9 @@ const selectedSkillCategories: SkillCategory[] = [
             <div class="edu-item">
               <p class="edu-school">{item.organizationName}{item.location ? ` \u00b7 ${item.location}` : ''}</p>
               <h3 class="edu-degree">{item.title}</h3>
-              <p class="edu-detail">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              {(item.descriptionPrint ?? item.descriptionSummary) && (
+                <p class="edu-detail">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              )}
             </div>
           ))}
         </div>
@@ -610,7 +602,9 @@ const selectedSkillCategories: SkillCategory[] = [
                 <h4 class="proj-title">{item.title}</h4>
                 <span class="proj-org">{item.organizationName}</span>
               </div>
-              <p class="proj-desc">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              {(item.descriptionPrint ?? item.descriptionSummary) && (
+                <p class="proj-desc">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              )}
             </div>
           ))}
         </div>

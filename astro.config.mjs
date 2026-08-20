@@ -4,11 +4,10 @@ import tailwindcss from '@tailwindcss/vite';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
-import clerk from '@clerk/astro';
 
 
 export default defineConfig({
-  integrations: [react({ experimentalDisableStreaming: true }), mdx(), sitemap(), clerk({ signInUrl: '/sign-in', signUpUrl: '/sign-up' })],
+  integrations: [react({ experimentalDisableStreaming: true }), mdx(), sitemap()],
 
   vite: {
     plugins: [tailwindcss()],

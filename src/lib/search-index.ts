@@ -17,7 +17,6 @@ export interface SearchIndexItem {
   tags?: string[];
   icon?: string;
   published?: boolean;
-  groups?: string[];
   featured?: boolean;
   date?: string;
 }
@@ -82,7 +81,6 @@ export async function buildSearchIndex(): Promise<SearchIndexItem[]> {
         tags: project.data.tags,
         icon: 'folder',
         published: project.data.published,
-        groups: project.data.groups,
         featured: project.data.featured,
         date: project.data.date.toISOString(),
       });
@@ -92,31 +90,6 @@ export async function buildSearchIndex(): Promise<SearchIndexItem[]> {
   }
 
   return index;
-}
-
-/**
- * Filter search index based on user permissions
- * This can be used to filter results client-side based on authentication
- */
-export function filterIndexByPermissions(
-  index: SearchIndexItem[],
-  userGroups: string[] = [],
-  isAuthenticated: boolean = false
-): SearchIndexItem[] {
-  return index.filter((item) => {
-    // If item has no groups restriction, it's public
-    if (!item.groups || item.groups.length === 0) {
-      return true;
-    }
-
-    // If user is not authenticated, hide restricted items
-    if (!isAuthenticated) {
-      return false;
-    }
-
-    // Check if user has any of the required groups
-    return item.groups.some((group) => userGroups.includes(group));
-  });
 }
 
 /**

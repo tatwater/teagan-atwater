@@ -1,0 +1,5 @@
+---
+// The contact page no longer has per-subject routes. Previously published URLs
+// like /contact/hire redirect to the single form rather than 404ing.
+return Astro.redirect('/contact', 301);
+---

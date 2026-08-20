@@ -3,6 +3,7 @@ import type { ResumeItem, SkillTag } from '@/data/resume/types';
 
 import { faChevronRight, faLocationDot } from '@fortawesome/sharp-regular-svg-icons';
 import { DynamicDescription } from '@/islands/resume/dynamic-description';
+import { Highlight, textMatchesTerms } from '@/islands/resume/highlight';
 import { OrgBadge } from '@/islands/resume/org-badge';
 import { TagPill } from '@/islands/resume/tag-pill';
 import { formatDateRange, getDuration, getInitials } from '@/islands/resume/helpers';
@@ -14,7 +15,6 @@ import { Icon } from '@/components/icon';
 export function CardBase(props: {
   item: ResumeItem;
   verbosity: Verbosity;
-  activeTags?: Set<SkillTag>;
   logoShape?: 'circle' | 'square' | 'squircle';
   /**
    * When set, the card is rendered for use inside GroupedCard.
@@ -22,7 +22,7 @@ export function CardBase(props: {
    * - 'own-page': each item has its own detail page — full border + hover, keep detail link
    */
   nestingMode?: 'shared-page' | 'own-page';
-  onTagClick?: (tag: SkillTag) => void;
+  searchTerms?: string[];
   showDuration?: boolean;
   showLogoInTitle?: boolean;
   showOrgInHeader?: boolean;
@@ -34,6 +34,7 @@ export function CardBase(props: {
     : undefined;
 
   const displayTags = props.tagsOverride ?? props.item.tags;
+  const terms = props.searchTerms ?? [];
 
   return (
     <article
@@ -59,7 +60,7 @@ export function CardBase(props: {
                   src={resolvedSrc}
                 />
                 <h3 className='font-semibold text-foreground leading-snug'>
-                  {props.item.title}
+                  <Highlight terms={terms} text={props.item.title} />
                 </h3>
               </div>
             )
@@ -71,6 +72,7 @@ export function CardBase(props: {
                     logoSrc={props.item.logoSrc}
                     organization={props.item.organizationName}
                     organizationUrl={props.item.organizationUrl}
+                    searchTerms={terms}
                     size='sm'
                   />
                 </div>
@@ -79,7 +81,7 @@ export function CardBase(props: {
                 // No org badge — title takes the badge position alongside dates
                 <div className='flex-1 min-w-0'>
                   <h3 className='font-semibold text-foreground leading-snug'>
-                    {props.item.title}
+                    <Highlight terms={terms} text={props.item.title} />
                   </h3>
                 </div>
               )
@@ -103,7 +105,7 @@ export function CardBase(props: {
       {/* ── Title (full-width) — only when OrgBadge is in the badge position ── */}
       {!props.showLogoInTitle && props.showOrgInHeader && props.item.organizationName && (
         <h3 className='font-semibold text-foreground leading-snug mt-2 sm:mt-1'>
-          {props.item.title}
+          <Highlight terms={terms} text={props.item.title} />
         </h3>
       )}
 
@@ -112,13 +114,14 @@ export function CardBase(props: {
         <div className='flex items-center gap-1 mt-0.5 text-xs text-muted-foreground/64'>
           <Icon icon={faLocationDot} />
           <span>
-            {props.item.location}
+            <Highlight terms={terms} text={props.item.location} />
           </span>
         </div>
       )}
 
       <DynamicDescription
         item={props.item}
+        searchTerms={terms}
         verbosity={props.verbosity}
       />
 
@@ -132,8 +135,7 @@ export function CardBase(props: {
             {displayTags.map((tag) => (
               <TagPill
                 key={tag}
-                active={(props.activeTags ?? new Set()).has(tag)}
-                onClick={() => props.onTagClick?.(tag)}
+                highlighted={textMatchesTerms(tag, terms)}
                 small
                 tag={tag}
               />

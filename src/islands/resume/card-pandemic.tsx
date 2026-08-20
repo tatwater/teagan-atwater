@@ -1,5 +1,5 @@
 import type { Verbosity } from '@/islands/resume/types';
-import type { ResumeItem, SkillTag } from '@/data/resume/types';
+import type { ResumeItem } from '@/data/resume/types';
 
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { faBiohazard, faChevronRight, faLocationDot } from '@fortawesome/sharp-regular-svg-icons';
@@ -7,19 +7,20 @@ import { resumeItems } from '@/data/resume';
 import { DynamicDescription } from '@/islands/resume/dynamic-description';
 import { Icon } from '@/components/icon';
 import { cn } from '@/lib/utils';
-import { getInitials, isSubCardEnabled } from '@/islands/resume/helpers';
+import { getInitials } from '@/islands/resume/helpers';
+import { Highlight } from '@/islands/resume/highlight';
 import { Avatar } from '@/components/avatar';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
 
 export function PandemicCard({
-  activeTags,
   item,
+  searchTerms = [],
   verbosity,
   isTimeline = false,
 }: {
-  activeTags: Set<SkillTag>;
   item: ResumeItem;
+  searchTerms?: string[];
   verbosity: Verbosity;
   isTimeline?: boolean;
 }) {
@@ -48,7 +49,7 @@ export function PandemicCard({
             <div className='flex items-center gap-1.5 text-base'>
               <Icon icon={faBiohazard} />
               <h3 className='font-semibold text-foreground leading-snug'>
-                {item.title}
+                <Highlight terms={searchTerms} text={item.title} />
               </h3>
             </div>
             {item.location && (
@@ -63,7 +64,7 @@ export function PandemicCard({
         </div>
 
         {/* Animated description */}
-        <DynamicDescription verbosity={verbosity} item={item} />
+        <DynamicDescription item={item} searchTerms={searchTerms} verbosity={verbosity} />
 
         {/* Sub-cards carousel */}
         {allSubs.length > 0 && (
@@ -103,7 +104,6 @@ export function PandemicCard({
                 >
                   {allSubs.map((sc) => {
                     const ref = resumeItems.find((i) => i.id === sc.id);
-                    const enabled = isSubCardEnabled(sc.id, activeTags);
 
                     if (!ref)
                       return null;
@@ -117,19 +117,15 @@ export function PandemicCard({
                           className={cn(
                             'flex flex-col gap-1 border p-3 transition-all duration-200 w-72',
                             sc.primary
-                              ? enabled
-                                ? ref.detailLabel
-                                  ? 'border-border bg-card hover:border-emerald-800/28 hover:bg-card cursor-pointer'
-                                  : 'border-border bg-card cursor-default'
-                                : 'border-border/40 bg-card/30 opacity-40 cursor-not-allowed'
-                              : enabled
-                                ? ref.detailLabel
-                                  ? 'border-border/40 hover:border-emerald-800/28 hover:bg-muted/32 cursor-pointer'
-                                  : 'border-border/40 cursor-default'
-                                : 'border-border/30 opacity-40 cursor-not-allowed',
+                              ? ref.detailLabel
+                                ? 'border-border bg-card hover:border-emerald-800/28 hover:bg-card cursor-pointer'
+                                : 'border-border bg-card cursor-default'
+                              : ref.detailLabel
+                                ? 'border-border/40 hover:border-emerald-800/28 hover:bg-muted/32 cursor-pointer'
+                                : 'border-border/40 cursor-default',
                           )}
-                          href={enabled && ref.detailLabel ? `/resume/${sc.id}` : undefined}
-                          onClick={enabled && ref.detailLabel ? undefined : (e) => e.preventDefault()}
+                          href={ref.detailLabel ? `/resume/${sc.id}` : undefined}
+                          onClick={ref.detailLabel ? undefined : (e) => e.preventDefault()}
                         >
                           <div className='flex items-center justify-between gap-2'>
                             <div className='flex items-center gap-1.5 min-w-0'>
@@ -144,10 +140,10 @@ export function PandemicCard({
                                 'text-sm font-medium leading-snug truncate',
                                 sc.primary ? 'text-foreground' : 'text-foreground/70',
                               )}>
-                                {ref.organizationName}
+                                <Highlight terms={searchTerms} text={ref.organizationName} />
                               </span>
                             </div>
-                            {enabled && ref.detailLabel && (
+                            {ref.detailLabel && (
                               <Icon
                                 className='text-[10px] text-muted-foreground/64 shrink-0'
                                 icon={faChevronRight}
@@ -156,7 +152,7 @@ export function PandemicCard({
                           </div>
                           {verbosity !== 'headline' && (
                             <p className='text-xs text-muted-foreground leading-snug line-clamp-2'>
-                              {ref.descriptionHeadline}
+                              <Highlight terms={searchTerms} text={ref.descriptionHeadline} />
                             </p>
                           )}
                         </a>

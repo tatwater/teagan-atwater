@@ -1,5 +1,5 @@
 import type { ResumeItem } from '@/data/resume/types';
-import type { SectionFilter, Verbosity } from '@/islands/resume/types';
+import type { Verbosity } from '@/islands/resume/types';
 
 import { faBuilding, faFolder, faGraduationCap, faEllipsisStroke, faGrip, faGrid } from '@fortawesome/sharp-regular-svg-icons';
 
@@ -27,16 +27,6 @@ export const SECTION_LABEL: Record<ResumeItem['type'], string> = {
   experience: 'Experience',
   project: 'Projects',
 };
-
-export const SECTION_OPTIONS: {
-  label: string;
-  value: SectionFilter;
-}[] = [
-  { label: 'All categories', value: 'all' },
-  { label: 'Experience',     value: 'experience' },
-  { label: 'Projects',       value: 'project' },
-  { label: 'Education',      value: 'education' },
-];
 
 export const VERBOSITY_OPTIONS: {
   icon: typeof faEllipsisStroke;

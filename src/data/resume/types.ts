@@ -60,7 +60,6 @@ export interface ResumeItem {
   groupKey?: string;
   hidden?: boolean;  // Hide from resume list but still generate a /resume/{id} page
   hideDates?: boolean;
-  isInternship?: boolean;
   location?: string;
   logoShape?: 'circle' | 'square' | 'squircle';
   logoSrc?: string;  // Path relative to src/assets/logos/

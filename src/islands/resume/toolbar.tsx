@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 
 
 export function ResumeToolbar(props: {
+  matchCount: number;
   search: string;
   onSearchChange: (value: string) => void;
   verbosity: Verbosity;
@@ -59,7 +60,7 @@ export function ResumeToolbar(props: {
               'transition-all',
             )}
             onChange={(e) => props.onSearchChange(e.target.value)}
-            placeholder='Search experience, skills, companies…'
+            placeholder='Highlight experience, skills, companies…'
             ref={searchRef}
             type='text'
             value={props.search}
@@ -85,9 +86,25 @@ export function ResumeToolbar(props: {
           )}
         </div>
 
+        {/* Match count — search highlights in place, so this reports hits rather than a filtered total */}
+        {props.search.trim() && (
+          <span
+            aria-live='polite'
+            className={cn(
+              'order-3 w-full text-[10px] font-mono md:order-2 md:w-auto md:shrink-0',
+              props.matchCount === 0 ? 'text-destructive' : 'text-muted-foreground',
+            )}
+          >
+            {props.matchCount === 0
+              ? 'No matches'
+              : `${props.matchCount} ${props.matchCount === 1 ? 'match' : 'matches'} highlighted`
+            }
+          </span>
+        )}
+
         {/* Controls */}
         <TooltipProvider>
-          <div className='flex items-center justify-between gap-2 order-2 w-full md:w-auto'>
+          <div className='flex items-center justify-between gap-2 order-2 w-full md:order-3 md:w-auto'>
             <div className='flex items-center gap-2'>
             {/* View mode toggle */}
             <ButtonGroup className='shrink-0'>
