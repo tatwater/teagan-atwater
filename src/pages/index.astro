@@ -10,6 +10,7 @@ import { mockupsFor } from '@/lib/mockups';
 // pull the whole résumé data set into its client bundle. Mockup URLs resolve
 // here, at build time, where Vite has already hashed them.
 const items: ReelItem[] = highlights.map((highlight) => ({
+  accent: highlight.accent,
   id: highlight.id,
   name: highlight.name,
   shots: mockupsFor(highlight.id, highlight.name),

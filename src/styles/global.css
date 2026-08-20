@@ -94,6 +94,27 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* Home page reel accents.
+
+     Each highlight owns a hue lifted from its own logo, so the sidebar shifts
+     colour as the reel advances; see HIGHLIGHT_SOURCES in src/data/highlights.ts.
+
+       nmc      166.4  the logo's forest-green field, #002418
+       gli      224.9  #8FD3EE, standing in until the logo exists
+       sous      29.0  the mark's red, #F23B2E
+       car-app  264.8  the Outback's Abyss Blue body paint
+       osler     84.4  the gold of the ring, chroma-weighted across its gradient
+
+     The hue is the brand; lightness and chroma are not. Each pair holds the hue
+     and re-solves the other two per theme, because the accent is painted as
+     label text as well as fill and has to clear 4.5:1 on either background.
+     Chroma is capped at what sRGB can hold at that lightness. */
+  --reel-nmc: oklch(0.550 0.114 166.4);
+  --reel-gli: oklch(0.550 0.100 224.9);
+  --reel-sous: oklch(0.550 0.200 29.0);
+  --reel-car-app: oklch(0.550 0.150 264.8);
+  --reel-osler: oklch(0.550 0.113 84.4);
 }
 
 .dark {
@@ -130,6 +151,14 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Reel accents again, re-solved for the dark ground. Gli is #8FD3EE exactly,
+     which sits a little lighter than the rest of the set on purpose. */
+  --reel-nmc: oklch(0.720 0.118 166.4);
+  --reel-gli: oklch(0.831 0.078 224.9);
+  --reel-sous: oklch(0.720 0.175 29.0);
+  --reel-car-app: oklch(0.720 0.145 264.8);
+  --reel-osler: oklch(0.720 0.130 84.4);
 }
 
 @layer base {

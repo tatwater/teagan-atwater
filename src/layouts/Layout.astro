@@ -20,11 +20,22 @@ import '@/styles/global.css';
 		<ClientRouter />
 		<script is:inline>
 			(function () {
-				var stored = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
-				var isDark =
-					stored === 'dark' ||
-					(stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-				document.documentElement.classList.toggle('dark', isDark);
+				function applyStoredTheme() {
+					var stored = typeof localStorage !== 'undefined' ? localStorage.getItem('theme') : null;
+					var isDark =
+						stored === 'dark' ||
+						(stored !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+					document.documentElement.classList.toggle('dark', isDark);
+				}
+
+				applyStoredTheme();
+
+				// ClientRouter rebuilds <html> from the server response on every
+				// client-side navigation, and the server never renders the class — it
+				// only exists because this script put it there. Without re-applying,
+				// the theme survives only until the first in-page link is followed.
+				// after-swap runs before the new page paints, so there is no flash.
+				document.addEventListener('astro:after-swap', applyStoredTheme);
 			})();
 		</script>
 	</head>

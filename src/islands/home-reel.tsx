@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils';
 
 
 export interface ReelItem {
+  accent: string;  // CSS colour, resolved per theme — see src/styles/global.css
   id: string;
   name: string;
   shots: Mockup[];
@@ -101,18 +102,28 @@ export default function HomeReel(props: {
 
       {/* Sidebar: selected work */}
       <aside className='w-full lg:w-72 xl:w-80 shrink-0 border-b lg:border-b-0 lg:border-r border-border-light'>
-        <div className='lg:sticky lg:top-0 flex flex-col gap-4 p-6'>
+        <div className='lg:sticky lg:top-0 flex flex-col gap-4 py-6'>
           <span
-            className='text-[10px] font-mono uppercase tracking-widest text-muted-foreground'
+            className='px-6 text-[10px] font-mono uppercase tracking-widest text-muted-foreground'
             id='reel-label'
           >
             {`Selected work`}
           </span>
 
+          {/*
+            The rail is a single neutral hairline down the whole list; only the
+            selected tab paints over it. Carrying it on the container rather than
+            per-tab keeps it unbroken between tabs, and means the accent bar can
+            inset itself vertically without the rail insetting with it.
+
+            The page shell already draws a border down this edge, so the rail is
+            widened a pixel and pulled a pixel left to land on top of it rather
+            than beside it — one line, whose colour the selected tab takes over.
+          */}
           <div
             aria-labelledby='reel-label'
             aria-orientation='vertical'
-            className='flex flex-col'
+            className='flex flex-col w-[calc(100%+1px)] -translate-x-px border-l border-border-light'
             role='tablist'
           >
             {items.map((item, index) => {
@@ -124,23 +135,39 @@ export default function HomeReel(props: {
                   aria-controls={`reel-panel-${item.id}`}
                   aria-selected={selected}
                   className={cn(
-                    'group flex flex-col gap-0.5 border-l py-2.5 pl-3 -ml-px text-left transition-colors cursor-pointer',
+                    // The rail sits outside the sidebar now, so a plain pl-6 puts
+                    // the label on the 'Selected work' heading's left edge.
+                    'group relative flex w-full flex-col gap-0.5 py-2.5 pl-6 pr-6 text-left transition-colors cursor-pointer',
                     'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
-                    selected
-                      ? 'border-primary bg-muted/40'
-                      : 'border-transparent hover:border-primary/40 hover:bg-muted/20',
+                    !selected && 'hover:bg-muted/20',
                   )}
                   id={`reel-tab-${item.id}`}
                   onClick={() => setActiveIndex(index)}
                   onKeyDown={(event) => handleTabKeyDown(event, index)}
                   ref={(node) => { tabRefs.current[index] = node; }}
                   role='tab'
+                  style={{
+                    '--reel-accent': item.accent,
+                    // A glow bleeding in from the rail, anchored just off the left
+                    // edge so the tab reads as lit by the bar rather than filled.
+                    background: selected
+                      ? 'radial-gradient(ellipse 20% 48% at -2% 50%, color-mix(in oklch, var(--reel-accent) 8%, transparent) 8%, transparent 100%)'
+                      : undefined,
+                  } as React.CSSProperties}
                   tabIndex={selected ? 0 : -1}
                   type='button'
                 >
+                  {/* Inset a little at each end so the bar reads as a mark on the
+                      rail, not as a segment of it. */}
+                  {selected && (
+                    <span
+                      aria-hidden='true'
+                      className='absolute left-0 top-1 h-[calc(100%-0.5rem)] w-px -translate-x-px bg-[var(--reel-accent)]'
+                    />
+                  )}
                   <span className={cn(
                     'text-sm font-medium leading-snug transition-colors',
-                    selected ? 'text-foreground' : 'text-foreground/80 group-hover:text-foreground',
+                    selected ? 'text-[var(--reel-accent)]' : 'text-foreground/80 group-hover:text-foreground',
                   )}>
                     {item.name}
                   </span>

@@ -15,12 +15,17 @@ import { resumeItems } from '@/data/resume';
  * Everything else — logo, dates, tags, whether there is a detail page — still
  * comes from the résumé entry, so this file never has to be kept in sync.
  *
+ * `accent` names a CSS variable rather than holding a colour outright, because
+ * the reel paints it as text as well as fill and so it has to be readable in
+ * both themes; the light/dark pairs live in src/styles/global.css.
+ *
  * `hidden` entries resolve here on purpose. Work can be worth showing on the
  * home page before it is worth putting on a résumé — `project-gli` is showcased
  * as mockups while its résumé entry stays hidden — so the reel deliberately does
  * not filter on that flag the way the résumé and the printed page do.
  */
 interface HighlightSource {
+  accent: string;  // CSS colour for the reel's selection bar, glow, and label
   id: string;  // id of a ResumeItem
   name: string;  // What the home page calls it
   tagline: string;  // One-liner written for the home page
@@ -28,26 +33,31 @@ interface HighlightSource {
 
 const HIGHLIGHT_SOURCES: HighlightSource[] = [
   {
+    accent: 'var(--reel-nmc)',
     id: 'nmc-swe',
     name: 'The New Money Company',
     tagline: 'YC-backed fintech startup guaranteeing payments in trust-sensitive marketplaces',
   },
   {
+    accent: 'var(--reel-gli)',
     id: 'project-gli',
     name: 'Gli',
     tagline: 'An ice quality reporting platform for wild ice skaters',
   },
   {
+    accent: 'var(--reel-sous)',
     id: 'project-sous',
     name: 'Sous',
     tagline: 'A social platform for home cooking',
   },
   {
+    accent: 'var(--reel-car-app)',
     id: 'project-car-app',
     name: 'Car App',
     tagline: 'A lifetime cost-of-ownership tracker for personal vehicles',
   },
   {
+    accent: 'var(--reel-osler)',
     id: 'osler-cto',
     name: 'Osler',
     tagline: 'Structured, predictive EMR mapping exams and diagnoses to a representative patient avatar',
