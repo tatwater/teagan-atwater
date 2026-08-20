@@ -21,7 +21,7 @@ export function Navbar() {
     <div className='w-full border-b border-border-light'>
       <div className='px-5 md:px-8 lg:px-10'>
         <nav className='relative flex items-center justify-between max-w-7xl mx-auto pl-6 pr-2 border-x border-border-light min-h-16'>
-          <div className='flex items-center gap-8'>
+          <div className='flex items-center gap-5 sm:gap-8'>
             <a
               className='size-10 opacity-85'
               href='/'
@@ -31,7 +31,7 @@ export function Navbar() {
                 strokeWidth={2}
               />
             </a>
-            <nav className='hidden sm:flex items-center gap-6 font-glyph text-sm'>
+            <nav className='flex items-center gap-3 sm:gap-6 font-glyph text-sm'>
               {NAV_LINKS.map(({ href, label }) => {
                 const isActive = pathname.startsWith(href);
                 return (
@@ -39,7 +39,7 @@ export function Navbar() {
                     key={href}
                     href={href}
                     className={cn(
-                      'relative isolate transition-colors px-2 py-0.5',
+                      'relative isolate transition-colors px-2 py-0.5 whitespace-nowrap',
                       isActive
                         ? 'text-foreground'
                         : 'text-secondary-foreground/70 hover:text-secondary-foreground',
