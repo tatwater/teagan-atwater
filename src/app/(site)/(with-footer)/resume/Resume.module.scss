@@ -57,6 +57,7 @@
 }
 .content {
   flex-basis: 75%;
+  margin-bottom: 8rem;
   max-width: 60rem;
 }
 .section {
@@ -78,6 +79,16 @@
 }
 .entry:hover {
   background-color: var(--color-surface-secondary);
+}
+.entryNoHover {
+  display: flex;
+    flex-direction: column;
+}
+.entryNoHover + .entryNoHover {
+  margin-top: 2rem;
+}
+.entryNoHover header > svg {
+  height: 4rem;
 }
 .organization {
   display: flex;

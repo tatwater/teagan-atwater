@@ -20,8 +20,7 @@ export default async function ResumePage() {
           <div className=''>
             <h4>Programming Languages</h4>
             <div className='flex flex-wrap gap-2 mt-2 mb-4'>
-              <SkillBadge>TypeScript</SkillBadge>
-              <SkillBadge>TSX</SkillBadge>
+              <SkillBadge>TypeScript / TSX</SkillBadge>
               <SkillBadge>Sass</SkillBadge>
               <SkillBadge>GraphQL</SkillBadge>
               <SkillBadge>PostgREST</SkillBadge>
@@ -240,7 +239,7 @@ export default async function ResumePage() {
           </section>
           <section className={ styles.section }>
             <h2>Academics</h2>
-            <article className={ styles.entry }>
+            <article className={ styles.entryNoHover }>
               <header>
                 <span className={ styles.organization }>Connecticut College</span>
                 <h3>
@@ -283,7 +282,7 @@ export default async function ResumePage() {
                 </div>
               </div>
             </article>
-            <article className={ styles.entry }>
+            <article className={ styles.entryNoHover }>
               <header>
                 <span className={ styles.organization }>Northfield Mount Hermon</span>
                 <h3>
