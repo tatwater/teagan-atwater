@@ -8,9 +8,9 @@ import { buildSearchIndex } from '@/lib/search-index';
  * Returns the search index consumed by the command palette. The site has no
  * authentication, so the whole index is public.
  */
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = () => {
   try {
-    const index = await buildSearchIndex();
+    const index = buildSearchIndex();
 
     return new Response(JSON.stringify(index), {
       status: 200,

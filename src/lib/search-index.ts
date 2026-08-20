@@ -1,11 +1,13 @@
-import { getCollection } from 'astro:content';
 import { resumeItems } from '@/data/resume';
 
 /**
  * Search Index Builder
  *
- * Generates a static JSON index of all searchable content for the Command Palette.
- * This runs at build time and creates a lightweight index for client-side search.
+ * Builds the index the command palette searches. Résumé data lives in plain
+ * TypeScript modules rather than a content collection: the entries are
+ * structured and relational rather than prose, and two React islands import
+ * them synchronously, which `getCollection` — being async and server-only —
+ * cannot support.
  */
 
 export interface SearchIndexItem {
@@ -16,81 +18,35 @@ export interface SearchIndexItem {
   type: 'page' | 'project' | 'action';
   tags?: string[];
   icon?: string;
-  published?: boolean;
-  featured?: boolean;
-  date?: string;
 }
 
-/**
- * Build search index from content collections
- * Call this during Astro build to generate search-index.json
- */
-export async function buildSearchIndex(): Promise<SearchIndexItem[]> {
-  const index: SearchIndexItem[] = [];
+const SECTION_LABEL = {
+  education: 'Education',
+  experience: 'Experience',
+  project: 'Project',
+} as const;
 
-  // Add static pages
-  const staticPages: SearchIndexItem[] = [
-    // {
-    //   id: 'admin',
-    //   title: 'Admin Dashboard',
-    //   description: 'Admin panel',
-    //   url: '/admin/contact',
-    //   type: 'page',
-    //   icon: 'user',
-    // },
-  ];
 
-  index.push(...staticPages);
+export function buildSearchIndex(): SearchIndexItem[] {
+  // Only entries that opt into a detail page with `detailLabel` have a URL to
+  // point at — see getStaticPaths in src/pages/resume/[id].astro.
+  return resumeItems
+    .filter((item) => item.detailLabel)
+    .map((item) => {
+      const sectionLabel = SECTION_LABEL[item.type];
 
-  // Add resume detail pages — only for items that have a detail page (detailLabel opt-in)
-  for (const item of resumeItems.filter((item) => item.detailLabel)) {
-    const sectionLabel =
-      item.type === 'experience'
-        ? 'Experience'
-        : item.type === 'education'
-        ? 'Education'
-        : 'Project';
-
-    index.push({
-      id: `resume-${item.id}`,
-      title: item.title,
-      description: `${sectionLabel} · ${item.organizationName} — ${item.descriptionHeadline}`,
-      url: `/resume/${item.id}`,
-      type: 'project',
-      icon: item.type === 'experience' ? 'folder' : item.type === 'education' ? 'file' : 'folder',
-      tags: [...item.tags, item.organizationName, sectionLabel.toLowerCase()],
+      return {
+        id: `resume-${item.id}`,
+        title: item.title,
+        description: `${sectionLabel} · ${item.organizationName} — ${item.descriptionHeadline}`,
+        url: `/resume/${item.id}`,
+        type: 'project' as const,
+        icon: item.type === 'education' ? 'file' : 'folder',
+        tags: [...item.tags, item.organizationName, sectionLabel.toLowerCase()],
+      };
     });
-  }
-
-  // Add projects from content collection
-  try {
-    const projects = await getCollection('projects');
-
-    for (const project of projects) {
-      // Only include published projects in the search index
-      if (!project.data.published) {
-        continue;
-      }
-
-      index.push({
-        id: `project-${project.id}`,
-        title: project.data.title,
-        description: project.data.description,
-        url: `/projects/${project.id}`,
-        type: 'project',
-        tags: project.data.tags,
-        icon: 'folder',
-        published: project.data.published,
-        featured: project.data.featured,
-        date: project.data.date.toISOString(),
-      });
-    }
-  } catch (error) {
-    console.warn('Failed to load projects collection:', error);
-  }
-
-  return index;
 }
+
 
 /**
  * Create a lightweight search index for MiniSearch
