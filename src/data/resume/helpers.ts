@@ -1,5 +1,7 @@
 import type { OrgGroup, ResumeItem, SkillTag } from '@/data/resume/types';
 
+import { visibleTags } from '@/data/resume/skills';
+
 
 function startGroup(key: string, item: ResumeItem): OrgGroup {
   return {
@@ -54,20 +56,23 @@ export function groupItems(items: ResumeItem[]): OrgGroup[] {
 
 /**
  * Split a group's tags into those every item shares — shown once in the group
- * footer — and the remainder, which each item shows on its own card.
+ * footer — and the remainder, which each item shows on its own card. Both sides
+ * are filtered to visible tags first, so a group whose only shared tag is hidden
+ * correctly reports no common tags rather than an empty footer's worth.
  */
 export function splitGroupTags(items: ResumeItem[]): {
   commonTags: SkillTag[];
   uniqueTagsByItemId: Map<string, SkillTag[]>;
 } {
-  const tagSets = items.map((item) => new Set(item.tags));
-  const commonTags = (items[0]?.tags ?? []).filter((tag) => tagSets.every((set) => set.has(tag)));
+  const shown = items.map((item) => [item.id, visibleTags(item.tags)] as const);
+  const tagSets = shown.map(([, tags]) => new Set(tags));
+  const commonTags = (shown[0]?.[1] ?? []).filter((tag) => tagSets.every((set) => set.has(tag)));
   const commonTagSet = new Set(commonTags);
 
   return {
     commonTags,
     uniqueTagsByItemId: new Map(
-      items.map((item) => [item.id, item.tags.filter((tag) => !commonTagSet.has(tag))]),
+      shown.map(([id, tags]) => [id, tags.filter((tag) => !commonTagSet.has(tag))]),
     ),
   };
 }

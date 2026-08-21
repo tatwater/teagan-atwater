@@ -1,5 +1,5 @@
 ---
-import type { ResumeItem, SkillCategory } from '@/data/resume/types';
+import type { ResumeItem } from '@/data/resume/types';
 
 import TALogo from '@/components/ta-brand/TA';
 import { PrintBackLink } from '@/islands/resume/print-back-link';
@@ -7,7 +7,7 @@ import { PrintPrintButton } from '@/islands/resume/print-print-button';
 import { resumeItems } from '@/data/resume';
 import { groupItems } from '@/data/resume/helpers';
 import { formatDateRange } from '@/data/resume/dates';
-import { printSkills } from '@/data/resume/skills';
+import { printSkillCategories } from '@/data/resume/skills';
 import '@/styles/global.css';
 
 
@@ -42,16 +42,10 @@ const printProjects = resumeItems
 
 
 
-// The printed résumé shows the five craft-focused categories, in this order.
-// 'Backend & Services' and 'Product & Leadership' exist for tagging entries on
-// the site but are deliberately left off the one-page résumé.
-const selectedSkillCategories: SkillCategory[] = [
-  'Craft & Design',
-  'Web & Native',
-  'State & Data Persistence',
-  'Architecture & Rendering',
-  'Agentic Processes',
-];
+// Which categories print, and which of their tags, both come from the taxonomy's
+// per-tag visibility — a category with no 'print' tags simply doesn't appear.
+// 'Backend & Services' and 'Product & Leadership' fall out that way today.
+const skillColumn = printSkillCategories();
 ---
 
 <!doctype html>
@@ -512,11 +506,11 @@ const selectedSkillCategories: SkillCategory[] = [
         <!-- Skills -->
         <div>
           <p class="left-section-label">Skills</p>
-          {selectedSkillCategories.map((cat) => (
+          {skillColumn.map(([cat, tags]) => (
             <div class="skills-category">
               <p class="skills-category-label">{cat}</p>
               <div class="skills-tags">
-                {(printSkills[cat] ?? []).map((tag) => (
+                {tags.map((tag) => (
                   <span class="skill-tag">{tag}</span>
                 ))}
               </div>

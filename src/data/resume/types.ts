@@ -1,46 +1,14 @@
 /**
- * Skill taxonomy follows the printed résumé's grouping. The five categories the
- * résumé itself shows come first; the last two hold the parts of Teagan's
- * history the one-page résumé leaves out but the site still tags entries with.
+ * Item shapes for résumé entries. The skill taxonomy itself — which tags exist,
+ * how they group, and where each is allowed to render — lives in
+ * `@/data/resume/skills`, which derives these two types from the vocabulary so
+ * a tag is only ever declared once. They are re-exported here so entry files
+ * keep importing everything about an item from one place.
  */
-export type SkillCategory =
-  | 'Craft & Design'
-  | 'Web & Native'
-  | 'State & Data Persistence'
-  | 'Architecture & Rendering'
-  | 'Agentic Processes'
-  | 'Backend & Services'
-  | 'Product & Leadership'
-;
+import type { SkillCategory, SkillTag, SkillVisibility } from '@/data/resume/skills';
 
-export type SkillTag =
-  // Craft & Design
-  | 'Figma' | 'Adobe XD' | 'Design Systems' | 'Design Tokens' | 'UI Design' | 'UX Design'
-  | 'Motion' | 'Responsive Design' | 'Semantic Markup' | 'Information Architecture'
-  | 'Prototyping' | 'Accessibility' | 'Keyboard Navigation' | 'Screen Readers'
-  // Web & Native
-  | 'TypeScript' | 'React' | 'JavaScript' | 'HTML' | 'CSS' | 'CSS Modules' | 'Sass/Less'
-  | 'Styled Components' | 'Tailwind' | 'Electron' | 'Expo' | 'React Native' | 'Next.js'
-  | 'Astro' | 'Angular' | 'jQuery'
-  // State & Data Persistence
-  | 'Atomic State' | 'React Context' | 'Immutable Stores' | 'Redux' | 'Device Storage'
-  | 'Offline Support' | 'Sync Engines' | 'Postgres' | 'SQL' | 'MongoDB' | 'NoSQL'
-  | 'Key-Value Stores' | 'Vector Databases' | 'Convex' | 'Supabase'
-  // Architecture & Rendering
-  | 'Monorepos' | 'Server-Side Rendering' | 'React Server Components' | 'Partial Pre-Rendering'
-  | 'Incremental Static Regeneration' | 'Static Site Generation' | 'Web Performance'
-  | 'Vercel' | 'CI/CD' | 'Git'
-  // Agentic Processes
-  | 'Claude Code' | 'Codex' | 'Agent Skills' | 'Sub-agent Orchestration' | 'Automated Testing'
-  | 'Code Review'
-  // Backend & Services
-  | 'Node.js' | 'REST APIs' | 'GraphQL' | 'Auth' | 'PHP' | 'Ruby' | 'Java' | 'Python'
-  | 'Meteor' | 'Drupal' | 'React Email' | 'Full Stack'
-  // Product & Leadership
-  | 'Product Strategy' | 'Roadmapping' | 'Team Leadership' | 'Mentorship' | 'Startup'
-  | 'Fundraising' | 'Agile/Scrum' | 'Technical Writing' | 'Freelance' | 'Content Strategy'
-  | 'SEO'
-;
+export type { SkillCategory, SkillTag, SkillVisibility };
+
 
 export interface OrgGroup {
   key: string;

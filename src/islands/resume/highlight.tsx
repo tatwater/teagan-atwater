@@ -1,6 +1,8 @@
 import type { ResumeItem } from '@/data/resume/types';
 import type { Verbosity } from '@/islands/resume/types';
 
+import { visibleTags } from '@/data/resume/skills';
+
 
 const VERBOSITY_ORDER: Verbosity[] = ['headline', 'summary', 'detail'];
 
@@ -48,7 +50,7 @@ export function itemMatchesTerms(item: ResumeItem, terms: string[]): boolean {
     item.location,
     item.descriptionSummary,
     item.descriptionFull,
-    ...item.tags,
+    ...visibleTags(item.tags),
   ].join(' ').toLowerCase();
 
   return terms.every((term) => haystack.includes(term));
@@ -70,7 +72,8 @@ export function resolveVerbosity(
     return verbosity;
 
   // Always-rendered fields need no bump.
-  const alwaysVisible = [item.title, item.organizationName, item.location, ...item.tags].join(' ');
+  const alwaysVisible =
+    [item.title, item.organizationName, item.location, ...visibleTags(item.tags)].join(' ');
 
   if (textMatchesTerms(alwaysVisible, terms))
     return verbosity;

@@ -2,8 +2,10 @@
 import { faArrowLeft, faArrowUpRightFromSquare } from '@fortawesome/sharp-regular-svg-icons';
 import Layout from '@/layouts/Layout.astro';
 import { Icon } from '@/components/icon';
+import { TagPill } from '@/islands/resume/tag-pill';
 import { resumeItems } from '@/data/resume';
 import { formatDateRange, getDuration } from '@/data/resume/dates';
+import { visibleTags } from '@/data/resume/skills';
 import { logoUrl } from '@/lib/logos';
 
 export const prerender = true;
@@ -22,8 +24,8 @@ const allEnd = nmcItems.every((i) => i.dateEnd !== null)
   ? nmcItems.map((i) => i.dateEnd as string).sort().reverse()[0]
   : null;
 
-// Collect unique tags
-const allTags = [...new Set(nmcItems.flatMap((i) => i.tags))];
+// Collect unique tags, minus any the taxonomy marks hidden.
+const allTags = [...new Set(nmcItems.flatMap((i) => visibleTags(i.tags)))];
 
 // The header card already states the overall span, so per-role dates only earn
 // their place once there is more than one role to tell apart.
@@ -125,14 +127,7 @@ const showRoleDates = nmcItems.length > 1;
         Skills &amp; technologies
       </p>
       <div class='flex flex-wrap gap-1.5'>
-        {allTags.map((tag) => (
-          <a
-            href={`/?tag=${encodeURIComponent(tag)}`}
-            class='inline-flex items-center px-2 py-1 text-xs font-mono border border-border bg-muted/50 text-muted-foreground hover:border-primary hover:text-primary hover:bg-primary/5 transition-all'
-          >
-            {tag}
-          </a>
-        ))}
+        {allTags.map((tag) => <TagPill tag={tag} />)}
       </div>
     </div>
 

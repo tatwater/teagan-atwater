@@ -1,4 +1,5 @@
 import { resumeItems } from '@/data/resume';
+import { visibleTags } from '@/data/resume/skills';
 
 /**
  * Search Index Builder
@@ -42,7 +43,7 @@ export function buildSearchIndex(): SearchIndexItem[] {
         url: `/resume/${item.id}`,
         type: 'project' as const,
         icon: item.type === 'education' ? 'file' : 'folder',
-        tags: [...item.tags, item.organizationName, sectionLabel.toLowerCase()],
+        tags: [...visibleTags(item.tags), item.organizationName, sectionLabel.toLowerCase()],
       };
     });
 }

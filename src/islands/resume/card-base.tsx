@@ -7,6 +7,7 @@ import { Highlight, textMatchesTerms } from '@/islands/resume/highlight';
 import { OrgBadge } from '@/islands/resume/org-badge';
 import { TagPill } from '@/islands/resume/tag-pill';
 import { formatDateRange, getDuration } from '@/data/resume/dates';
+import { visibleTags } from '@/data/resume/skills';
 import { getInitials } from '@/islands/resume/helpers';
 import { logoUrl } from '@/lib/logos';
 import { cn } from '@/lib/utils';
@@ -206,7 +207,8 @@ function cardClassName(item: ResumeItem, nestingMode?: NestingMode): string {
 export function CardBase(props: CardBaseProps) {
   const { item, nestingMode } = props;
   const terms = props.searchTerms ?? [];
-  const displayTags = props.tagsOverride ?? item.tags;
+  // Hidden tags stay on the entry but never reach a pill.
+  const displayTags = visibleTags(props.tagsOverride ?? item.tags);
   // The org badge sits in the badge slot, so the title needs its own full-width row.
   const orgBadgeInHeader = Boolean(!props.showLogoInTitle && props.showOrgInHeader && item.organizationName);
 
@@ -239,7 +241,7 @@ export function CardBase(props: CardBaseProps) {
       />
 
       {/* ── Tag footer ───────────────────────────────────────────────────── */}
-      {props.showTagFooter && (
+      {props.showTagFooter && (displayTags.length > 0 || item.detailLabel) && (
         <CardTagFooter
           item={item}
           nestingMode={nestingMode}

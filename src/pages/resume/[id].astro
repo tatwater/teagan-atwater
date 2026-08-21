@@ -4,8 +4,10 @@ import type { ResumeItem } from '@/data/resume/types';
 import { faArrowLeft, faArrowUpRightFromSquare } from '@fortawesome/sharp-regular-svg-icons';
 import Layout from '@/layouts/Layout.astro';
 import { Icon } from '@/components/icon';
+import { TagPill } from '@/islands/resume/tag-pill';
 import { resumeItems } from '@/data/resume';
 import { formatDateRange, getDuration } from '@/data/resume/dates';
+import { visibleTags } from '@/data/resume/skills';
 import { logoUrl } from '@/lib/logos';
 
 export const prerender = true;
@@ -147,14 +149,7 @@ const logoSrcResolved = item.logoSrc
         Skills &amp; technologies
       </p>
       <div class="flex flex-wrap gap-1.5">
-        {item.tags.map((tag) => (
-          <a
-            href={`/?tag=${encodeURIComponent(tag)}`}
-            class="inline-flex items-center px-2 py-1 text-xs font-mono border border-border bg-muted/50 text-muted-foreground hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
-          >
-            {tag}
-          </a>
-        ))}
+        {visibleTags(item.tags).map((tag) => <TagPill tag={tag} />)}
       </div>
     </div>
 
