@@ -38,7 +38,7 @@ export const projectItems: ResumeItem[] = [
     dateEnd: null,
     type: 'project',
     tags: ['TypeScript', 'React', 'React Native', 'Expo', 'Postgres', 'Tailwind', 'Design Systems'],
-    descriptionHeadline: 'An ice quality reporting platform for wild ice skaters',
+    descriptionHeadline: 'An ice conditions reporting platform for Nordic / wild ice skaters',
     // TODO: real copy. Nothing below is written yet; the home page shows the
     // headline above and the mockups, and needs none of these.
     descriptionSummary: '',
@@ -106,7 +106,7 @@ export const projectItems: ResumeItem[] = [
   {
     id: 'project-car-app',
     hideFromPrint: true,
-    title: 'Car App / Gas Tracker',
+    title: 'Personal Car App / Gas Tracker',
     organizationName: '',
     logoShape: 'squircle',
     logoSrc: 'outback.png',

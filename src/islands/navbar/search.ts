@@ -1,7 +1,8 @@
 import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
 import type { SearchIndexItem as SearchItem } from '@/lib/search-index';
 import type { ThemePreference } from '@/islands/navbar/types';
-import type MiniSearch from 'minisearch';
+
+import MiniSearch from 'minisearch';
 
 import {
   faDisplay,
@@ -121,6 +122,56 @@ export function iconFor(iconName?: string): IconDefinition {
 
 
 /**
+ * Reduce text to the bare 26 letters and the digits: decomposing first peels the
+ * accent off its base letter so the mark can be dropped outright rather than
+ * splitting the word, and everything left over becomes a word break. Typing
+ * "resume" has to find "Résumé", so the indexed text and the query are both
+ * folded into the same alphabet before they ever meet.
+ */
+function foldText(text: string): string {
+  return text
+    .normalize('NFD')
+    .replace(/\p{M}+/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+
+/** The per-term form of {@link foldText}; a term carries no word breaks. */
+export function foldTerm(term: string): string {
+  return foldText(term).replace(/ /g, '');
+}
+
+
+/**
+ * Build the palette's index. Kept here so the folding above applies to indexing
+ * and querying alike — MiniSearch runs `processTerm` on both sides.
+ */
+export function createSearchIndex(items: SearchItem[]): MiniSearch {
+  const miniSearch = new MiniSearch({
+    fields: ['title', 'description', 'tags'],
+    storeFields: ['id', 'title', 'description', 'url', 'type', 'tags', 'icon'],
+    processTerm: foldTerm,
+    searchOptions: {
+      boost: { title: 2 },
+      fuzzy: 0.2,
+      prefix: true,
+    },
+  });
+
+  miniSearch.addAll(
+    items.map((item) => ({
+      ...item,
+      tags: item.tags?.join(' ') || '',
+    }))
+  );
+
+  return miniSearch;
+}
+
+
+/**
  * Narrow the palette's items to those matching `search`. MiniSearch handles it
  * once the index has loaded; until then a plain substring match over title,
  * description, and tags keeps the palette usable on first open.
@@ -133,12 +184,12 @@ export function filterSearchItems(
   if (!search) return allItems;
 
   if (!miniSearch) {
-    const query = search.toLowerCase();
+    const query = foldText(search);
 
     return allItems.filter((item) =>
-      item.title.toLowerCase().includes(query)
-      || Boolean(item.description?.toLowerCase().includes(query))
-      || Boolean(item.tags?.some((tag) => tag.toLowerCase().includes(query))));
+      foldText(item.title).includes(query)
+      || Boolean(item.description && foldText(item.description).includes(query))
+      || Boolean(item.tags?.some((tag) => foldText(tag).includes(query))));
   }
 
   return miniSearch

@@ -15,7 +15,18 @@ const MOCKUP_URLS = import.meta.glob('/src/assets/mockups/*/*.{png,jpg,jpeg,webp
 }) as Record<string, string>;
 
 /** Real alt text, keyed by the path under src/assets/mockups/. */
-const MOCKUP_ALT: Record<string, string> = {};
+const MOCKUP_ALT: Record<string, string> = {
+  'project-car-app/01-home-screen-cost-overview.jpg':
+    'The personal car app\u2019s home screen on a phone, headed by a 2025 Outback: a nudge that it has been nine days since the last fill-up, a lifetime cost curve, and tiles reading 33.3 mpg average fuel economy, 616 mi average projected range, and 9¢/gal against the previous ninety days',
+  'project-car-app/02-fill-up-review-screen.jpg':
+    'The personal car app\u2019s review screen after logging a fill-up: 32.3 miles per gallon, 3% below average and 10¢ per mile, over the entry it was worked out from — 500.5 miles, 15.5 gallons, and 50.50 dollars on November 5, 2024',
+  'project-gli/01-phone-in-hand-explore-map.jpg':
+    'Gli\u2019s explore map open on a phone, showing Mascoma Lake with ice condition reports pinned along the shoreline',
+  'project-gli/02-conditions-card-close-up.jpg':
+    'A close-up of Gli\u2019s lake summary card: conditions rated Good, last reported two hours ago by three skaters, six to eight inches of ice, and two hazards',
+  'project-gli/03-logo-lockups.jpg':
+    'The Gli wordmark in both of its lockups, reversed white on black and black on white, each underscored by a skate blade trailing pale blue ice',
+};
 
 
 export interface Mockup {

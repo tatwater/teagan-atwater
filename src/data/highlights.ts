@@ -42,19 +42,19 @@ const HIGHLIGHT_SOURCES: HighlightSource[] = [
     accent: 'var(--reel-gli)',
     id: 'project-gli',
     name: 'Gli',
-    tagline: 'An ice quality reporting platform for wild ice skaters',
+    tagline: 'An ice conditions reporting platform for Nordic / wild ice skaters',
   },
   {
     accent: 'var(--reel-sous)',
     id: 'project-sous',
     name: 'Sous',
-    tagline: 'A social platform for home cooking',
+    tagline: 'A smart, social platform encouraging more cooking at home',
   },
   {
     accent: 'var(--reel-car-app)',
     id: 'project-car-app',
-    name: 'Car App',
-    tagline: 'A lifetime cost-of-ownership tracker for personal vehicles',
+    name: 'Personal Car App',
+    tagline: 'A lifetime cost-of-ownership tracker for my own car',
   },
   // Shelved for now, copy kept — uncomment to bring the tab back. Its résumé
   // entry and its --reel-osler accent both stay where they are.

@@ -1,8 +1,14 @@
 import type { SearchItem } from '@/islands/navbar/search';
 
 import { describe, it, expect } from 'vitest';
-import MiniSearch from 'minisearch';
-import { filterSearchItems, iconFor, themeActions, THEME_BY_ACTION_ID } from '@/islands/navbar/search';
+import {
+  createSearchIndex,
+  filterSearchItems,
+  foldTerm,
+  iconFor,
+  themeActions,
+  THEME_BY_ACTION_ID,
+} from '@/islands/navbar/search';
 
 
 const items: SearchItem[] = [
@@ -12,15 +18,7 @@ const items: SearchItem[] = [
 ];
 
 
-function indexOf(source: SearchItem[]): MiniSearch {
-  const ms = new MiniSearch({
-    fields: ['title', 'description', 'tags'],
-    storeFields: ['id'],
-  });
-  ms.addAll(source.map((item) => ({ ...item, tags: item.tags?.join(' ') || '' })));
-
-  return ms;
-}
+const indexOf = createSearchIndex;
 
 
 describe('filterSearchItems', () => {
@@ -51,11 +49,35 @@ describe('filterSearchItems', () => {
     expect(results.map((i) => i.id)).toEqual(['proj']);
   });
 
+  it('finds an accented title from an unaccented query, index or not', () => {
+    expect(filterSearchItems(items, 'resume', null).map((i) => i.id)).toEqual(['resume', 'print']);
+    expect(filterSearchItems(items, 'resume', indexOf(items)).map((i) => i.id)).toContain('resume');
+  });
+
+  it('finds an unaccented title from an accented query', () => {
+    expect(filterSearchItems(items, 'Résumé', null).map((i) => i.id)).toEqual(['resume', 'print']);
+    expect(filterSearchItems(items, 'Résumé', indexOf(items)).map((i) => i.id)).toContain('resume');
+  });
+
   it('drops index hits that are no longer in the item list', () => {
     // The theme actions are indexed but filtered out of `allItems` when already active.
     const results = filterSearchItems(items, 'widget', indexOf([...items, ...themeActions]));
 
     expect(results.every((item) => items.includes(item))).toBe(true);
+  });
+});
+
+
+describe('foldTerm', () => {
+  it('strips accents down to the bare letter', () => {
+    expect(foldTerm('Résumé')).toBe('resume');
+    expect(foldTerm('naïve')).toBe('naive');
+  });
+
+  it('drops everything that is not a letter or a digit', () => {
+    expect(foldTerm('PDF/Print')).toBe('pdfprint');
+    expect(foldTerm("don't")).toBe('dont');
+    expect(foldTerm('·')).toBe('');
   });
 });
 

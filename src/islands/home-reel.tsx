@@ -229,7 +229,7 @@ export default function HomeReel(props: {
       </aside>
 
       {/* Photoset for the selected project */}
-      <div className='flex-1 min-w-0 p-6 md:p-10'>
+      <div className='flex-1 min-w-0 p-2 pb-12'>
         {/*
           Keyed so React remounts the panel when the selection changes, which
           replays the fade-in. Deliberately not wrapped in AnimatePresence: an
@@ -241,7 +241,7 @@ export default function HomeReel(props: {
           key={active.id}
           animate={{ opacity: 1 }}
           aria-labelledby={`reel-tab-${active.id}`}
-          className='flex flex-col gap-6'
+          className='flex flex-col gap-4'
           id={`reel-panel-${active.id}`}
           initial={{ opacity: 0 }}
           role='tabpanel'

@@ -17,13 +17,14 @@ import { Icon } from '@/components/icon';
 import { Kbd, KbdGroup } from '@/components/ui/kbd';
 import { applyTheme } from '@/islands/navbar/theme';
 import {
+  createSearchIndex,
   defaultItems,
   filterSearchItems,
   iconFor,
   themeActions,
   THEME_BY_ACTION_ID,
 } from '@/islands/navbar/search';
-import MiniSearch from 'minisearch';
+import type MiniSearch from 'minisearch';
 
 
 interface ResultItemProps {
@@ -128,24 +129,7 @@ export function CommandPalette() {
       const data: SearchItem[] = await response.json();
       setItems([...defaultItems, ...data]);
 
-      const ms = new MiniSearch({
-        fields: ['title', 'description', 'tags'],
-        storeFields: ['id', 'title', 'description', 'url', 'type', 'tags', 'icon'],
-        searchOptions: {
-          boost: { title: 2 },
-          fuzzy: 0.2,
-          prefix: true,
-        },
-      });
-
-      ms.addAll(
-        [...defaultItems, ...data, ...themeActions].map((item) => ({
-          ...item,
-          tags: item.tags?.join(' ') || '',
-        }))
-      );
-
-      setMiniSearch(ms);
+      setMiniSearch(createSearchIndex([...defaultItems, ...data, ...themeActions]));
     } catch (error) {
       console.error('Failed to load search index:', error);
     } finally {
