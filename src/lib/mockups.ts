@@ -16,6 +16,12 @@ const MOCKUP_URLS = import.meta.glob('/src/assets/mockups/*/*.{png,jpg,jpeg,webp
 
 /** Real alt text, keyed by the path under src/assets/mockups/. */
 const MOCKUP_ALT: Record<string, string> = {
+  'nmc-swe/02-order-management.jpg':
+    'The New Money Company\u2019s order workspace on a tablet, open on order O-1001 for $108,007.50: a checklist running from uploading the buyer\u2019s purchase order through marking the order shipped and delivered to reconciling payment, beside a sidebar of the documents the order generates along the way',
+  'nmc-swe/03-purchase-order-pdf.jpg':
+    'A purchase order the platform generated, printed and lying on an oak table — order O-1001, Net 30, routing seven lines of sauces from a Chicago seller to a buyer in São Paulo, footed \u201CPowered by The New Money Company\u201D',
+  'nmc-swe/04-invoice-review-and-pay.jpg':
+    'An invoice open on a laptop before payment: I-1001, issued February 1 2025 and due March 2, six lines of lab equipment billed to a buyer in Geneva, totalling $108,007.50 USD beside a Pay Invoice button',
   'project-car-app/01-home-screen-cost-overview.jpg':
     'The personal car app\u2019s home screen on a phone, headed by a 2025 Outback: a nudge that it has been nine days since the last fill-up, a lifetime cost curve, and tiles reading 33.3 mpg average fuel economy, 616 mi average projected range, and 9¢/gal against the previous ninety days',
   'project-car-app/02-fill-up-review-screen.jpg':
@@ -26,6 +32,8 @@ const MOCKUP_ALT: Record<string, string> = {
     'A close-up of Gli\u2019s lake summary card: conditions rated Good, last reported two hours ago by three skaters, six to eight inches of ice, and two hazards',
   'project-gli/03-logo-lockups.jpg':
     'The Gli wordmark in both of its lockups, reversed white on black and black on white, each underscored by a skate blade trailing pale blue ice',
+  'project-sous/01-recipe-detail-on-laptop.jpg':
+    'A Sous recipe open on a laptop — BBQ Chicken, grilled, an hour and twenty minutes for six servings: its ingredients and equipment down one column, five steps down the other with every ingredient linked back into the prose, a timer offered against the step that needs one, and a cook\u2019s own note left under the grilling step',
 };
 
 
