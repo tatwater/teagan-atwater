@@ -40,10 +40,12 @@ expect.extend({
   },
 });
 
-// Extend Vitest's expect types
+// Extend Vitest's expect types. The type parameters must match Vitest's own
+// declaration exactly -- as of Vitest 5 that is <R, T> rather than the single
+// <T> of earlier versions, and a mismatch fails the build with ts(2428).
 declare module 'vitest' {
-  interface Assertion<T = any> {
-    toBeValidEmail(): T;
+  interface Assertion<R extends void | Promise<void> = void, T = unknown> {
+    toBeValidEmail(): R;
   }
   interface AsymmetricMatchersContaining {
     toBeValidEmail(): any;
