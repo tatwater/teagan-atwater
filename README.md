@@ -102,18 +102,22 @@ Copy `.env.example` to `.env.local` and fill in the values. `FONTAWESOME_NPM_TOK
 is required to install dependencies at all — the Sharp icon packages come from a
 private registry.
 
-On pnpm 10 and later, `.env.local` alone is not enough for the install itself.
-pnpm refuses to expand `${VAR}` in registry credentials coming from a project
-`.npmrc`, because that file is committed and a hostile registry line could leak
-the secret. Put the token in your user-level config once per machine:
+`.env.local` alone is not enough for the install itself. pnpm refuses to expand
+`${VAR}` in registry credentials coming from a project `.npmrc`, because that
+file is committed and a hostile registry line could leak the secret. So the
+committed `.npmrc` carries only the registry mapping, never the token. Put the
+token in your user-level config once per machine:
 
 ```
 pnpm config set "//npm.fontawesome.com/:_authToken" "$FONTAWESOME_NPM_TOKEN"
 ```
 
-Leave the `_authToken` line in the committed `.npmrc` alone. Deploys resolve
-pnpm 9 from `lockfileVersion: '9.0'`, and that version *does* expand the line
-from the `FONTAWESOME_NPM_TOKEN` environment variable set in Vercel.
+Deploys get the same credential from the `NPM_RC` environment variable set in
+Vercel, which Vercel writes out as an `.npmrc` at build time so the token never
+has to be committed. That is deliberately independent of the pnpm version:
+Vercel picks pnpm 9 *or 10* from `lockfileVersion: '9.0'`, and pnpm 10 ignores
+an expanded credential exactly the way the local pnpm does — so a setup relying
+on that expansion would break whenever the deploy landed on 10.
 
 Turnstile verification is skipped entirely when `TURNSTILE_SECRET_KEY` is unset,
 so the contact form works locally without it.
@@ -137,10 +141,11 @@ logs, not the inbox.
 **`pnpm install` fails on `@fortawesome/sharp-*`**: `FONTAWESOME_NPM_TOKEN` is
 missing or expired.
 
-**`pnpm install` returns 401 with "No authorization header was set"**: pnpm 10+
-is ignoring the credential in the project `.npmrc` — see Environment above and
-set it in your user-level config. A `[WARN] Ignored project-level auth setting`
-line earlier in the output confirms this is the cause.
+**`pnpm install` returns 401 with "No authorization header was set"**: the token
+is missing from your user-level config — see Environment above. On Vercel, check
+the `NPM_RC` environment variable instead. If the output also carries a `[WARN]
+Ignored project-level auth setting` line, something has re-added an `_authToken`
+to the committed `.npmrc`; that line belongs in user-level config, not here.
 
 **`ERR_PNPM_IGNORED_BUILDS: Ignored build scripts: esbuild, msw, sharp`**: pnpm
 blocks dependency install scripts until you answer for each one. On pnpm 10 this
