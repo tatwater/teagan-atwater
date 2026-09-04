@@ -8,9 +8,9 @@ import { resumeItems } from '@/data/resume';
  *
  * Order is editorial, not chronological, and each entry gets its own `name` and
  * `tagline` because the home page introduces the *thing* — the product or the
- * company — while the résumé introduces the *role*. `nmc-swe` is "Founding
- * Software Engineer" on the résumé and "The New Money Company" here; `osler-cto`
- * is filed under ScopeAI's legal name but the world knows the product as Osler.
+ * company — while the résumé introduces the *role*. `nmc` is "Founding Software
+ * Engineer" on the résumé and "The New Money Company" here; `osler-cto` is
+ * filed under ScopeAI's legal name but the world knows the product as Osler.
  *
  * Everything else — logo, dates, tags, whether there is a detail page — still
  * comes from the résumé entry, so this file never has to be kept in sync.
@@ -34,7 +34,7 @@ interface HighlightSource {
 const HIGHLIGHT_SOURCES: HighlightSource[] = [
   {
     accent: 'var(--reel-nmc)',
-    id: 'nmc-swe',
+    id: 'nmc',
     name: 'The New Money Company',
     tagline: 'YC-backed fintech startup guaranteeing payments in trust-sensitive marketplaces',
   },

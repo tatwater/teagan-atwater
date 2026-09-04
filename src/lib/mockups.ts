@@ -16,11 +16,11 @@ const MOCKUP_URLS = import.meta.glob('/src/assets/mockups/*/*.{png,jpg,jpeg,webp
 
 /** Real alt text, keyed by the path under src/assets/mockups/. */
 const MOCKUP_ALT: Record<string, string> = {
-  'nmc-swe/02-order-management.jpg':
+  'nmc/02-order-management.jpg':
     'The New Money Company\u2019s order workspace on a tablet, open on order O-1001 for $108,007.50: a checklist running from uploading the buyer\u2019s purchase order through marking the order shipped and delivered to reconciling payment, beside a sidebar of the documents the order generates along the way',
-  'nmc-swe/03-purchase-order-pdf.jpg':
+  'nmc/03-purchase-order-pdf.jpg':
     'A purchase order the platform generated, printed and lying on an oak table — order O-1001, Net 30, routing seven lines of sauces from a Chicago seller to a buyer in São Paulo, footed \u201CPowered by The New Money Company\u201D',
-  'nmc-swe/04-invoice-review-and-pay.jpg':
+  'nmc/04-invoice-review-and-pay.jpg':
     'An invoice open on a laptop before payment: I-1001, issued February 1 2025 and due March 2, six lines of lab equipment billed to a buyer in Geneva, totalling $108,007.50 USD beside a Pay Invoice button',
   'project-car-app/01-home-screen-cost-overview.jpg':
     'The personal car app\u2019s home screen on a phone, headed by a 2025 Outback: a nudge that it has been nine days since the last fill-up, a lifetime cost curve, and tiles reading 33.3 mpg average fuel economy, 616 mi average projected range, and 9¢/gal against the previous ninety days',
@@ -56,7 +56,7 @@ export interface Mockup {
  * fallback below carry on unaffected.
  */
 const MOCKUP_VIDEOS: Record<string, Mockup[]> = {
-  'nmc-swe': [
+  'nmc': [
     {
       alt: 'The New Money Company — product walkthrough',
       kind: 'video',

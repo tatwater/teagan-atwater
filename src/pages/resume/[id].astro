@@ -13,11 +13,24 @@ import { logoUrl } from '@/lib/logos';
 export const prerender = true;
 
 export function getStaticPaths() {
-  // Only generate pages for items that have a detailLabel (i.e. opt-in to a detail page)
+  // Slugs under /resume served by their own page file, which this route must not
+  // generate a second copy of. `nmc` aggregates every New Money Company role
+  // onto one page — one date span across all of them, their tags merged — which
+  // this generic route has no way to express.
+  //
+  // Declared in here rather than beside the other frontmatter constants because
+  // Astro hoists getStaticPaths into its own module at build time, where the
+  // component's scope does not reach it.
+  const bespokeDetailSlugs = new Set(['nmc']);
+
+  // A detailLabel is how an item opts in to having a detail page at all, and
+  // `detailId ?? id` is the slug it opts in to — the same expression every link
+  // in the site is built from, so the page is always generated at the URL those
+  // links point to.
   return resumeItems
-    .filter((item) => item.detailLabel)
+    .filter((item) => item.detailLabel && !bespokeDetailSlugs.has(item.detailId ?? item.id))
     .map((item) => ({
-      params: { id: item.id },
+      params: { id: item.detailId ?? item.id },
       props: { item },
     }));
 }

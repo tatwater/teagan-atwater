@@ -3,7 +3,7 @@ import type { ResumeItem } from '@/data/resume/types';
 
 export const experienceItems: ResumeItem[] = [
   {
-    id: 'nmc-swe',
+    id: 'nmc',
     title: 'Founding Software Engineer',
     organizationName: 'The New Money Company',
     organizationUrl: 'https://newmoneycompany.com/',
@@ -25,7 +25,6 @@ export const experienceItems: ResumeItem[] = [
     descriptionPrint:
       'Employee #1 and sole frontend engineer at a four-person YC W24 fintech. Built every interface across 6 production web apps and internal dashboards serving 1,000+ users, set all frontend architecture, and shipped a native Electron client. Products I built process $250K+/month in transaction volume.',
     detailLabel: 'Learn more',
-    detailId: 'nmc',
   },
   {
     // Shelved for now, data kept — drop `hidden` to bring the card back. Its

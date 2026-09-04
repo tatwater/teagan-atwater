@@ -1,0 +1,8 @@
+---
+// The New Money Company has a single detail page, at /resume/nmc. This slug came
+// from the résumé item's old id, `nmc-swe`, since renamed to `nmc` so the entry,
+// its mockup directory and its URL all share one id. Nothing in the site ever
+// linked here, but the URL was live and prerendered, so it redirects rather than
+// starting to 404.
+return Astro.redirect('/resume/nmc', 301);
+---
