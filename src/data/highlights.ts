@@ -42,7 +42,7 @@ const HIGHLIGHT_SOURCES: HighlightSource[] = [
     accent: 'var(--reel-gli)',
     id: 'project-gli',
     name: 'Gli',
-    tagline: 'An ice conditions reporting platform for Nordic / wild ice skaters',
+    tagline: 'An ice conditions reporting platform for the Nordic / wild ice skating community',
   },
   {
     accent: 'var(--reel-sous)',

@@ -28,8 +28,8 @@ const MOCKUP_ALT: Record<string, string> = {
     'The personal car app\u2019s review screen after logging a fill-up: 32.3 miles per gallon, 3% below average and 10¢ per mile, over the entry it was worked out from — 500.5 miles, 15.5 gallons, and 50.50 dollars on November 5, 2024',
   'project-gli/01-phone-in-hand-explore-map.jpg':
     'Gli\u2019s explore map open on a phone, showing Mascoma Lake with ice condition reports pinned along the shoreline',
-  'project-gli/02-conditions-card-close-up.jpg':
-    'A close-up of Gli\u2019s lake summary card: conditions rated Good, last reported two hours ago by three skaters, six to eight inches of ice, and two hazards',
+  'project-gli/02-satellite-card-close-up.jpg':
+    'A close-up of Gli\u2019s satellite layer over Mascoma Lake in Enfield, New Hampshire: a Sentinel-2 true colour capture from December 22 2025 at 1% cloud cover, scrubbable along a timeline of every earlier pass over the lake',
   'project-gli/03-logo-lockups.jpg':
     'The Gli wordmark in both of its lockups, reversed white on black and black on white, each underscored by a skate blade trailing pale blue ice',
   'project-sous/01-recipe-detail-on-laptop.jpg':

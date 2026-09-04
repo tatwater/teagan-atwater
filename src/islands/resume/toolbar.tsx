@@ -23,6 +23,14 @@ import { cn } from '@/lib/utils';
  */
 const SHOW_PRINT_BUTTON: boolean = false;
 
+/**
+ * The grouped/chronological toggle is shelved while the page stays simple.
+ * Chronological is the default the explorer holds, so hiding the toggle just
+ * pins it there — grouped rendering still lives in
+ * src/islands/resume/accordion.tsx and comes back with this flag.
+ */
+const SHOW_VIEW_MODE_TOGGLE: boolean = false;
+
 
 export function ResumeToolbar(props: {
   matchCount: number;
@@ -118,6 +126,7 @@ export function ResumeToolbar(props: {
           <div className='flex items-center justify-between gap-2 order-2 w-full md:order-3 md:w-auto'>
             <div className='flex items-center gap-2'>
             {/* View mode toggle */}
+            {SHOW_VIEW_MODE_TOGGLE && (
             <ButtonGroup className='shrink-0'>
               <Tooltip>
                 <TooltipTrigger
@@ -170,6 +179,7 @@ export function ResumeToolbar(props: {
                 </TooltipContent>
               </Tooltip>
             </ButtonGroup>
+            )}
 
             {/* Verbosity toggle: text labels on sm+ */}
             <ButtonGroup className='shrink-0 hidden sm:flex'>

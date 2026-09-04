@@ -38,7 +38,7 @@ export const projectItems: ResumeItem[] = [
     dateEnd: null,
     type: 'project',
     tags: ['TypeScript', 'React', 'React Native', 'Expo', 'Postgres', 'Tailwind', 'Design Systems'],
-    descriptionHeadline: 'An ice conditions reporting platform for Nordic / wild ice skaters',
+    descriptionHeadline: 'An ice conditions reporting platform for the Nordic / wild ice skating community',
     // TODO: real copy. Nothing below is written yet; the home page shows the
     // headline above and the mockups, and needs none of these.
     descriptionSummary: '',
