@@ -56,8 +56,7 @@ export const projectItems: ResumeItem[] = [
     type: 'project',
     tags: ['TypeScript', 'Next.js', 'Supabase', 'Styled Components', 'Tailwind', 'Electron', 'Expo', 'Figma', 'Full Stack', 'Product Strategy'],
     descriptionHeadline: 'Founded and solo-built a social platform for home cooking',
-    descriptionSummary:
-      'A social platform for home cooking, designed and built solo to own and learn the full stack — a git-style data model for branching and forking recipes, a canonical ingredient database, a scraping and normalization pipeline, and a live \u201cplayer\u201d that guides you through preparing several dishes at once.',
+    descriptionSummary: 'Designed and built a social platform for home cooking, including a git-style data model for branching/forking recipes, a canonical ingredient database, a web scraping and normalization pipeline, and a live \u201cplayer\u201d experience to help users prepare multiple dishes at once',
     descriptionFull:
       'Sous was a social platform for home cooking that I designed and built entirely on my own over three and a half years. I took it on deliberately: I wanted to own the full stack rather than a slice of it, and a real product with real complexity was the only way to learn that honestly.\n\nThe interesting problems were in the data. Recipes want to be forked and adapted, so I built a git-style data model for branching them, backed by a canonical ingredient database and a scraping and normalization pipeline to get messy recipes from the web into a consistent shape. On top of that sat a live \u201cplayer\u201d experience that walks a cook through preparing multiple dishes at once, which turns out to be a scheduling problem as much as an interface one.\n\nAlong the way I taught myself TypeScript, Postgres, auth, Tailwind, Electron, modern rendering strategies, and Figma. That self-directed foundation is exactly what I brought with me to The New Money Company.',
     descriptionPrint:

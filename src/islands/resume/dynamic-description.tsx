@@ -1,10 +1,55 @@
 import type { Verbosity } from '@/islands/resume/types';
-import type { ResumeItem } from '@/data/resume/types';
+import type { DescriptionBody, ResumeItem } from '@/data/resume/types';
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { Highlight, resolveVerbosity } from '@/islands/resume/highlight';
+import { hasDescription, toBulletRuns } from '@/data/resume/description';
 import { cn } from '@/lib/utils';
+
+
+function BulletList({ bullets, terms }: { bullets: string[]; terms: string[] }) {
+  return (
+    <ul className='flex flex-col gap-1.5 pl-4 list-disc marker:text-muted-foreground/40'>
+      {bullets.map((bullet, i) => (
+        <li key={i} className='pl-0.5'>
+          <Highlight terms={terms} text={bullet} />
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+
+/** Prose renders as paragraphs split on blank lines; a list renders as bullets. */
+function DescriptionContent({ body, terms }: { body: DescriptionBody; terms: string[] }) {
+  if (typeof body === 'string') {
+    return (
+      <>
+        {body.split('\n\n').map((paragraph, i) => (
+          <p key={i}>
+            <Highlight terms={terms} text={paragraph} />
+          </p>
+        ))}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {toBulletRuns(body).map((run, i) => (
+        <div key={i} className='flex flex-col gap-1.5'>
+          {run.label && (
+            <p className='text-xs font-mono font-medium text-foreground/72'>
+              <Highlight terms={terms} text={run.label} />
+            </p>
+          )}
+          <BulletList bullets={run.bullets} terms={terms} />
+        </div>
+      ))}
+    </>
+  );
+}
 
 
 export function DynamicDescription(props: {
@@ -28,7 +73,7 @@ export function DynamicDescription(props: {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
 
-  const text = getText(shownVerbosity);
+  const body = getText(shownVerbosity);
 
   // After every content change, sync wrapper height to the natural content height.
   // useLayoutEffect fires before paint, so the CSS transition picks up the new target
@@ -65,13 +110,13 @@ export function DynamicDescription(props: {
           initial={false}
           transition={{ duration: 0.15, ease: 'easeInOut' }}
         >
-          {text && (
-            <p className={cn(
-              'mt-2 text-sm leading-relaxed text-muted-foreground',
+          {body && hasDescription(body) && (
+            <div className={cn(
+              'flex flex-col gap-2 mt-2 text-sm leading-relaxed text-muted-foreground',
               shownVerbosity === 'detail' && 'leading-loose',
             )}>
-              <Highlight terms={terms} text={text} />
-            </p>
+              <DescriptionContent body={body} terms={terms} />
+            </div>
           )}
         </motion.div>
       </div>

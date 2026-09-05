@@ -40,6 +40,10 @@ interface CardBaseProps {
 
 
 function CardTitle({ terms, text, className }: { terms: string[]; text: string; className?: string }) {
+  // An entry with no role or degree to name — Northfield Mount Hermon — leaves
+  // `title` empty and shows only its org badge, dates, and location.
+  if (!text) return null;
+
   return (
     <h3 className={cn('font-semibold text-foreground leading-snug', className)}>
       <Highlight terms={terms} text={text} />

@@ -74,6 +74,16 @@ describe('itemMatchesTerms', () => {
   it('matches text that is only in the full description', () => {
     expect(itemMatchesTerms(makeItem(), ['fundraising'])).toBe(true);
   });
+
+  it('matches inside a bulleted summary, labels included', () => {
+    const item = makeItem({
+      descriptionSummary: ['A loose bullet', { label: 'Impact', bullets: ['Shipped the wizard'] }],
+    });
+
+    expect(itemMatchesTerms(item, ['loose'])).toBe(true);
+    expect(itemMatchesTerms(item, ['wizard'])).toBe(true);
+    expect(itemMatchesTerms(item, ['impact'])).toBe(true);
+  });
 });
 
 
@@ -90,6 +100,14 @@ describe('resolveVerbosity', () => {
 
   it('expands to summary when the match is only in the summary', () => {
     expect(resolveVerbosity(makeItem(), 'headline', ['architecture'])).toBe('summary');
+  });
+
+  it('expands to summary when the match is only in a bullet', () => {
+    const item = makeItem({
+      descriptionSummary: [{ label: 'Impact', bullets: ['Shipped the wizard'] }],
+    });
+
+    expect(resolveVerbosity(item, 'headline', ['wizard'])).toBe('summary');
   });
 
   it('expands to detail when the match is only in the full description', () => {

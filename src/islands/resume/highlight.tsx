@@ -1,6 +1,7 @@
 import type { ResumeItem } from '@/data/resume/types';
 import type { Verbosity } from '@/islands/resume/types';
 
+import { descriptionText } from '@/data/resume/description';
 import { visibleTags } from '@/data/resume/skills';
 
 
@@ -48,7 +49,7 @@ export function itemMatchesTerms(item: ResumeItem, terms: string[]): boolean {
     item.title,
     item.organizationName,
     item.location,
-    item.descriptionSummary,
+    descriptionText(item.descriptionSummary),
     item.descriptionFull,
     ...visibleTags(item.tags),
   ].join(' ').toLowerCase();
@@ -79,7 +80,7 @@ export function resolveVerbosity(
     return verbosity;
 
   const needed: Verbosity | null =
-    textMatchesTerms(item.descriptionSummary, terms) ? 'summary'
+    textMatchesTerms(descriptionText(item.descriptionSummary), terms) ? 'summary'
     : textMatchesTerms(item.descriptionFull, terms) ? 'detail'
     : null;
 

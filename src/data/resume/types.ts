@@ -10,6 +10,25 @@ import type { SkillCategory, SkillTag, SkillVisibility } from '@/data/resume/ski
 export type { SkillCategory, SkillTag, SkillVisibility };
 
 
+/**
+ * A labeled run of bullets — the "Built" / "Impact" split the printed résumé
+ * uses to break a long entry into sections a reader can scan.
+ */
+export interface DescriptionBulletGroup {
+  bullets: string[];
+  label: string;
+}
+
+/** One entry in a bulleted body: a plain bullet, or a labeled run of them. */
+export type DescriptionBlock = string | DescriptionBulletGroup;
+
+/**
+ * The body of a description. A string renders as prose — blank lines separate
+ * paragraphs — and an array renders as a bulleted list. Consecutive plain
+ * bullets share one list; each labeled group gets its own heading and list.
+ */
+export type DescriptionBody = string | DescriptionBlock[];
+
 export interface OrgGroup {
   key: string;
   dateEnd: string | null;
@@ -33,7 +52,7 @@ export interface ResumeItem {
   dateStart: string;
   descriptionFull: string;  // Full paragraph
   descriptionHeadline: string;  // One-liner
-  descriptionSummary: string;  // 1–2 sentence description
+  descriptionSummary: DescriptionBody;  // Short prose, or the entry's bullets
   organizationName: string;
   tags: SkillTag[];
   title: string;

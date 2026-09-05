@@ -5,6 +5,7 @@ import TALogo from '@/components/ta-brand/TA';
 import { PrintBackLink } from '@/islands/resume/print-back-link';
 import { PrintPrintButton } from '@/islands/resume/print-print-button';
 import { resumeItems } from '@/data/resume';
+import { descriptionText } from '@/data/resume/description';
 import { groupItems } from '@/data/resume/helpers';
 import { formatDateRange } from '@/data/resume/dates';
 import { printSkillCategories } from '@/data/resume/skills';
@@ -40,6 +41,13 @@ const printProjects = resumeItems
   .filter((i) => i.type === 'project' && !i.hidden && !i.hideFromPrint)
   .sort((a, b) => (b.dateEnd ?? '9999') > (a.dateEnd ?? '9999') ? 1 : -1);
 
+
+
+// Printed entries carry a `descriptionPrint` written for this page's narrow
+// column; the interactive summary is only a fallback, and is flattened here
+// because a bulleted body has no single-paragraph form of its own.
+const printDescription = (item: ResumeItem) =>
+  item.descriptionPrint ?? descriptionText(item.descriptionSummary, ' · ');
 
 
 // Which categories print, and which of their tags, both come from the taxonomy's
@@ -536,8 +544,8 @@ const skillColumn = printSkillCategories();
                 <h3 class="exp-title">{group.lead.title}</h3>
                 <span class="exp-dates">{formatDateRange(group.lead.dateStart, group.lead.dateEnd)}</span>
               </div>
-              {(group.lead.descriptionPrint ?? group.lead.descriptionSummary) && (
-                <p class="exp-desc">{group.lead.descriptionPrint ?? group.lead.descriptionSummary}</p>
+              {printDescription(group.lead) && (
+                <p class="exp-desc">{printDescription(group.lead)}</p>
               )}
               {group.previously.length > 0 && (
                 <div class="prev-roles">
@@ -563,8 +571,8 @@ const skillColumn = printSkillCategories();
             <div class="edu-item">
               <p class="edu-school">{item.organizationName}{item.location ? ` \u00b7 ${item.location}` : ''}</p>
               <h3 class="edu-degree">{item.title}</h3>
-              {(item.descriptionPrint ?? item.descriptionSummary) && (
-                <p class="edu-detail">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              {printDescription(item) && (
+                <p class="edu-detail">{printDescription(item)}</p>
               )}
             </div>
           ))}
@@ -580,8 +588,8 @@ const skillColumn = printSkillCategories();
                 <h4 class="proj-title">{item.title}</h4>
                 <span class="proj-org">{item.organizationName}</span>
               </div>
-              {(item.descriptionPrint ?? item.descriptionSummary) && (
-                <p class="proj-desc">{item.descriptionPrint ?? item.descriptionSummary}</p>
+              {printDescription(item) && (
+                <p class="proj-desc">{printDescription(item)}</p>
               )}
             </div>
           ))}

@@ -18,8 +18,27 @@ export const experienceItems: ResumeItem[] = [
     type: 'experience',
     tags: ['TypeScript', 'React', 'Tailwind', 'Electron', 'PHP', 'Postgres', 'Design Systems', 'Monorepos', 'Full Stack', 'Startup'],
     descriptionHeadline: 'Employee #1 and sole frontend owner at a YC W24 fintech',
-    descriptionSummary:
-      'Employee #1 at a four-person fintech and its only frontend engineer, building every user interface on a shared design system — six production web apps and several internal dashboards serving 1,000+ users. The products I build process $250K+/month in transaction volume.',
+    descriptionSummary: [
+      {
+        label: 'Built',
+        bullets: [
+          'Six production web apps, a shared design system, and several internal dashboards',
+          'Rebranded and incorporated an acquired marketplace platform, closing critical gaps in the inherited experience to unblock launch in under two months',
+          'Data-entry tables with keyboard controls & live database sync against local state',
+          'Multi-page wizards with branching, complex validation state, and resumable progress',
+          'An email dispatcher lambda for sending marketplace match alerts, with queuing, batching, retries, and status updates',
+          'An Electron email client with a built-in AI assistant for sales reps to manage marketplace matches & trades across their inbox',
+        ],
+      },
+      {
+        label: 'Impact',
+        bullets: [
+          'Set all frontend architecture: monorepo structure, app & shared package boundaries, and the refactor roadmap to manage technical debt and centralize shared logic',
+          'Unblocked work across the stack: wrote SQL/PHP for endpoints and PDF templates, and had the trust of our lead designer to ship ahead of mocks as necessary to hit production targets; introduced agentic tooling into daily delivery and code review',
+          'Products I built process $600K+/month in transaction volume with hundreds of MAUs',
+        ],
+      },
+    ],
     descriptionFull:
       'I am employee #1 and the sole frontend engineer at The New Money Company, a four-person Y Combinator W24 fintech. I started on contract in January 2024, established the front-end patterns the team still works in, and came on full-time a few months later. Every user interface at the company is mine, built on a shared design system that keeps six production web apps and several internal dashboards — serving over a thousand users — visually consistent.\n\nThe work has ranged widely. I rebranded and rebuilt the UI of an acquired marketplace codebase, closing gaps in the inherited experience before we scaled it, and wrote the email dispatcher lambda behind our match alerts. I also built a native Electron email client with built-in AI chat, so sales reps can manage marketplace matches and trades inside their own networks.\n\nBeyond the interfaces, I set all of the frontend architecture: the monorepo structure, the boundaries between apps and shared packages, and the refactor roadmap we use to manage technical debt and centralize shared logic. At a company this size the useful instinct is to unblock yourself, so I have written SQL and PHP for endpoints and PDF templates that did not exist yet, and shipped ahead of design when a launch depended on it. As agentic tooling matured I folded it into daily delivery and code review.',
     descriptionPrint:
@@ -91,8 +110,9 @@ export const experienceItems: ResumeItem[] = [
     groupKey: 'oho',
     tags: ['React', 'TypeScript', 'Design Systems', 'Freelance'],
     descriptionHeadline: 'Returned to OHO to help modernize their component library',
-    descriptionSummary:
-      'Came back to OHO Interactive on contract to help the team adopt React and TypeScript, building toward a better developer experience in their reusable frontend component library.',
+    descriptionSummary: [
+      'Returned as a contractor in 2023 to assist the company in its adoption of React & TypeScript for more modern DX in their reusable frontend component library',
+    ],
     descriptionFull:
       'Years after my last stint at OHO Interactive, the team brought me back on contract to help them move their reusable frontend component library toward React and TypeScript. The goal was a more modern developer experience for the engineers building client sites on top of it — typed, composable components in place of patterns the agency had outgrown. It was a satisfying return: the same studio, the same standards, a decade of my own experience to bring to it.',
     descriptionPrint:
@@ -112,8 +132,12 @@ export const experienceItems: ResumeItem[] = [
     type: 'experience',
     tags: ['Startup', 'Team Leadership', 'Product Strategy', 'Next.js', 'Redux', 'GraphQL', 'MongoDB', 'Styled Components', 'Adobe XD', 'UI Design'],
     descriptionHeadline: 'Co-founded a clinical software startup and led its design and engineering',
-    descriptionSummary:
-      'Co-founded ScopeAI and built an interactive electronic medical record demo for primary care doctors, mapping exams and diagnoses onto a representative patient avatar. Hired and managed a team of eight, and led the company rebrand to Osler.',
+    descriptionSummary: [
+      'Architected next-gen medical record system for medical charting, enabling primary care doctors to spend less time with software and more time with patients, including a heavily structured data model mapping exams and diagnoses to patients',
+      'Directly partnered with practicing clinicians in forward deployed settings to iterate faster and with higher confidence',
+      'Made design our competitive advantage to differentiate from legacy competitors',
+      'Hired and managed a team of eight: another full-time design engineer whom I mentored directly, two backend engineer interns, and five medical research data interns',
+    ],
     descriptionFull:
       'ScopeAI — later Osler, and now EMRLD — was a clinical software startup I co-founded in Hanover, New Hampshire. Our product was an interactive electronic medical record demo built for primary care doctors: a heavily structured data model that mapped exams and diagnoses onto a representative patient avatar, iterated toward an MVP alongside practicing clinicians.\n\nElectronic medical records are an entrenched market, so we made great design our competitive advantage. I did that work in Adobe XD, and in my final months led a full company rebrand to Osler, covering naming, identity, and UI.\n\nI also hired and managed a team of eight: another full-time design engineer, two backend engineering interns, and five data interns. The avatar-driven diagnostic tool I architected outlived my tenure — it is the company\'s core product today, used for medical education and training.',
     descriptionPrint:
@@ -132,8 +156,11 @@ export const experienceItems: ResumeItem[] = [
     type: 'experience',
     tags: ['Startup', 'Team Leadership', 'Product Strategy', 'Meteor', 'MongoDB', 'React', 'Node.js', 'Full Stack'],
     descriptionHeadline: 'Co-founded Fiber and built its products end to end',
-    descriptionSummary:
-      'Co-founded Fiber and built two Meteor/MERN applications as the business evolved — a video-centric education platform and a data analytics dashboard — plus a Gatsby marketing site. Defined the target market and scope, and hired the company\'s first engineer.',
+    descriptionSummary: [
+      'Built two Meteor/MERN apps: a video-centric education platform and a data analytics dashboard, plus a Gatsby marketing site',
+      'Defined target market and scope, iterating with design',
+      'Interviewed and hired the company\'s first engineer',
+    ],
     descriptionFull:
       'Fiber was a startup I co-founded in Somerville, Massachusetts. As the business found its shape I built two Meteor/MERN applications to match it: first a video-centric education platform, then a data analytics dashboard, alongside a Gatsby marketing site.\n\nMy work was not only technical. I helped define the target market and scope the product, iterating closely with design to decide what was worth building. I also interviewed and hired the company\'s first engineer. Fiber was the first time I owned both what to build and how to build it, and it shaped how I think about the relationship between the two.',
     descriptionPrint:
@@ -154,8 +181,9 @@ export const experienceItems: ResumeItem[] = [
     groupKey: 'oho',
     tags: ['Drupal', 'PHP', 'jQuery', 'JavaScript', 'HTML', 'CSS', 'Responsive Design', 'Agile/Scrum'],
     descriptionHeadline: 'Joined a Boston digital agency full-time after graduation',
-    descriptionSummary:
-      'Worked across teams at OHO Interactive to build and ship large-scale Drupal PHP/jQuery sites for the agency\'s clients, having first arrived there as an intern and then on contract.',
+    descriptionSummary: [
+      'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern, then on contract, then full-time after graduation',
+    ],
     descriptionFull:
       'OHO Interactive is a Boston digital agency I kept returning to — first as an intern, then on contract, and after graduation as a full-time engineer. In this role I worked across teams to build and ship large-scale Drupal sites in PHP and jQuery, the kind of projects where the content model matters as much as the interface.\n\nAgency work meant several clients at once, each with its own requirements and expectations, and OHO held high standards for code quality alongside a genuinely collaborative culture. It is where I learned the craft of shipping client work in production, and the reason I came back twice more.',
     descriptionPrint:
