@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 /**
  * Record a contact form submission.
@@ -29,5 +29,37 @@ export const submitContactMessage = mutation({
     });
 
     return { contactId, threadId };
+  },
+});
+
+/**
+ * Record whether the notification email actually went out.
+ *
+ * Convex and Resend cannot share a transaction — an email is irreversible once
+ * accepted — so the row is written first and stamped afterwards. A row left at
+ * `emailDelivered: false` is the compensating record for the one case that is
+ * not atomic: the insert committed, then the send failed.
+ */
+export const markContactDelivery = mutation({
+  args: {
+    contactId: v.id("contacts"),
+    emailDelivered: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.contactId, { emailDelivered: args.emailDelivered });
+  },
+});
+
+/**
+ * Messages whose notification email never landed. Read from the Convex
+ * dashboard to recover anything the sender was told had failed.
+ */
+export const undeliveredContacts = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db
+      .query("contacts")
+      .withIndex("by_email_delivered", (q) => q.eq("emailDelivered", false))
+      .collect();
   },
 });

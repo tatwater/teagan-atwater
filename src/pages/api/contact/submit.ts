@@ -1,11 +1,12 @@
 import type { APIRoute } from 'astro';
-import type { ContactSubmission } from '@/lib/contact-submission';
 
 import { getConvexClient } from '@/lib/convex';
-import { sendContactSubmission } from '@/lib/email';
+import { sendContactReceipt, sendContactSubmission } from '@/lib/email';
 import { parseContactSubmission } from '@/lib/contact-submission';
+import { deliverContactSubmission } from '@/lib/contact-delivery';
 import { verifyTurnstileToken } from '@/lib/turnstile';
 import { api } from '../../../../convex/_generated/api';
+import type { Id } from '../../../../convex/_generated/dataModel';
 
 
 export const prerender = false;
@@ -16,32 +17,6 @@ function json(body: unknown, status: number) {
     status,
     headers: { 'Content-Type': 'application/json' },
   });
-}
-
-
-/**
- * Persist the message, falling back to a synthetic thread id so a Convex outage
- * still lets the notification email go out.
- */
-async function record(
-  submission: ContactSubmission,
-  submittedAt: Date,
-): Promise<{ threadId: string; recorded: boolean }> {
-  try {
-    const convex = getConvexClient();
-    const result = await convex.mutation(api.contacts.submitContactMessage, {
-      name: submission.name,
-      email: submission.email,
-      subject: submission.subject,
-      message: submission.message,
-    });
-
-    return { threadId: result.threadId, recorded: true };
-  } catch (error) {
-    console.error('Failed to record contact message in Convex:', error);
-
-    return { threadId: `thread_${submittedAt.getTime()}`, recorded: false };
-  }
 }
 
 
@@ -61,26 +36,45 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     }
 
     const submittedAt = new Date();
-
-    // Record and notify independently — the message survives if either path works.
-    const { threadId, recorded } = await record(submission, submittedAt);
-    const emailResult = await sendContactSubmission({
+    const email = {
       name: submission.name,
       email: submission.email,
       subject: submission.subject,
       message: submission.message,
-      threadId,
       submittedAt,
+    };
+
+    const outcome = await deliverContactSubmission({
+      record: async () => {
+        const convex = getConvexClient();
+        const result = await convex.mutation(api.contacts.submitContactMessage, {
+          name: submission.name,
+          email: submission.email,
+          subject: submission.subject,
+          message: submission.message,
+        });
+
+        return { contactId: result.contactId, threadId: result.threadId };
+      },
+
+      markDelivery: async (contactId, delivered) => {
+        const convex = getConvexClient();
+        await convex.mutation(api.contacts.markContactDelivery, {
+          contactId: contactId as Id<'contacts'>,
+          emailDelivered: delivered,
+        });
+      },
+
+      sendNotification: (threadId) => sendContactSubmission({ ...email, threadId }),
+      sendReceipt: (threadId) => sendContactReceipt({ ...email, threadId }),
+      fallbackThreadId: () => `thread_${submittedAt.getTime()}`,
     });
 
-    if (!recorded && !emailResult.success) {
-      return json(
-        { error: 'We could not deliver your message. Please email desk@teaganatwater.com directly.' },
-        502,
-      );
+    if (!outcome.ok) {
+      return json({ error: outcome.error }, 502);
     }
 
-    return json({ success: true }, 200);
+    return json({ success: true, receiptSent: outcome.receiptSent }, 200);
   } catch (error) {
     console.error('Contact submission error:', error);
     return json({ error: 'Something went wrong. Please try again.' }, 500);

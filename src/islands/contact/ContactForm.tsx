@@ -36,6 +36,7 @@ export default function ContactForm(props: {
 }) {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [receiptSent, setReceiptSent] = useState(false);
   const turnstileRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
 
@@ -114,6 +115,7 @@ export default function ContactForm(props: {
       }
 
       form.reset();
+      setReceiptSent(Boolean(result.receiptSent));
       setStatus('success');
     } catch {
       setError('Could not reach the server. Please check your connection and try again.');
@@ -132,7 +134,9 @@ export default function ContactForm(props: {
             {`Message sent.`}
           </p>
           <p className='text-xs text-muted-foreground'>
-            {`Thanks for reaching out — I'll get back to you at the address you provided.`}
+            {receiptSent
+              ? `Thanks for reaching out — a confirmation is on its way to your inbox, and I'll get back to you at that address.`
+              : `Thanks for reaching out — I'll get back to you at the address you provided.`}
           </p>
         </div>
         <Button
