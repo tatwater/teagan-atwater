@@ -1,7 +1,12 @@
 import type { ResumeItem } from '@/data/resume/types';
 import type { Verbosity } from '@/islands/resume/types';
 
-import { faBuilding, faFolder, faGraduationCap, faEllipsisStroke, faGrip, faGrid } from '@fortawesome/sharp-regular-svg-icons';
+import { faArrowDownShortWide, faBuilding, faFolder, faGraduationCap, faEllipsisStroke, faGrip, faGrid } from '@fortawesome/sharp-regular-svg-icons';
+
+
+/** The merged experience-and-projects list shown while a skill tag is active. */
+export const SORTED_SECTION_ICON = faArrowDownShortWide;
+export const SORTED_SECTION_LABEL = 'Experience & Projects';
 
 
 export const SECTION_COLOR: Record<ResumeItem['type'], string> = {

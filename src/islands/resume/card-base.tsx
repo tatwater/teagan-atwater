@@ -2,11 +2,12 @@ import type { Verbosity } from '@/islands/resume/types';
 import type { ResumeItem, SkillTag } from '@/data/resume/types';
 
 import { faChevronRight, faLocationDot } from '@fortawesome/sharp-regular-svg-icons';
+import { CardTagRow } from '@/islands/resume/card-tag-row';
 import { DynamicDescription } from '@/islands/resume/dynamic-description';
-import { Highlight, textMatchesTerms } from '@/islands/resume/highlight';
+import { Highlight } from '@/islands/resume/highlight';
 import { OrgBadge } from '@/islands/resume/org-badge';
-import { TagPill } from '@/islands/resume/tag-pill';
 import { formatDateRange, getDuration } from '@/data/resume/dates';
+import { tagsWithActiveFirst } from '@/islands/resume/sort';
 import { visibleTags } from '@/data/resume/skills';
 import { getInitials } from '@/islands/resume/helpers';
 import { logoUrl } from '@/lib/logos';
@@ -28,6 +29,7 @@ type NestingMode = 'shared-page' | 'own-page';
 interface CardBaseProps {
   item: ResumeItem;
   verbosity: Verbosity;
+  activeTag?: SkillTag | null;
   logoShape?: LogoShape;
   nestingMode?: NestingMode;
   searchTerms?: string[];
@@ -159,12 +161,13 @@ function DetailLink({ item }: Pick<CardBaseProps, 'item'>) {
 
 
 function CardTagFooter({
+  activeTag,
   item,
   nestingMode,
   orgBadgeInHeader,
   tags,
   terms,
-}: Pick<CardBaseProps, 'item' | 'nestingMode'> & {
+}: Pick<CardBaseProps, 'activeTag' | 'item' | 'nestingMode'> & {
   orgBadgeInHeader: boolean;
   tags: SkillTag[];
   terms: string[];
@@ -174,16 +177,7 @@ function CardTagFooter({
       'flex flex-col mt-3 sm:flex-row sm:items-end sm:justify-between sm:gap-2',
       orgBadgeInHeader ? 'gap-3' : 'gap-2',
     )}>
-      <div className='flex flex-wrap gap-1'>
-        {tags.map((tag) => (
-          <TagPill
-            key={tag}
-            highlighted={textMatchesTerms(tag, terms)}
-            small
-            tag={tag}
-          />
-        ))}
-      </div>
+      <CardTagRow activeTag={activeTag} tags={tags} terms={terms} />
 
       {item.detailLabel && nestingMode !== 'shared-page' && <DetailLink item={item} />}
     </div>
@@ -211,8 +205,12 @@ function cardClassName(item: ResumeItem, nestingMode?: NestingMode): string {
 export function CardBase(props: CardBaseProps) {
   const { item, nestingMode } = props;
   const terms = props.searchTerms ?? [];
-  // Hidden tags stay on the entry but never reach a pill.
-  const displayTags = visibleTags(props.tagsOverride ?? item.tags);
+  // Hidden tags stay on the entry but never reach a pill. The tag being sorted
+  // by leads the row, so the reason this card ranked where it did reads first.
+  const displayTags = tagsWithActiveFirst(
+    visibleTags(props.tagsOverride ?? item.tags),
+    props.activeTag ?? null,
+  );
   // The org badge sits in the badge slot, so the title needs its own full-width row.
   const orgBadgeInHeader = Boolean(!props.showLogoInTitle && props.showOrgInHeader && item.organizationName);
 
@@ -247,6 +245,7 @@ export function CardBase(props: CardBaseProps) {
       {/* ── Tag footer ───────────────────────────────────────────────────── */}
       {props.showTagFooter && (displayTags.length > 0 || item.detailLabel) && (
         <CardTagFooter
+          activeTag={props.activeTag}
           item={item}
           nestingMode={nestingMode}
           orgBadgeInHeader={orgBadgeInHeader}

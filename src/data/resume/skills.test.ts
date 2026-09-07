@@ -7,6 +7,7 @@ import {
   sidebarSkillCategories,
   skillCategories,
   skillCategoryOrder,
+  visibilityAtLeast,
   visibilityOf,
 } from '@/data/resume/skills';
 import { resumeItems } from '@/data/resume';
@@ -43,39 +44,63 @@ describe('skill taxonomy', () => {
 
 
 describe('skill visibility', () => {
-  it('treats visibility as a ladder, print implying site', () => {
+  it('treats visibility as a ladder, print implying sidebar', () => {
     const printed = printSkillCategories().flatMap(([, tags]) => tags);
-    const shown = new Set(sidebarSkillCategories().flatMap(([, tags]) => tags));
+    const listed = new Set(sidebarSkillCategories().flatMap(([, tags]) => tags));
 
-    expect(printed.filter((tag) => !shown.has(tag))).toEqual([]);
+    expect(printed.filter((tag) => !listed.has(tag))).toEqual([]);
   });
 
-  it('omits hidden tags from the sidebar and from print', () => {
+  it('keeps everything the sidebar lists renderable on entry cards', () => {
+    const listed = sidebarSkillCategories().flatMap(([, tags]) => tags);
+
+    expect(listed.filter((tag) => !isTagVisible(tag))).toEqual([]);
+  });
+
+  it('omits hidden tags from every render path', () => {
     const hidden = allTags.filter((tag) => visibilityOf(tag) === 'hidden');
     const rendered = new Set([
+      ...allTags.filter(isTagVisible),
       ...sidebarSkillCategories().flatMap(([, tags]) => tags),
       ...printSkillCategories().flatMap(([, tags]) => tags),
     ]);
 
     expect(hidden.filter((tag) => rendered.has(tag))).toEqual([]);
-    expect(hidden.length).toBeGreaterThan(0);  // the mechanism is actually in use
   });
 
-  it('drops a category whose tags are all hidden', () => {
-    const fullyHidden = skillCategoryOrder
-      .filter((category) => tagsIn(category).every((tag) => !isTagVisible(tag)));
+  // The rung that keeps the sidebar curated while entries stay richly tagged.
+  // If this ever empties out, the sidebar has stopped being a curated subset.
+  it('keeps the entry-only rung in use', () => {
+    const entryOnly = allTags.filter((tag) => visibilityOf(tag) === 'entry');
+
+    expect(entryOnly.length).toBeGreaterThan(0);
+    expect(entryOnly.every((tag) => !visibilityAtLeast(tag, 'sidebar'))).toBe(true);
+  });
+
+  it('drops a category with nothing above the entry rung', () => {
+    const entryOnly = skillCategoryOrder
+      .filter((category) => tagsIn(category).every((tag) => !visibilityAtLeast(tag, 'sidebar')));
     const listed = new Set(sidebarSkillCategories().map(([category]) => category));
 
-    expect(fullyHidden.filter((category) => listed.has(category))).toEqual([]);
+    expect(entryOnly.filter((category) => listed.has(category))).toEqual([]);
+    expect(entryOnly.length).toBeGreaterThan(0);  // Backend & Services, Product & Leadership
   });
 
   it('preserves the record order in both render paths', () => {
     for (const [category, tags] of sidebarSkillCategories()) {
-      expect(tags).toEqual(tagsIn(category).filter(isTagVisible));
+      expect(tags).toEqual(tagsIn(category).filter((tag) => visibilityAtLeast(tag, 'sidebar')));
     }
 
     expect(sidebarSkillCategories().map(([category]) => category))
-      .toEqual(skillCategoryOrder.filter((category) => tagsIn(category).some(isTagVisible)));
+      .toEqual(skillCategoryOrder.filter((category) =>
+        tagsIn(category).some((tag) => visibilityAtLeast(tag, 'sidebar'))));
+  });
+
+  // The sidebar and the printed résumé are meant to mirror the same designed
+  // one-pager for now. Splitting them later means giving some tags the
+  // 'sidebar' rung — at which point this is the test to delete.
+  it('holds the sidebar and print sets identical', () => {
+    expect(sidebarSkillCategories()).toEqual(printSkillCategories());
   });
 
   // Curation hides tags, not entries. An entry stripped of every visible tag

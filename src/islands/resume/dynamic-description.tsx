@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 
 function BulletList({ bullets, terms }: { bullets: string[]; terms: string[] }) {
   return (
-    <ul className='flex flex-col gap-1.5 pl-4 list-disc marker:text-muted-foreground/40'>
+    <ul className='flex flex-col pl-4 list-disc marker:text-muted-foreground/40'>
       {bullets.map((bullet, i) => (
         <li key={i} className='pl-0.5'>
           <Highlight terms={terms} text={bullet} />

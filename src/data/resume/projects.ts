@@ -12,7 +12,7 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2026-03-14',
     dateEnd: null,
     type: 'project',
-    tags: ['Astro', 'React', 'TypeScript', 'Tailwind', 'Convex', 'Motion'],
+    tags: ['Astro', 'React', 'TypeScript', 'Tailwind', 'Convex', 'Motion', 'Figma', 'Design Systems', 'Design Tokens', 'Responsive Design', 'Semantic Markup', 'Keyboard Navigation', 'UI Design', 'UX Design', 'Accessibility', 'Information Architecture', 'Vitest', 'CSS', 'Vite', 'Postgres', 'Static Site Generation', 'Web Performance', 'Vercel', 'CI/CD', 'Git', 'HITL Engineering', 'Agent Skills', 'Sub-agent Orchestration', 'Automated Guardrails', 'Continuous Verification', 'Claude Code', 'Automated Testing', 'Code Review', 'Node.js', 'Auth', 'React Email', 'Full Stack', 'Product Strategy', 'Roadmapping'],
     descriptionHeadline: 'This site — Astro, React, Tailwind, Convex',
     descriptionSummary:
       'My personal website, now in its eleventh iteration. Built with Astro for server rendering, React islands for interactivity, Tailwind CSS v4 for styling, and Convex as the backend. Features a command palette, dark mode, and this résumé explorer.',
@@ -37,7 +37,7 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2026-07',
     dateEnd: null,
     type: 'project',
-    tags: ['TypeScript', 'React', 'React Native', 'Expo', 'Postgres', 'Tailwind', 'Design Systems'],
+    tags: ['TypeScript', 'React', 'React Native', 'Expo', 'Postgres', 'Tailwind', 'Design Systems', 'Figma', 'Design Tokens', 'Motion', 'Responsive Design', 'Semantic Markup', 'UI Design', 'UX Design', 'Accessibility', 'Information Architecture', 'Prototyping', 'Vitest', 'CSS', 'TanStack Start', 'Vite', 'Device Storage', 'Offline Support', 'Sync Engines', 'Key-Value Stores', 'React Context', 'Convex', 'Monorepos', 'Vercel', 'CI/CD', 'Git', 'HITL Engineering', 'Agent Skills', 'Sub-agent Orchestration', 'Automated Guardrails', 'Continuous Verification', 'Claude Code', 'Automated Testing', 'Code Review', 'Node.js', 'Auth', 'Python', 'React Email', 'Full Stack', 'Product Strategy', 'Roadmapping'],
     descriptionHeadline: 'An ice conditions reporting platform for the Nordic / wild ice skating community',
     // TODO: real copy. Nothing below is written yet; the home page shows the
     // headline above and the mockups, and needs none of these.
@@ -54,7 +54,7 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2020-06',
     dateEnd: '2024-01',
     type: 'project',
-    tags: ['TypeScript', 'Next.js', 'Supabase', 'Styled Components', 'Tailwind', 'Electron', 'Expo', 'Figma', 'Full Stack', 'Product Strategy'],
+    tags: ['TypeScript', 'Next.js', 'Supabase', 'Styled Components', 'Tailwind', 'Electron', 'Figma', 'Full Stack', 'Product Strategy', 'Design Systems', 'Design Tokens', 'Responsive Design', 'Semantic Markup', 'UI Design', 'UX Design', 'Accessibility', 'Information Architecture', 'Prototyping', 'React', 'Vitest', 'CSS', 'CSS Modules', 'TanStack Start', 'Vite', 'Immutable Stores', 'Device Storage', 'Postgres', 'React Context', 'Redux', 'Convex', 'Monorepos', 'Server-Side Rendering', 'React Server Components', 'Vercel', 'CI/CD', 'Git', 'HITL Engineering', 'Automated Guardrails', 'Sub-agent Orchestration', 'Continuous Verification', 'Claude Code', 'Code Review', 'Node.js', 'Auth', 'React Email', 'Roadmapping'],
     descriptionHeadline: 'Founded and solo-built a social platform for home cooking',
     descriptionSummary: 'Designed and built a social platform for home cooking, including a git-style data model for branching/forking recipes, a canonical ingredient database, a web scraping and normalization pipeline, and a live \u201cplayer\u201d experience to help users prepare multiple dishes at once',
     descriptionFull:
@@ -76,7 +76,7 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2020-06',
     dateEnd: '2023-12',
     type: 'project',
-    tags: ['UI Design', 'UX Design', 'Product Strategy', 'Information Architecture'],
+    tags: ['UX Design', 'Accessibility', 'Content Strategy', 'Product Strategy', 'Prototyping'],
     descriptionHeadline: 'Designed and renovated a century-old New Hampshire house as a family project',
     descriptionSummary:
       'A full gut renovation of a century-old property in Plainfield, NH, undertaken as a family creative project during the pandemic years. Involved design, planning, and hands-on construction work from concept through completion.',
@@ -96,7 +96,7 @@ export const projectItems: ResumeItem[] = [
     dateEnd: '2023-12',
     type: 'project',
     hidden: true,
-    tags: [],
+    tags: ['Figma', 'Freelance'],
     descriptionHeadline: 'Designed a brand & logo for a friend starting his health & wellness coaching business',
     descriptionSummary: '',
     descriptionFull: '',
@@ -112,7 +112,7 @@ export const projectItems: ResumeItem[] = [
     dateStart: '2025-08',
     dateEnd: null,
     type: 'project',
-    tags: ['Product Strategy', 'Full Stack', 'React', 'TypeScript', 'Node.js', 'UI Design', 'UX Design'],
+    tags: ['Product Strategy', 'Full Stack', 'React', 'TypeScript', 'UI Design', 'UX Design', 'Figma', 'Design Systems', 'Design Tokens', 'Responsive Design', 'Semantic Markup', 'Information Architecture', 'Prototyping', 'Tailwind', 'Vitest', 'CSS', 'TanStack Start', 'Vite', 'Device Storage', 'Offline Support', 'Sync Engines', 'Postgres', 'React Context', 'Convex', 'Monorepos', 'Vercel', 'CI/CD', 'Git', 'HITL Engineering', 'Automated Guardrails', 'Sub-agent Orchestration', 'Continuous Verification', 'Claude Code', 'Code Review', 'Node.js', 'Auth', 'React Email', 'Roadmapping'],
     descriptionHeadline: 'A lifetime cost-of-ownership tracker for personal vehicles',
     descriptionSummary:
       'Description coming soon',

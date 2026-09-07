@@ -1,0 +1,45 @@
+---
+import '@fontsource-variable/geist';
+import '@fontsource-variable/geist-mono';
+import '@/styles/global.css';
+import TagEditor from '@/islands/tag-editor';
+import { skillCategories } from '@/data/resume/skills';
+import { resumeItems } from '@/data/resume';
+
+// A development tool, not a page. It writes to the repository's source files
+// through /api/resume-tags, so it has no business existing on the deployed
+// site — hence the 404 outside `astro dev`, and no prerender.
+export const prerender = false;
+
+if (!import.meta.env.DEV) {
+  return new Response(null, { status: 404 });
+}
+
+// Served straight from the module rather than fetched, so the editor starts
+// with the same data the résumé renders from. After a save the dev server
+// reloads this module and the page comes back with the new state.
+const entries = resumeItems.map((item) => ({
+  id: item.id,
+  hidden: Boolean(item.hidden),
+  organizationName: item.organizationName,
+  tags: item.tags,
+  title: item.title,
+  type: item.type,
+}));
+---
+
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <meta name='robots' content='noindex, nofollow' />
+    <title>Tag editor</title>
+  </head>
+  <body>
+    <TagEditor
+      client:load
+      initialEntries={entries}
+      initialTaxonomy={skillCategories}
+    />
+  </body>
+</html>

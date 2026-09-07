@@ -7,18 +7,27 @@
  * Visibility is a ladder rather than a set of independent switches; each level
  * is a superset of the one beneath it:
  *
- *   'hidden'  In the vocabulary, out of the UI. Entries may still carry the tag
- *             and it stays valid to tag with, but it renders on no card, no
- *             sidebar, no print page, and matches no search. This is the
- *             staging area — where a tag waits to be judged.
- *   'site'    Renders in the skills sidebar and on entry cards, but is left off
- *             the one-page printed résumé.
- *   'print'   Renders everywhere, the printed résumé included.
+ *   'hidden'   In the vocabulary, out of the UI. Entries may still carry the
+ *              tag and it stays valid to tag with, but it renders on no card,
+ *              no sidebar, no print page, and matches no search. This is the
+ *              staging area — where a tag waits to be judged.
+ *   'entry'    Renders on entry cards and detail pages, and is matched by both
+ *              the résumé search and the site-wide command palette. Left out of
+ *              the skills sidebar. This is where the long tail lives: an entry
+ *              can carry as many of these as it likes without crowding the
+ *              curated list.
+ *   'sidebar'  Also listed in the skills sidebar.
+ *   'print'    Also printed on the one-page résumé.
+ *
+ * The sidebar and print sets are deliberately identical today — nothing sits at
+ * 'sidebar' — because both are meant to mirror the designed paper résumé. The
+ * rung is kept distinct so the two can be split again later without reworking
+ * the ladder.
  *
  * Category order below is render order, in the sidebar and in print alike, and
- * a category whose tags are all hidden drops out of both on its own.
+ * a category with nothing above 'entry' drops out of both on its own.
  */
-export type SkillVisibility = 'hidden' | 'site' | 'print';
+export type SkillVisibility = 'hidden' | 'entry' | 'sidebar' | 'print';
 
 
 export const skillCategories = {
@@ -26,55 +35,57 @@ export const skillCategories = {
     'Figma':                    'print',
     'Design Systems':           'print',
     'Design Tokens':            'print',
-    'UI Design':                'site',
-    'UX Design':                'site',
     'Motion':                   'print',
     'Responsive Design':        'print',
     'Semantic Markup':          'print',
-    'Information Architecture': 'hidden',
-    'Prototyping':              'hidden',
-    'Accessibility':            'site',
     'Keyboard Navigation':      'print',
     'Screen Readers':           'print',
-    'Adobe XD':                 'hidden',
+    'UI Design':                'entry',
+    'UX Design':                'entry',
+    'Accessibility':            'entry',
+    'Information Architecture': 'entry',
+    'Prototyping':              'entry',
+    'Adobe XD':                 'entry',
   },
 
   'Web & Native': {
     'TypeScript':        'print',
     'React':             'print',
     'Electron':          'print',
-    'Expo':              'print',
     'React Native':      'print',
+    'Expo':              'print',
     'Tailwind':          'print',
+    'Vitest':            'print',
     'CSS':               'print',
     'CSS Modules':       'print',
-    'Sass/Less':         'print',
-    'Next.js':           'site',
-    'Astro':             'site',
-    'JavaScript':        'hidden',
-    'HTML':              'hidden',
-    'Styled Components': 'hidden',
+    'Sass/Less':         'entry',
+    'Next.js':           'entry',
+    'Astro':             'entry',
+    'TanStack Start':    'entry',
+    'Vite':              'entry',
+    'Styled Components': 'entry',
+    'JavaScript':        'entry',
+    'HTML':              'entry',
     'Angular':           'hidden',
-    'jQuery':            'hidden',
-    'TanStack Start':    'hidden',
+    'jQuery':            'entry',
   },
 
   'State & Data Persistence': {
     'Atomic State':     'print',
-    'React Context':    'print',
     'Immutable Stores': 'print',
-    'Redux':            'hidden',
     'Device Storage':   'print',
     'Offline Support':  'print',
     'Sync Engines':     'print',
     'Postgres':         'print',
-    'SQL':              'print',
+    'SQL':              'hidden',
     'Key-Value Stores': 'print',
     'Vector Databases': 'print',
     'NoSQL':            'print',
-    'MongoDB':          'hidden',
-    'Convex':           'site',
-    'Supabase':         'site',
+    'React Context':    'entry',
+    'Redux':            'entry',
+    'MongoDB':          'entry',
+    'Convex':           'entry',
+    'Supabase':         'entry',
   },
 
   'Architecture & Rendering': {
@@ -84,48 +95,52 @@ export const skillCategories = {
     'Partial Pre-Rendering':           'print',
     'Incremental Static Regeneration': 'print',
     'Static Site Generation':          'print',
-    'Web Performance':                 'hidden',
-    'Vercel':                          'hidden',
-    'CI/CD':                           'hidden',
-    'Git':                             'hidden',
+    'Web Performance':                 'entry',
+    'Vercel':                          'entry',
+    'CI/CD':                           'entry',
+    'Git':                             'entry',
   },
 
   'Agentic Processes': {
-    'Claude Code':             'print',
-    'Codex':                   'print',
+    'HITL Engineering':        'print',
     'Agent Skills':            'print',
     'Sub-agent Orchestration': 'print',
-    'Automated Testing':       'print',
-    'Code Review':             'print',
+    'Automated Guardrails':    'print',
+    'Continuous Verification': 'print',
+    'Claude Code':             'entry',
+    'Codex':                   'hidden',
+    'Automated Testing':       'entry',
+    'Code Review':             'entry',
   },
 
   'Backend & Services': {
-    'Node.js':     'site',
-    'REST APIs':   'site',
-    'GraphQL':     'site',
-    'Auth':        'site',
-    'PHP':         'hidden',
+    'Node.js':     'entry',
+    'REST APIs':   'entry',
+    'GraphQL':     'entry',
+    'Auth':        'entry',
+    'NextAuth':    'entry',
+    'PHP':         'entry',
     'Ruby':        'hidden',
     'Java':        'hidden',
     'Python':      'hidden',
-    'Meteor':      'hidden',
-    'Drupal':      'hidden',
-    'React Email': 'hidden',
-    'Full Stack':  'hidden',
+    'Meteor':      'entry',
+    'Drupal':      'entry',
+    'React Email': 'entry',
+    'Full Stack':  'entry',
   },
 
   'Product & Leadership': {
-    'Product Strategy':  'site',
+    'Product Strategy':  'entry',
     'Roadmapping':       'hidden',
-    'Team Leadership':   'site',
+    'Team Leadership':   'hidden',
     'Mentorship':        'hidden',
-    'Startup':           'site',
+    'Startup':           'entry',
     'Fundraising':       'hidden',
-    'Agile/Scrum':       'hidden',
+    'Agile/Scrum':       'entry',
     'Technical Writing': 'hidden',
-    'Freelance':         'site',
-    'Content Strategy':  'hidden',
-    'SEO':               'hidden',
+    'Freelance':         'entry',
+    'Content Strategy':  'entry',
+    'SEO':               'entry',
   },
 } as const satisfies Record<string, Record<string, SkillVisibility>>;
 
@@ -141,6 +156,10 @@ export type SkillTag = {
 export const skillCategoryOrder = Object.keys(skillCategories) as SkillCategory[];
 
 
+/** The ladder, lowest rung first. Index doubles as the comparable rank. */
+export const SKILL_VISIBILITY_ORDER: SkillVisibility[] = ['hidden', 'entry', 'sidebar', 'print'];
+
+
 const visibilityByTag = new Map<SkillTag, SkillVisibility>(
   skillCategoryOrder.flatMap((category) =>
     Object.entries(skillCategories[category]) as [SkillTag, SkillVisibility][]),
@@ -152,9 +171,16 @@ export function visibilityOf(tag: SkillTag): SkillVisibility {
 }
 
 
+/** True when a tag sits at `level` or higher on the ladder. */
+export function visibilityAtLeast(tag: SkillTag, level: SkillVisibility): boolean {
+  return SKILL_VISIBILITY_ORDER.indexOf(visibilityOf(tag))
+    >= SKILL_VISIBILITY_ORDER.indexOf(level);
+}
+
+
 /** True for anything the UI is allowed to render or match on. */
 export function isTagVisible(tag: SkillTag): boolean {
-  return visibilityOf(tag) !== 'hidden';
+  return visibilityAtLeast(tag, 'entry');
 }
 
 
@@ -167,12 +193,12 @@ export function visibleTags<T extends SkillTag>(tags: readonly T[]): T[] {
 }
 
 
-function categoriesAtLeast(level: 'site' | 'print'): [SkillCategory, SkillTag[]][] {
+function categoriesAtLeast(level: SkillVisibility): [SkillCategory, SkillTag[]][] {
   return skillCategoryOrder
     .map((category): [SkillCategory, SkillTag[]] => [
       category,
       (Object.keys(skillCategories[category]) as SkillTag[])
-        .filter((tag) => level === 'print' ? visibilityOf(tag) === 'print' : isTagVisible(tag)),
+        .filter((tag) => visibilityAtLeast(tag, level)),
     ])
     .filter(([, tags]) => tags.length > 0);
 }
@@ -180,7 +206,7 @@ function categoriesAtLeast(level: 'site' | 'print'): [SkillCategory, SkillTag[]]
 
 /** Categories and tags for the site's skills sidebar. */
 export function sidebarSkillCategories(): [SkillCategory, SkillTag[]][] {
-  return categoriesAtLeast('site');
+  return categoriesAtLeast('sidebar');
 }
 
 

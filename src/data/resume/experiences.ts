@@ -9,14 +9,14 @@ export const experienceItems: ResumeItem[] = [
     organizationUrl: 'https://newmoneycompany.com/',
     logoShape: 'squircle',
     logoSrc: 'nmc.png',
-    location: 'San Francisco, CA · Remote',
+    location: 'Chicago, IL · Remote',
     // The contract engagement that opened this role is folded in rather than
     // split out: one entry, dated from the January 2024 start, the way the
     // printed résumé states it.
     dateStart: '2024-01',
     dateEnd: null,
     type: 'experience',
-    tags: ['TypeScript', 'React', 'Tailwind', 'Electron', 'PHP', 'Postgres', 'Design Systems', 'Monorepos', 'Full Stack', 'Startup'],
+    tags: ['TypeScript', 'React', 'Tailwind', 'Electron', 'PHP', 'Postgres', 'Design Systems', 'Monorepos', 'Full Stack', 'Startup', 'Figma', 'Design Tokens', 'Motion', 'Responsive Design', 'Semantic Markup', 'Keyboard Navigation', 'Prototyping', 'Vitest', 'CSS', 'CSS Modules', 'TanStack Start', 'Vite', 'Atomic State', 'Immutable Stores', 'Device Storage', 'Key-Value Stores', 'React Context', 'Server-Side Rendering', 'CI/CD', 'Git', 'HITL Engineering', 'Agent Skills', 'Sub-agent Orchestration', 'Automated Guardrails', 'Continuous Verification', 'Claude Code', 'Automated Testing', 'Code Review', 'Node.js', 'REST APIs', 'Auth', 'Roadmapping'],
     descriptionHeadline: 'Employee #1 and sole frontend owner at a YC W24 fintech',
     descriptionSummary: [
       {
@@ -88,7 +88,7 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: '2024-01',
     type: 'experience',
     hidden: true,
-    tags: ['Freelance'],
+    tags: [],
     descriptionHeadline: 'Served and bartended at Worthy Kitchen in Woodstock, VT',
     descriptionSummary:
       'Worked as a server and bartender at Worthy Kitchen, a beloved gastropub in Woodstock, Vermont. A grounding re-entry into the physical world after years of solo remote work.',
@@ -108,7 +108,7 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: '2023-03',
     type: 'experience',
     groupKey: 'oho',
-    tags: ['React', 'TypeScript', 'Design Systems', 'Freelance'],
+    tags: ['React', 'TypeScript', 'Freelance', 'Responsive Design', 'Semantic Markup', 'Screen Readers', 'Accessibility', 'Prototyping', 'CSS', 'CSS Modules', 'React Context', 'Web Performance', 'Git', 'Agile/Scrum'],
     descriptionHeadline: 'Returned to OHO to help modernize their component library',
     descriptionSummary: [
       'Returned as a contractor in 2023 to assist the company in its adoption of React & TypeScript for more modern DX in their reusable frontend component library',
@@ -130,7 +130,7 @@ export const experienceItems: ResumeItem[] = [
     dateStart: '2018-12',
     dateEnd: '2020-04',
     type: 'experience',
-    tags: ['Startup', 'Team Leadership', 'Product Strategy', 'Next.js', 'Redux', 'GraphQL', 'MongoDB', 'Styled Components', 'Adobe XD', 'UI Design'],
+    tags: ['Startup', 'Team Leadership', 'Product Strategy', 'Next.js', 'Redux', 'GraphQL', 'MongoDB', 'Styled Components', 'Adobe XD', 'UI Design', 'Design Systems', 'Design Tokens', 'Responsive Design', 'Semantic Markup', 'UX Design', 'Information Architecture', 'Prototyping', 'React', 'CSS', 'JavaScript', 'Immutable Stores', 'NoSQL', 'React Context', 'Git', 'Node.js', 'Full Stack', 'Roadmapping', 'Mentorship'],
     descriptionHeadline: 'Co-founded a clinical software startup and led its design and engineering',
     descriptionSummary: [
       'Architected next-gen medical record system for medical charting, enabling primary care doctors to spend less time with software and more time with patients, including a heavily structured data model mapping exams and diagnoses to patients',
@@ -154,7 +154,7 @@ export const experienceItems: ResumeItem[] = [
     dateStart: '2017-07',
     dateEnd: '2018-09',
     type: 'experience',
-    tags: ['Startup', 'Team Leadership', 'Product Strategy', 'Meteor', 'MongoDB', 'React', 'Node.js', 'Full Stack'],
+    tags: ['Startup', 'Product Strategy', 'Meteor', 'MongoDB', 'React', 'Full Stack', 'Responsive Design', 'Semantic Markup', 'Prototyping', 'Adobe XD', 'CSS', 'Styled Components', 'JavaScript', 'React Context', 'NoSQL', 'Git', 'Node.js', 'GraphQL', 'Roadmapping', 'Team Leadership'],
     descriptionHeadline: 'Co-founded Fiber and built its products end to end',
     descriptionSummary: [
       'Built two Meteor/MERN apps: a video-centric education platform and a data analytics dashboard, plus a Gatsby marketing site',
@@ -179,7 +179,7 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: '2017-06',
     type: 'experience',
     groupKey: 'oho',
-    tags: ['Drupal', 'PHP', 'jQuery', 'JavaScript', 'HTML', 'CSS', 'Responsive Design', 'Agile/Scrum'],
+    tags: ['Drupal', 'PHP', 'jQuery', 'JavaScript', 'HTML', 'CSS', 'Responsive Design', 'Agile/Scrum', 'Semantic Markup', 'Screen Readers', 'Accessibility', 'Sass/Less', 'Git'],
     descriptionHeadline: 'Joined a Boston digital agency full-time after graduation',
     descriptionSummary: [
       'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern, then on contract, then full-time after graduation',
@@ -200,7 +200,7 @@ export const experienceItems: ResumeItem[] = [
     dateStart: '2011-08',
     dateEnd: '2016-08',
     type: 'experience',
-    tags: ['Freelance', 'Full Stack', 'UI Design', 'UX Design', 'HTML', 'CSS', 'JavaScript', 'Content Strategy', 'Responsive Design'],
+    tags: ['Freelance', 'Full Stack', 'UI Design', 'UX Design', 'HTML', 'CSS', 'JavaScript', 'Content Strategy', 'Responsive Design', 'Figma', 'Semantic Markup', 'Information Architecture', 'Accessibility', 'Sass/Less', 'jQuery', 'Web Performance', 'Git', 'Agile/Scrum', 'SEO'],
     descriptionHeadline: 'Ran a freelance web design & development studio for 5 years',
     descriptionSummary:
       'Founded and operated Shadow Art Studios, a freelance web design and development practice. Worked directly with clients to assess needs, design custom websites, and manage projects from scoping through launch.',
@@ -226,7 +226,7 @@ export const experienceItems: ResumeItem[] = [
     // one-month engagement from a decade ago earns a line on the timeline and
     // nothing more. Empty descriptions render no paragraph at any verbosity, and
     // no tags keeps it out of skill filtering and search results.
-    tags: [],
+    tags: ['Responsive Design', 'Semantic Markup', 'Screen Readers', 'Accessibility', 'CSS', 'Sass/Less', 'JavaScript', 'HTML', 'jQuery', 'Web Performance', 'Git', 'PHP', 'Drupal', 'Agile/Scrum', 'Freelance'],
     descriptionHeadline: '',
     descriptionSummary: '',
     descriptionFull: '',

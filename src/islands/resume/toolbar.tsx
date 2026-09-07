@@ -1,9 +1,10 @@
 import type { Verbosity, ViewMode } from '@/islands/resume/types';
+import type { SkillTag } from '@/data/resume/types';
 
 import { useRef } from 'react';
 import { navigate } from 'astro:transitions/client';
 import { detectPlatform, MAC_MODIFIER_SYMBOLS, useHotkey } from '@tanstack/react-hotkeys';
-import { faLayerGroup, faMagnifyingGlass, faPrint, faTableList, faXmark } from '@fortawesome/sharp-regular-svg-icons';
+import { faArrowDownShortWide, faLayerGroup, faMagnifyingGlass, faPrint, faTableList, faXmark } from '@fortawesome/sharp-regular-svg-icons';
 import { VERBOSITY_OPTIONS } from '@/islands/resume/constants';
 import { Icon } from '@/components/icon';
 import { Button } from '@/components/ui/button';
@@ -32,10 +33,53 @@ const SHOW_PRINT_BUTTON: boolean = false;
 const SHOW_VIEW_MODE_TOGGLE: boolean = false;
 
 
-export function ResumeToolbar(props: {
+/**
+ * The active sort tag, shown as a chip so the state is legible from the top of
+ * the page and clearable without hunting for the pill you clicked. Kept
+ * separate from the search field on purpose: search highlights per keystroke
+ * and matches substrings, while a tag is a discrete, exact choice — folding
+ * them together would re-sort the whole page on every letter typed.
+ */
+function SortChip(props: {
   matchCount: number;
+  onClear: () => void;
+  tag: SkillTag;
+}) {
+  return (
+    <div
+      className={cn(
+        'order-3 flex items-center gap-1.5 h-6.5 pl-2 pr-1 shrink-0',
+        'border border-primary bg-primary/10 text-primary text-[10px] font-mono',
+        'md:order-2',
+      )}
+    >
+      <Icon className='text-[10px]' icon={faArrowDownShortWide} />
+      <span>
+        {`Sorted by ${props.tag}`}
+      </span>
+      <span className='text-primary/60'>
+        {`${props.matchCount} ${props.matchCount === 1 ? 'entry' : 'entries'}`}
+      </span>
+      <button
+        aria-label={`Clear sort by ${props.tag}`}
+        className='grid place-items-center size-4.5 cursor-pointer hover:bg-primary/15'
+        onClick={props.onClear}
+        type='button'
+      >
+        <Icon className='text-[10px]' icon={faXmark} />
+      </button>
+    </div>
+  );
+}
+
+
+export function ResumeToolbar(props: {
+  activeTag: SkillTag | null;
+  matchCount: number;
+  onClearActiveTag: () => void;
   search: string;
   onSearchChange: (value: string) => void;
+  tagMatchCount: number;
   verbosity: Verbosity;
   onVerbosityChange: (value: Verbosity) => void;
   viewMode: ViewMode;
@@ -53,6 +97,10 @@ export function ResumeToolbar(props: {
       searchRef.current?.focus();
       searchRef.current?.select();
     }
+  });
+
+  useHotkey('Escape', () => {
+    if (props.activeTag) props.onClearActiveTag();
   });
 
   useHotkey('Mod+P', (e) => {
@@ -104,6 +152,26 @@ export function ResumeToolbar(props: {
               </Kbd>
           )}
         </div>
+
+        {/* Active sort tag — clicking a skill ranks entries, it never removes any */}
+        {props.activeTag && (
+          <SortChip
+            matchCount={props.tagMatchCount}
+            onClear={props.onClearActiveTag}
+            tag={props.activeTag}
+          />
+        )}
+
+        {/*
+          Reordering is a silent change for a screen reader, so the sort is
+          announced here. The region is always mounted — one that appears with
+          its own content is announced unreliably.
+        */}
+        <span aria-live='polite' className='sr-only'>
+          {props.activeTag
+            ? `Sorted by ${props.activeTag}. ${props.tagMatchCount} ${props.tagMatchCount === 1 ? 'entry' : 'entries'} listed first. Nothing was removed.`
+            : ''}
+        </span>
 
         {/* Match count — search highlights in place, so this reports hits rather than a filtered total */}
         {props.search.trim() && (
