@@ -1,7 +1,7 @@
 import type { ResumeItem } from '@/data/resume/types';
 import type { Verbosity } from '@/islands/resume/types';
 
-import { faArrowDownShortWide, faBuilding, faFolder, faGraduationCap, faEllipsisStroke, faGrip, faGrid } from '@fortawesome/sharp-regular-svg-icons';
+import { faArrowDownShortWide, faBuilding, faFolder, faGraduationCap } from '@fortawesome/sharp-regular-svg-icons';
 
 
 /** The merged experience-and-projects list shown while a skill tag is active. */
@@ -28,15 +28,14 @@ export const SECTION_LABEL: Record<ResumeItem['type'], string> = {
 };
 
 type VerbosityOption = {
-  icon: typeof faEllipsisStroke;
   label: string;
   value: Verbosity;
 };
 
 const ALL_VERBOSITY_OPTIONS: VerbosityOption[] = [
-  { icon: faEllipsisStroke, label: 'Headline', value: 'headline' },
-  { icon: faGrip,           label: 'Summary',   value: 'summary' },
-  { icon: faGrid,           label: 'Detail',      value: 'detail' },
+  { label: 'Headline', value: 'headline' },
+  { label: 'Summary',  value: 'summary' },
+  { label: 'Detail',   value: 'detail' },
 ];
 
 /**

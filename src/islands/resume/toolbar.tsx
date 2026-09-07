@@ -249,8 +249,12 @@ export function ResumeToolbar(props: {
             </ButtonGroup>
             )}
 
-            {/* Verbosity toggle: text labels on sm+ */}
-            <ButtonGroup className='shrink-0 hidden sm:flex'>
+            {/*
+              Verbosity toggle — text labels at every width. The controls row
+              gets a line of its own on mobile, so the labels fit and there's
+              nothing for an icon-only variant to save.
+            */}
+            <ButtonGroup className='shrink-0'>
               {VERBOSITY_OPTIONS.map(({ value, label }, i) => (
                 <Button
                   key={value}
@@ -267,34 +271,6 @@ export function ResumeToolbar(props: {
                 >
                   {label}
                 </Button>
-              ))}
-            </ButtonGroup>
-
-            {/* Verbosity toggle: icon-only with tooltips on mobile */}
-            <ButtonGroup className='shrink-0 sm:hidden'>
-              {VERBOSITY_OPTIONS.map(({ value, label, icon }, i) => (
-                <Tooltip key={value}>
-                  <TooltipTrigger
-                    render={
-                      <Button
-                        className={cn(
-                          'font-sans',
-                          i < VERBOSITY_OPTIONS.length - 1 && 'border-r border-border',
-                          props.verbosity === value
-                            ? 'bg-primary hover:bg-primary text-primary-foreground hover:text-primary-foreground'
-                            : 'text-muted-foreground hover:text-foreground hover:bg-muted',
-                        )}
-                        onClick={() => props.onVerbosityChange(value)}
-                        size='icon'
-                        type='button'
-                        variant='outline'
-                      />
-                    }
-                  >
-                    <Icon className='text-xs' icon={icon} />
-                  </TooltipTrigger>
-                  <TooltipContent>{label}</TooltipContent>
-                </Tooltip>
               ))}
             </ButtonGroup>
             </div>{/* end left button groups */}
