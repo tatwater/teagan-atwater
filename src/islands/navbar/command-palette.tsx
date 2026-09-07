@@ -1,4 +1,5 @@
 import type { SearchItem } from '@/islands/navbar/search';
+import type { ThemePreference } from '@/islands/navbar/types';
 
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { navigate } from 'astro:transitions/client';
@@ -15,7 +16,7 @@ import {
 } from '@/components/ui/command';
 import { Icon } from '@/components/icon';
 import { Kbd, KbdGroup } from '@/components/ui/kbd';
-import { applyTheme } from '@/islands/navbar/theme';
+import { applyTheme, getStoredTheme } from '@/islands/navbar/theme';
 import {
   createSearchIndex,
   defaultItems,
@@ -91,7 +92,7 @@ export function CommandPalette() {
   const [miniSearch, setMiniSearch] = useState<MiniSearch | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const loadingRef = useRef(false);
-  const [currentTheme, setCurrentTheme] = useState<string | null>(null);
+  const [currentTheme, setCurrentTheme] = useState<ThemePreference>('system');
 
   useEffect(() => {
     const isMac = detectPlatform() === 'mac';
@@ -100,8 +101,11 @@ export function CommandPalette() {
 
   useEffect(() => {
     if (!open) return;
-    const stored = localStorage.getItem('theme');
-    setCurrentTheme(stored ?? (document.documentElement.classList.contains('dark') ? 'dark' : 'light'));
+    // The stored *preference*, not the resolved theme: with nothing stored the
+    // answer is 'system', and reading the dark class back would mislabel that
+    // as Light or Dark. This is the same source the navbar's theme radio group
+    // reads, so the two controls always agree on what's checked.
+    setCurrentTheme(getStoredTheme());
   }, [open]);
 
   useEffect(() => {
@@ -138,13 +142,9 @@ export function CommandPalette() {
     }
   }, []);
 
-  const availableThemeActions = useMemo(() => {
-    return themeActions.filter((a) => a.id !== `theme-${currentTheme}`);
-  }, [currentTheme]);
-
   const allItems = useMemo(() => {
-    return [...items, ...availableThemeActions];
-  }, [items, availableThemeActions]);
+    return [...items, ...themeActions];
+  }, [items]);
 
   useEffect(() => {
     if (open && !miniSearch) {
@@ -226,16 +226,38 @@ export function CommandPalette() {
 
             {actionItems.length > 0 && (
               <CommandGroup heading="Actions">
-                {actionItems.map((item) => (
-                  <CommandItem
-                    key={item.id}
-                    value={item.title}
-                    onSelect={() => handleSelect(item.url, item.id)}
-                  >
-                    <Icon icon={iconFor(item.icon)} />
-                    <span>{item.title}</span>
-                  </CommandItem>
-                ))}
+                {actionItems.map((item) => {
+                  /*
+                    The theme you're already on stays listed — hiding it made
+                    the palette the one theme control on the site that can't
+                    answer "which theme am I on?", and searching for it landed
+                    on "No results found". It isn't an action, though, so it's
+                    disabled: cmdk skips disabled items in arrow navigation and
+                    won't fire their onSelect. The inherited dimming comes back
+                    off, because a greyed row reads as broken where a checked
+                    one reads as already active.
+                  */
+                  const isCurrent = THEME_BY_ACTION_ID[item.id] === currentTheme;
+
+                  return (
+                    <CommandItem
+                      key={item.id}
+                      className={isCurrent ? 'data-[disabled=true]:opacity-100' : undefined}
+                      data-checked={isCurrent ? 'true' : undefined}
+                      disabled={isCurrent}
+                      value={item.title}
+                      onSelect={() => handleSelect(item.url, item.id)}
+                    >
+                      <Icon icon={iconFor(item.icon)} />
+                      <span>{item.title}</span>
+                      {isCurrent && (
+                        <span className="ml-auto text-muted-foreground text-xs">
+                          Current theme
+                        </span>
+                      )}
+                    </CommandItem>
+                  );
+                })}
               </CommandGroup>
             )}
           </CommandList>

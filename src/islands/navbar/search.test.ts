@@ -60,7 +60,8 @@ describe('filterSearchItems', () => {
   });
 
   it('drops index hits that are no longer in the item list', () => {
-    // The theme actions are indexed but filtered out of `allItems` when already active.
+    // An index can outlive the list it was built from — a hit with no matching
+    // item is skipped rather than rendered as a hole in the results.
     const results = filterSearchItems(items, 'widget', indexOf([...items, ...themeActions]));
 
     expect(results.every((item) => items.includes(item))).toBe(true);

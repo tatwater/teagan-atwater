@@ -24,14 +24,15 @@ export type { SearchItem };
 
 
 export const defaultItems: SearchItem[] = [
-  // {
-  //   id: 'home',
-  //   title: 'Home',
-  //   description: 'Go to homepage',
-  //   url: '/',
-  //   type: 'page',
-  //   icon: 'home',
-  // },
+  {
+    id: 'home',
+    title: 'Home',
+    description: 'Browse selected work',
+    url: '/',
+    type: 'page',
+    icon: 'home',
+    tags: ['home', 'start', 'index'],
+  },
   {
     id: 'resume',
     title: 'Résumé',
@@ -51,14 +52,17 @@ export const defaultItems: SearchItem[] = [
   //   icon: 'print',
   //   tags: ['resume', 'cv', 'print', 'pdf'],
   // },
-  // {
-  //   id: 'contact',
-  //   title: 'Contact',
-  //   description: 'Get in touch',
-  //   url: '/contact',
-  //   type: 'page',
-  //   icon: 'mail',
-  // },
+  {
+    id: 'contact',
+    title: 'Contact',
+    description: 'Get in touch',
+    url: '/contact',
+    type: 'page',
+    icon: 'mail',
+    // 'hire' earns its place: /contact/hire was a real URL once, and it still
+    // redirects here — see src/pages/contact/[...rest].astro.
+    tags: ['contact', 'email', 'message', 'hire'],
+  },
 ];
 
 
