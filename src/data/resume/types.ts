@@ -4,10 +4,14 @@
  * `@/data/resume/skills`, which derives these two types from the vocabulary so
  * a tag is only ever declared once. They are re-exported here so entry files
  * keep importing everything about an item from one place.
+ *
+ * `SkillVisibility` is deliberately not among them: a rung describes the
+ * taxonomy, not an entry, and nothing that authors an entry needs it. Import it
+ * from `@/data/resume/skills` directly.
  */
-import type { SkillCategory, SkillTag, SkillVisibility } from '@/data/resume/skills';
+import type { SkillCategory, SkillTag } from '@/data/resume/skills';
 
-export type { SkillCategory, SkillTag, SkillVisibility };
+export type { SkillCategory, SkillTag };
 
 
 /**

@@ -9,18 +9,8 @@ import {
   replaceEntryTags,
   replaceTaxonomy,
 } from '@/lib/tag-source';
+import { RESUME_DATA_FILES, SKILLS_PATH } from '@/data/resume';
 import { skillCategories } from '@/data/resume/skills';
-import { educationItems } from '@/data/resume/education';
-import { experienceItems } from '@/data/resume/experiences';
-import { projectItems } from '@/data/resume/projects';
-
-
-const SKILLS_PATH = 'src/data/resume/skills.ts';
-const DATA_FILES = [
-  { path: 'src/data/resume/experiences.ts', items: experienceItems },
-  { path: 'src/data/resume/projects.ts', items: projectItems },
-  { path: 'src/data/resume/education.ts', items: educationItems },
-];
 
 
 describe('renderTaxonomy', () => {
@@ -145,7 +135,7 @@ describe('against the real data files', () => {
   // the id lookup finds the right object and the rendering matches the file's
   // formatting — so a real save shows only the tags the user actually changed.
   it('round-trips every entry in every data file', () => {
-    for (const { path, items } of DATA_FILES) {
+    for (const { path, items } of RESUME_DATA_FILES) {
       const source = readFileSync(path, 'utf8');
       const current = Object.fromEntries(items.map((item) => [item.id, item.tags]));
 
@@ -154,7 +144,7 @@ describe('against the real data files', () => {
   });
 
   it('lists exactly the entries the module exports, ignoring nested id references', () => {
-    for (const { path, items } of DATA_FILES) {
+    for (const { path, items } of RESUME_DATA_FILES) {
       const source = readFileSync(path, 'utf8');
 
       // `pandemic` references other entries by id in its subCards, on lines

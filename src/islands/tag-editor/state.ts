@@ -36,11 +36,11 @@ export interface Draft {
   tagsById: Record<string, string[]>;
 }
 
+/** An entry as the editor page hands it over, tags included. */
+export type ApiEntry = DraftEntry & { tags: string[] };
 
-export function draftFromApi(
-  taxonomy: TaxonomyRecord,
-  entries: (DraftEntry & { tags: string[] })[],
-): Draft {
+
+export function draftFromApi(taxonomy: TaxonomyRecord, entries: ApiEntry[]): Draft {
   return {
     categories: Object.entries(taxonomy).map(([name, tags]) => ({
       name,
@@ -162,7 +162,8 @@ export function setVisibility(draft: Draft, tag: string, visibility: SkillVisibi
 }
 
 
-export function tagExists(draft: Draft, name: string): boolean {
+/** Internal: the guard `renameTag` and `addTag` share against name collisions. */
+function tagExists(draft: Draft, name: string): boolean {
   return allTags(draft).some((t) => t.name === name);
 }
 

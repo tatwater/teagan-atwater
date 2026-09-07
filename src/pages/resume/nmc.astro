@@ -1,6 +1,7 @@
 ---
 import { faArrowLeft, faArrowUpRightFromSquare } from '@fortawesome/sharp-regular-svg-icons';
 import Layout from '@/layouts/Layout.astro';
+import ComingSoon from '@/components/coming-soon.astro';
 import { Icon } from '@/components/icon';
 import { TagPill } from '@/islands/resume/tag-pill';
 import { resumeItems } from '@/data/resume';
@@ -131,16 +132,7 @@ const showRoleDates = nmcItems.length > 1;
       </div>
     </div>
 
-    {/* Coming soon content area */}
-    <div class='border border-dashed border-border px-6 py-10 text-center'>
-      <p class='text-xs font-mono text-muted-foreground/50 uppercase tracking-widest mb-2'>
-        Deep dive coming soon
-      </p>
-      <p class='text-sm text-muted-foreground/70'>
-        This page will be home to a full project exploration —
-        case studies, screenshots, lessons learned, and more.
-      </p>
-    </div>
+    <ComingSoon />
 
   </div>
 </Layout>

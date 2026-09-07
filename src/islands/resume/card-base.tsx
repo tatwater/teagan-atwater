@@ -105,11 +105,11 @@ function CardBadge({
 
 
 /** Dates — left-aligned on mobile, right-aligned on sm+ */
-function CardDates({ item, showDuration }: Pick<CardBaseProps, 'item' | 'showDuration'>) {
+function CardDates({ className, item, showDuration }: Pick<CardBaseProps, 'item' | 'showDuration'> & { className?: string }) {
   if (item.hideDates) return null;
 
   return (
-    <div className='flex flex-col items-start text-left sm:items-end sm:text-right shrink-0 text-xs font-mono'>
+    <div className={cn('flex flex-col items-start text-left sm:items-end sm:text-right shrink-0 text-xs font-mono', className)}>
       <span className='text-muted-foreground whitespace-nowrap'>
         {formatDateRange(item.dateStart, item.dateEnd)}
       </span>
@@ -216,8 +216,13 @@ export function CardBase(props: CardBaseProps) {
 
   return (
     <article className={cardClassName(item, nestingMode)}>
-      {/* ── Top row: badge ←→ dates, stacks vertically on mobile ─────────── */}
-      <div className='flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-6'>
+      {/*
+        ── Header ────────────────────────────────────────────────────────────
+        sm+: badge ←→ dates on the first row, title full-width on the second.
+        Mobile: one column, and the dates drop past the title so the org badge
+        and the role it belongs to stay adjacent.
+      */}
+      <div className='flex flex-col gap-1 sm:grid sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-x-6'>
         <CardBadge
           item={item}
           logoShape={props.logoShape}
@@ -225,13 +230,17 @@ export function CardBase(props: CardBaseProps) {
           showOrgInHeader={props.showOrgInHeader}
           terms={terms}
         />
-        <CardDates item={item} showDuration={props.showDuration} />
-      </div>
+        <CardDates
+          className={orgBadgeInHeader ? 'order-last mt-1 sm:order-none sm:mt-0' : undefined}
+          item={item}
+          showDuration={props.showDuration}
+        />
 
-      {/* ── Title (full-width) — only when OrgBadge is in the badge position ── */}
-      {orgBadgeInHeader && (
-        <CardTitle className='mt-2 sm:mt-1' terms={terms} text={item.title} />
-      )}
+        {/* Title gets its own row — only when OrgBadge is in the badge position */}
+        {orgBadgeInHeader && (
+          <CardTitle className='sm:col-span-2' terms={terms} text={item.title} />
+        )}
+      </div>
 
       {/* ── Location (full-width, always below the top row) ──────────────── */}
       <CardLocation location={item.location} terms={terms} />
