@@ -17,5 +17,16 @@ alt text, add it to `MOCKUP_ALT` in `src/lib/mockups.ts`.
 Videos are the exception: they are not kept here. A clip large enough to be worth
 showing is large enough that committing it would weigh on the repository forever,
 so they are hotlinked instead — add one to `MOCKUP_VIDEOS` in
-`src/lib/mockups.ts`, keyed by the same id. Videos render above that highlight's
-stills, so the first one takes the top slot.
+`src/lib/mockups.ts`, keyed by the same id.
+
+Mockuuups player embeds are the other exception, in `MOCKUP_EMBEDS` beside them:
+paste the settings out of the snippet Mockuuups generates, and the reel renders
+their `<mockup-player>` element. Nothing is downloaded, so the slot depends on
+their service being up, and readers who prefer reduced motion are shown the
+stills instead — an embed has no still frame to fall back to.
+
+Anything that moves renders above that highlight's stills by default, so the
+first one takes the top slot. To place it somewhere else, give it a `position`
+that reads like one of the filenames here — `'02-app-on-phones'` files it
+between the `01-` and `03-` stills — and it sorts in among them as if it were a
+file in this directory.

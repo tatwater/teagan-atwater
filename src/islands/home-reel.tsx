@@ -1,4 +1,4 @@
-import type { Mockup } from '@/lib/mockups';
+import type { Mockup, MockupEmbed } from '@/lib/mockups';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
@@ -58,6 +58,77 @@ function MockupVideo({ alt, src }: { alt: string; src: string }) {
       playsInline
       preload='metadata'
       src={src}
+    />
+  );
+}
+
+
+const EMBED_SCRIPT_SRC = 'https://embed.mckp.live/embed.js';
+
+
+/**
+ * Register <mockup-player>, once per document.
+ *
+ * Mockuuups' own snippet appends the script on mount, which is wrong here: the
+ * reel remounts its panel on every project switch, so clicking away and back
+ * would stack a fresh <script> tag each time. Asking the document what it
+ * already has is the guard — a module-level flag would not survive the island
+ * being bundled into more than one entry point.
+ */
+function loadEmbedScript() {
+  if (document.querySelector(`script[src="${EMBED_SCRIPT_SRC}"]`)) return;
+
+  const script = document.createElement('script');
+  script.async = true;
+  script.src = EMBED_SCRIPT_SRC;
+  document.head.appendChild(script);
+}
+
+
+/**
+ * A mockup Mockuuups animates for us.
+ *
+ * The reel's rule is that readers who prefer reduced motion never see it move.
+ * A <video> can honour that by pausing on a frame, but this clip only exists
+ * inside a third-party player with no documented way to hold it still, so the
+ * only honest option is to leave it out for those readers — the highlight's
+ * stills sit directly below and carry the slot on their own.
+ *
+ * The check runs in an effect rather than during render because the markup is
+ * server-rendered, where the media query cannot be read; matching the first
+ * client paint to the server's and then dropping the player keeps hydration
+ * quiet. MockupVideo above flips the same way for the same reason.
+ */
+function MockupPlayer({ shot }: { shot: MockupEmbed }) {
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setReducedMotion(true);
+      return;
+    }
+
+    loadEmbedScript();
+  }, []);
+
+  if (reducedMotion) return null;
+
+  return (
+    <mockup-player
+      aria-label={shot.alt}
+      aspect-ratio={shot.aspectRatio}
+      background-color={shot.backgroundColor}
+      camera-zoom={shot.cameraZoom}
+      className='block w-full border border-border-light'
+      click-range={shot.clickRange}
+      cursor-affect-page={shot.cursorAffectPage}
+      cursor-range={shot.cursorRange}
+      mockup-id={shot.mockupId}
+      role='img'
+      trigger={shot.trigger}
+      trigger-loop={shot.triggerLoop}
+      trigger-threshold={shot.triggerThreshold}
+      width='100%'
     />
   );
 }
@@ -249,25 +320,31 @@ export default function HomeReel(props: {
           transition={{ duration: 0.25, ease: 'easeInOut' }}
         >
             {active.shots.length > 0
-              ? active.shots.map((shot) => (
-                  shot.kind === 'video'
-                    ? (
-                        <MockupVideo
-                          key={shot.src}
-                          alt={shot.alt}
-                          src={shot.src}
-                        />
-                      )
-                    : (
-                        <img
-                          key={shot.src}
-                          alt={shot.alt}
-                          className='w-full border border-border-light'
-                          loading='lazy'
-                          src={shot.src}
-                        />
-                      )
-                ))
+              ? active.shots.map((shot) => {
+                  if (shot.kind === 'embed') {
+                    return <MockupPlayer key={shot.mockupId} shot={shot} />;
+                  }
+
+                  if (shot.kind === 'video') {
+                    return (
+                      <MockupVideo
+                        key={shot.src}
+                        alt={shot.alt}
+                        src={shot.src}
+                      />
+                    );
+                  }
+
+                  return (
+                    <img
+                      key={shot.src}
+                      alt={shot.alt}
+                      className='w-full border border-border-light'
+                      loading='lazy'
+                      src={shot.src}
+                    />
+                  );
+                })
               : Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
                   <div
                     key={i}

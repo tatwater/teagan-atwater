@@ -34,14 +34,52 @@ const MOCKUP_ALT: Record<string, string> = {
     'The Gli wordmark in both of its lockups, reversed white on black and black on white, each underscored by a skate blade trailing pale blue ice',
   'project-sous/01-recipe-detail-on-laptop.jpg':
     'A Sous recipe open on a laptop — BBQ Chicken, grilled, an hour and twenty minutes for six servings: its ingredients and equipment down one column, five steps down the other with every ingredient linked back into the prose, a timer offered against the step that needs one, and a cook\u2019s own note left under the grilling step',
+  'project-sous/02-meal-player-ingredients-crossed-off.jpg':
+    'Sous\u2019 meal player held in one hand against a pantry wall of glass jars — spiralled pasta, rigatoni, grains and flour — with a whole dinner\u2019s shopping gathered into one list: the challah\u2019s water, vegetable oil, salt, flour and butter already struck through, its yeast, sugar, honey and sesame seeds still to fetch, and the mushroom risotto carrying on underneath',
+  'project-sous/03-meal-player-chicken-step-4.jpg':
+    'Sous\u2019 meal player face up on an oak table part-way through cooking, open on Baked Chicken Breasts at step four — whisking the salt, pepper, garlic powder and paprika, each measure tagged beneath the instruction — over a row of the three other dishes waiting at their own steps, the challah on six of seven and the green beans on three of six',
 };
 
 
-export interface Mockup {
+export interface MockupImage {
   alt: string;
-  kind: 'image' | 'video';
+  kind: 'image';
   src: string;
 }
+
+export interface MockupVideo {
+  alt: string;
+  kind: 'video';
+  position?: string;
+  src: string;
+}
+
+/**
+ * A Mockuuups player embed.
+ *
+ * Everything but `alt` is a Mockuuups player setting, carried through verbatim
+ * rather than interpreted here, so retuning a mockup is an edit to the table
+ * below and not a code change. They are strings for the same reason: they are
+ * HTML attributes on their element, and `triggerLoop` reads `'true'` rather
+ * than `true` so nothing has to guess how a boolean should be serialised.
+ */
+export interface MockupEmbed {
+  alt: string;
+  aspectRatio: string;
+  backgroundColor: string;
+  cameraZoom: string;
+  clickRange: string;
+  cursorAffectPage: string;
+  cursorRange: string;
+  kind: 'embed';
+  mockupId: string;
+  position?: string;
+  trigger: string;
+  triggerLoop: string;
+  triggerThreshold: string;
+}
+
+export type Mockup = MockupImage | MockupVideo | MockupEmbed;
 
 
 /**
@@ -55,7 +93,7 @@ export interface Mockup {
  * re-hashed the slot goes blank, while the globbed stills and the placeholder
  * fallback below carry on unaffected.
  */
-const MOCKUP_VIDEOS: Record<string, Mockup[]> = {
+const MOCKUP_VIDEOS: Record<string, MockupVideo[]> = {
   'nmc': [
     {
       alt: 'The New Money Company — product walkthrough',
@@ -66,6 +104,53 @@ const MOCKUP_VIDEOS: Record<string, Mockup[]> = {
 };
 
 
+/**
+ * Mockuuups player embeds, keyed by highlight id.
+ *
+ * Like the videos below these are not files in the repository, but the trade is
+ * a different one: the clip is rendered in the reader's browser by a script of
+ * Mockuuups', so this costs a third-party request on the home page and the slot
+ * goes blank if their service is down. It also cannot honour reduced motion the
+ * way a <video> can — see MockupPlayer in src/islands/home-reel.tsx for what
+ * the reel does about that.
+ */
+const MOCKUP_EMBEDS: Record<string, MockupEmbed[]> = {
+  'project-sous': [
+    {
+      alt: 'Three phones side by side showing Sous: a shared post for a salmon dinner, written up by the cook and linked back to the recipes it came from; a profile keeping 154 badges, a three-day streak and four active challenges; and the Pan-Seared Salmon recipe itself, credited to the cook who wrote it',
+      aspectRatio: '4 / 3',
+      backgroundColor: '#000000',
+      cameraZoom: '40',
+      clickRange: '15-22-12-22',
+      cursorAffectPage: 'false',
+      cursorRange: '1-1-1-1',
+      kind: 'embed',
+      mockupId: '45ea5780-7132-4ab7-bad7-1c6a336e9a9b',
+      // Second in the photoset, under the laptop shot. It shares the 02- prefix
+      // with a still, and `app-` sorting before `meal-` is what settles the two
+      // — renumber rather than rename if that order ever needs to change.
+      position: '02-app-on-phones',
+      trigger: 'load',
+      triggerLoop: 'false',
+      triggerThreshold: '0',
+    },
+  ],
+};
+
+
+/**
+ * A highlight's photoset, in the order the reel renders it.
+ *
+ * Stills sort by filename, which is the whole reason they are prefixed `01-`,
+ * `02-` and so on. Videos and embeds are not files, so they cannot join that
+ * sort on their own — by default they simply lead, on the grounds that a
+ * highlight with a walkthrough usually wants to open on it.
+ *
+ * `position` is the way out of that default: give a video or an embed a key
+ * that reads like one of those filenames and it is filed among the stills as
+ * though it were one, which is how the Sous embed sits second, under the laptop
+ * shot. Omitting it keeps the leading slot, which is what the NMC video wants.
+ */
 export function mockupsFor(id: string, name: string): Mockup[] {
   const prefix = `/src/assets/mockups/${id}/`;
 
@@ -73,12 +158,24 @@ export function mockupsFor(id: string, name: string): Mockup[] {
     .filter((path) => path.startsWith(prefix))
     .sort()
     .map((path, index) => ({
-      alt: MOCKUP_ALT[path.slice('/src/assets/mockups/'.length)]
-        ?? `${name} — mockup ${index + 1}`,
-      kind: 'image' as const,
-      src: MOCKUP_URLS[path],
+      key: path.slice(prefix.length),
+      shot: {
+        alt: MOCKUP_ALT[path.slice('/src/assets/mockups/'.length)]
+          ?? `${name} — mockup ${index + 1}`,
+        kind: 'image' as const,
+        src: MOCKUP_URLS[path],
+      } satisfies MockupImage,
     }));
 
-  // Videos take the top slots; stills follow in filename order.
-  return [...(MOCKUP_VIDEOS[id] ?? []), ...stills];
+  const motion = [...(MOCKUP_EMBEDS[id] ?? []), ...(MOCKUP_VIDEOS[id] ?? [])];
+
+  const filed = motion
+    .filter((shot) => shot.position !== undefined)
+    .map((shot) => ({ key: shot.position as string, shot }));
+
+  const ordered = [...stills, ...filed]
+    .sort((a, b) => a.key.localeCompare(b.key))
+    .map((entry) => entry.shot);
+
+  return [...motion.filter((shot) => shot.position === undefined), ...ordered];
 }
