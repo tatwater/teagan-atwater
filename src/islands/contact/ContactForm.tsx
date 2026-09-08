@@ -1,15 +1,37 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { faPaperPlane, faCircleCheck, faTriangleExclamation } from '@fortawesome/sharp-regular-svg-icons';
 import { Icon } from '@/components/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
+import { rateLimitMessage } from '@/lib/rate-limit-message';
 
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
+type ResolvedTheme = 'light' | 'dark';
 
 const TURNSTILE_SCRIPT = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+
+/**
+ * Ceiling on how long a submission waits for a captcha token. Generous, because
+ * the wait covers a visitor solving an interactive challenge — it exists to
+ * surface a wedged widget, not to rush anyone.
+ */
+const TOKEN_TIMEOUT_MS = 45_000;
+
+
+/**
+ * Turnstile follows the OS colour scheme when told `theme: 'auto'`, which is the
+ * wrong signal here: the site has its own three-way toggle, so someone on a dark
+ * machine who picks the light theme would get a dark widget in a light form.
+ * Read the resolved theme off the `dark` class that `navbar/theme.ts` writes.
+ */
+function currentTheme(): ResolvedTheme {
+  if (typeof document === 'undefined') return 'light';
+
+  return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+}
 
 
 function Field(props: {
@@ -37,14 +59,81 @@ export default function ContactForm(props: {
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState<string | null>(null);
   const [receiptSent, setReceiptSent] = useState(false);
+  const [needsInteraction, setNeedsInteraction] = useState(false);
+  const [theme, setTheme] = useState<ResolvedTheme>('light');
+
   const turnstileRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
+  const tokenRef = useRef<string | null>(null);
+  const waitersRef = useRef<Array<(token: string | null) => void>>([]);
+
+  // The widget is hidden until Cloudflare wants an interaction, so the form is
+  // unmounted on success and remounted for "Send another" — a Turnstile token is
+  // single-use, and a stale one would be rejected as a duplicate.
+  const formVisible = status !== 'success';
+
+
+  /** Hand a token (or a failure) to anything waiting on one. */
+  const settleToken = useCallback((token: string | null) => {
+    tokenRef.current = token;
+
+    const waiters = waitersRef.current;
+    waitersRef.current = [];
+    waiters.forEach((resolve) => resolve(token));
+  }, []);
+
+
+  /**
+   * Resolve with the current token, or wait for the widget to produce one.
+   * `appearance: 'interaction-only'` still executes on render, but the token
+   * arrives asynchronously — without this, a fast typist submits an empty token
+   * and gets a captcha error with nothing on screen to explain it.
+   */
+  const awaitToken = useCallback((timeoutMs: number) => {
+    return new Promise<string | null>((resolve) => {
+      if (tokenRef.current) {
+        resolve(tokenRef.current);
+        return;
+      }
+
+      let timer = 0;
+
+      const waiter = (token: string | null) => {
+        window.clearTimeout(timer);
+        resolve(token);
+      };
+
+      timer = window.setTimeout(() => {
+        waitersRef.current = waitersRef.current.filter((entry) => entry !== waiter);
+        resolve(null);
+      }, timeoutMs);
+
+      waitersRef.current.push(waiter);
+    });
+  }, []);
+
+
+  // Track the site's resolved theme so the widget can be re-rendered to match.
+  useEffect(() => {
+    setTheme(currentTheme());
+
+    const observer = new MutationObserver(() => setTheme(currentTheme()));
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
 
   // Load and render the Turnstile widget only when a site key is configured.
+  // Re-runs on a theme change because Turnstile cannot be re-themed in place.
   useEffect(() => {
-    if (!props.turnstileSiteKey || !turnstileRef.current) return;
+    if (!props.turnstileSiteKey || !formVisible) return;
 
     let cancelled = false;
+    let pollId = 0;
 
     function renderWidget() {
       const turnstile = (window as any).turnstile;
@@ -52,7 +141,22 @@ export default function ContactForm(props: {
 
       widgetIdRef.current = turnstile.render(turnstileRef.current, {
         sitekey: props.turnstileSiteKey,
-        theme: 'auto',
+        theme,
+        // Fills the form width on the rare occasion it is shown, rather than
+        // sitting as an orphaned 300px box under full-width inputs.
+        size: 'flexible',
+        // Invisible unless Cloudflare decides a human check is warranted.
+        appearance: 'interaction-only',
+        callback: (token: string) => settleToken(token),
+        'expired-callback': () => {
+          tokenRef.current = null;
+        },
+        'error-callback': () => {
+          // Settle rather than hang, so a submission in flight fails fast.
+          settleToken(null);
+        },
+        'before-interactive-callback': () => setNeedsInteraction(true),
+        'after-interactive-callback': () => setNeedsInteraction(false),
       });
     }
 
@@ -66,19 +170,41 @@ export default function ContactForm(props: {
       script.onload = renderWidget;
       document.head.appendChild(script);
     } else {
-      const id = window.setInterval(() => {
+      pollId = window.setInterval(() => {
         if ((window as any).turnstile) {
-          window.clearInterval(id);
+          window.clearInterval(pollId);
           renderWidget();
         }
       }, 100);
-      return () => window.clearInterval(id);
     }
 
     return () => {
       cancelled = true;
+      window.clearInterval(pollId);
+
+      if (widgetIdRef.current) {
+        try {
+          (window as any).turnstile?.remove(widgetIdRef.current);
+        } catch {
+          // The container may already be gone; nothing to clean up.
+        }
+
+        widgetIdRef.current = null;
+      }
+
+      tokenRef.current = null;
+      setNeedsInteraction(false);
     };
-  }, [props.turnstileSiteKey]);
+  }, [props.turnstileSiteKey, formVisible, theme, settleToken]);
+
+
+  function resetWidget() {
+    tokenRef.current = null;
+
+    if (widgetIdRef.current) {
+      (window as any).turnstile?.reset(widgetIdRef.current);
+    }
+  }
 
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -88,9 +214,21 @@ export default function ContactForm(props: {
 
     const form = event.currentTarget;
     const data = new FormData(form);
-    const turnstileToken = props.turnstileSiteKey
-      ? String(data.get('cf-turnstile-response') ?? '')
-      : undefined;
+
+    let turnstileToken: string | undefined;
+
+    if (props.turnstileSiteKey) {
+      const token = await awaitToken(TOKEN_TIMEOUT_MS);
+
+      if (!token) {
+        setError('We could not confirm you are human. Please try again.');
+        setStatus('error');
+        resetWidget();
+        return;
+      }
+
+      turnstileToken = token;
+    }
 
     try {
       const response = await fetch('/api/contact/submit', {
@@ -105,12 +243,22 @@ export default function ContactForm(props: {
         }),
       });
 
+      // A WAF block never reaches the route, so this 429 carries no JSON body.
+      // Read the wait off the header instead of showing "try again", which would
+      // invite the one retry certain to fail.
+      if (response.status === 429) {
+        setError(rateLimitMessage(response.headers.get('Retry-After')));
+        setStatus('error');
+        resetWidget();
+        return;
+      }
+
       const result = await response.json().catch(() => ({}));
 
       if (!response.ok) {
         setError(result.error ?? 'Something went wrong. Please try again.');
         setStatus('error');
-        (window as any).turnstile?.reset(widgetIdRef.current ?? undefined);
+        resetWidget();
         return;
       }
 
@@ -120,7 +268,7 @@ export default function ContactForm(props: {
     } catch {
       setError('Could not reach the server. Please check your connection and try again.');
       setStatus('error');
-      (window as any).turnstile?.reset(widgetIdRef.current ?? undefined);
+      resetWidget();
     }
   }
 
@@ -201,7 +349,23 @@ export default function ContactForm(props: {
       </Field>
 
       {props.turnstileSiteKey && (
-        <div ref={turnstileRef} />
+        <div className='flex flex-col gap-2'>
+          {/*
+            Turnstile reserves ~72px even when `interaction-only` keeps the
+            challenge hidden, which leaves an empty gap in the form. Collapse the
+            host until `before-interactive-callback` says a challenge is coming.
+          */}
+          <div
+            className={cn(!needsInteraction && 'h-0 overflow-hidden')}
+            ref={turnstileRef}
+          />
+
+          {needsInteraction && (
+            <p className='text-xs text-muted-foreground'>
+              {`Please complete the check above to send your message.`}
+            </p>
+          )}
+        </div>
       )}
 
       {error && (
@@ -213,7 +377,7 @@ export default function ContactForm(props: {
         </div>
       )}
 
-      <div className='flex items-center gap-3'>
+      <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
         <Button
           className={cn('font-mono', status === 'submitting' && 'opacity-70')}
           disabled={status === 'submitting'}
@@ -222,6 +386,30 @@ export default function ContactForm(props: {
           <Icon className='text-xs' icon={faPaperPlane} />
           {status === 'submitting' ? 'Sending…' : 'Send message'}
         </Button>
+
+        {/* Trails the button, flush with the right edge of the fields above. */}
+        {props.turnstileSiteKey && (
+          <p className='text-[11px] text-muted-foreground'>
+            {`Protected by Turnstile · `}
+            <a
+              className='underline underline-offset-2 hover:text-foreground'
+              href='https://www.cloudflare.com/privacypolicy/'
+              rel='noopener noreferrer'
+              target='_blank'
+            >
+              {`Privacy`}
+            </a>
+            {` · `}
+            <a
+              className='underline underline-offset-2 hover:text-foreground'
+              href='https://www.cloudflare.com/website-terms/'
+              rel='noopener noreferrer'
+              target='_blank'
+            >
+              {`Terms`}
+            </a>
+          </p>
+        )}
       </div>
     </form>
   );
