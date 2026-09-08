@@ -161,6 +161,26 @@
   --reel-osler: oklch(0.720 0.130 84.4);
 }
 
+/**
+ * Trailing space beneath the last thing on a scrolling page.
+ *
+ * Nothing follows the content — the site has no footer — so without a
+ * deliberate runout the scroll stops flush against the final element, which
+ * reads as content cropped off rather than a page that ended. Narrow screens
+ * need the most of it: the viewport is short enough that the last row is often
+ * the only thing in view when you hit the bottom.
+ *
+ * One utility rather than a per-page number, because the per-page numbers had
+ * already drifted to four different values.
+ */
+@utility page-runout {
+  padding-bottom: --spacing(20);
+
+  @variant md {
+    padding-bottom: --spacing(16);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

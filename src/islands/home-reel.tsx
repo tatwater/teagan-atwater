@@ -229,7 +229,7 @@ export default function HomeReel(props: {
       </aside>
 
       {/* Photoset for the selected project */}
-      <div className='flex-1 min-w-0 p-2 pb-12'>
+      <div className='flex-1 min-w-0 p-2 page-runout'>
         {/*
           Keyed so React remounts the panel when the selection changes, which
           replays the fade-in. Deliberately not wrapped in AnimatePresence: an

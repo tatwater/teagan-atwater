@@ -174,7 +174,9 @@ export default function ResumeExplorer() {
         </div>
 
         {/* Main content */}
-        <div className='flex-1 min-w-0 pt-3 pb-4 md:pt-4 md:pb-12'>
+        {/* The runout sits on the column, not on either child, so it lands under
+            whichever one is last — the entries at lg, the skills below it. */}
+        <div className='flex-1 min-w-0 pt-3 md:pt-4 page-runout'>
           <div className='space-y-6 px-4 md:px-6' ref={entriesRef}>
             {activeTag ? (
               <ResumeAccordion
