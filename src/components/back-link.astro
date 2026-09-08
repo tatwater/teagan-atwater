@@ -1,0 +1,30 @@
+---
+import { faArrowLeft } from '@fortawesome/sharp-regular-svg-icons';
+import { Icon } from '@/components/icon';
+
+/**
+ * The muted "back" link that opens each résumé detail page. Shared by the
+ * generic `/resume/[id]` route and the bespoke `/resume/nmc` page, which
+ * otherwise carried identical markup twice and would have drifted.
+ *
+ * Deliberately structural rather than historical: a detail page always sits
+ * under `/resume`, however the visitor happened to arrive at it.
+ */
+interface Props {
+  href?: string;
+  label?: string;
+}
+
+const { href = '/resume', label = 'Back to résumé' } = Astro.props;
+---
+
+<a
+  href={href}
+  class='inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors mb-8 group'
+>
+  <Icon
+    className='size-3 group-hover:-translate-x-0.5 transition-transform'
+    icon={faArrowLeft}
+  />
+  {label}
+</a>

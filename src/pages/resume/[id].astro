@@ -1,8 +1,9 @@
 ---
 import type { ResumeItem } from '@/data/resume/types';
 
-import { faArrowLeft, faArrowUpRightFromSquare } from '@fortawesome/sharp-regular-svg-icons';
+import { faArrowUpRightFromSquare } from '@fortawesome/sharp-regular-svg-icons';
 import Layout from '@/layouts/Layout.astro';
+import BackLink from '@/components/back-link.astro';
 import ComingSoon from '@/components/coming-soon.astro';
 import { Icon } from '@/components/icon';
 import { TagPill } from '@/islands/resume/tag-pill';
@@ -65,17 +66,7 @@ const logoSrcResolved = item.logoSrc
 <Layout>
   <div class="max-w-3xl mx-auto px-6 py-12">
 
-    {/* Back link */}
-    <a
-      href="/"
-      class="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors mb-8 group"
-    >
-      <Icon
-        className='size-3 group-hover:-translate-x-0.5 transition-transform'
-        icon={faArrowLeft}
-      />
-      Back to résumé
-    </a>
+    <BackLink />
 
     {/* Header card */}
     <div class="border border-border bg-card relative overflow-hidden mb-6">
