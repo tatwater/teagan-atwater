@@ -86,8 +86,9 @@ async function send(
     console.error(
       `Cannot send ${label}: ${missing.join(', ')} `
       + `${missing.length === 1 ? 'is' : 'are'} not set in this environment. `
-      + 'Set them on the deployment and redeploy — these are read at runtime, so '
-      + 'a build that shipped before they existed will not pick them up.',
+      + 'Set the missing configuration on the deployment and redeploy — these '
+      + 'variables are read at runtime, so a build that shipped before they '
+      + 'existed will not pick them up.',
     );
 
     return { success: false, error: `Missing email configuration: ${missing.join(', ')}` };
