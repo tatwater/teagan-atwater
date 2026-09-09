@@ -110,9 +110,7 @@ export const experienceItems: ResumeItem[] = [
     groupKey: 'oho',
     tags: ['React', 'TypeScript', 'Freelance', 'Responsive Design', 'Semantic Markup', 'Screen Readers', 'Accessibility', 'Prototyping', 'CSS', 'CSS Modules', 'React Context', 'Web Performance', 'Git', 'Agile/Scrum'],
     descriptionHeadline: 'Returned to OHO to help modernize their component library',
-    descriptionSummary: [
-      'Returned as a contractor in 2023 to assist the company in its adoption of React & TypeScript for more modern DX in their reusable frontend component library',
-    ],
+    descriptionSummary: 'Returned as a contractor in 2023 to assist the company in its adoption of React & TypeScript for more modern DX in their reusable frontend component library',
     descriptionFull:
       'Years after my last stint at OHO Interactive, the team brought me back on contract to help them move their reusable frontend component library toward React and TypeScript. The goal was a more modern developer experience for the engineers building client sites on top of it — typed, composable components in place of patterns the agency had outgrown. It was a satisfying return: the same studio, the same standards, a decade of my own experience to bring to it.',
     descriptionPrint:
@@ -181,9 +179,7 @@ export const experienceItems: ResumeItem[] = [
     groupKey: 'oho',
     tags: ['Drupal', 'PHP', 'jQuery', 'JavaScript', 'HTML', 'CSS', 'Responsive Design', 'Agile/Scrum', 'Semantic Markup', 'Screen Readers', 'Accessibility', 'Sass/Less', 'Git'],
     descriptionHeadline: 'Joined a Boston digital agency full-time after graduation',
-    descriptionSummary: [
-      'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern in summer 2014, then on contract in winter 2014–15, then full-time after graduation',
-    ],
+    descriptionSummary: 'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern in summer 2014, then on contract in winter 2014–15, then full-time after graduation',
     descriptionFull:
       'OHO Interactive is a Boston digital agency I kept returning to — first as an intern in summer 2014, then on contract in winter 2014–15, and after graduation as a full-time engineer. In this role I worked across teams to build and ship large-scale Drupal sites in PHP and jQuery, the kind of projects where the content model matters as much as the interface.\n\nAgency work meant several clients at once, each with its own requirements and expectations, and OHO held high standards for code quality alongside a genuinely collaborative culture. It is where I learned the craft of shipping client work in production, and the reason I came back twice more.',
     descriptionPrint:
