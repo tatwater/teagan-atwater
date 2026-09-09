@@ -40,7 +40,7 @@ function DescriptionContent({ body, terms }: { body: DescriptionBody; terms: str
       {toBulletRuns(body).map((run, i) => (
         <div key={i} className='flex flex-col gap-1.5'>
           {run.label && (
-            <p className='text-xs font-mono font-medium text-foreground/72'>
+            <p className='text-sm font-semibold text-foreground/72 -mb-1'>
               <Highlight terms={terms} text={run.label} />
             </p>
           )}
