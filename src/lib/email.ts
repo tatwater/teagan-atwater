@@ -37,6 +37,29 @@ function requireEnv(name: string, value: string | undefined): string {
 }
 
 
+/**
+ * Every variable a send needs, reported together.
+ *
+ * `requireEnv` throws on the first miss and `send` flattens that into the same
+ * generic failure any Resend error produces, so an unconfigured deployment used
+ * to look identical to a bounced domain — the variable's name was only legible
+ * by reading the exception inside an "Error sending …" line, and a deployment
+ * missing two variables surfaced the second one only after redeploying for the
+ * first. Naming the whole set up front makes the log line the diagnosis.
+ */
+function missingEmailConfig(): string[] {
+  const required: Record<string, string | undefined> = {
+    RESEND_API_KEY,
+    RESEND_FROM_EMAIL,
+    ADMIN_EMAIL,
+  };
+
+  return Object.entries(required)
+    .filter(([, value]) => !value)
+    .map(([name]) => name);
+}
+
+
 function formatTimestamp(submittedAt: Date): string {
   return submittedAt.toLocaleString('en-US', {
     dateStyle: 'long',
@@ -48,11 +71,28 @@ function formatTimestamp(submittedAt: Date): string {
 /**
  * Wraps a Resend send so a transport failure and an API-level error surface the
  * same way, and neither escapes as an exception into the request handler.
+ *
+ * The returned `error` names configuration when that is the cause. It stays out
+ * of the response: `deliverContactSubmission` answers a failed notification with
+ * its own fixed message, and a receipt's result is read only as a boolean.
  */
 async function send(
   label: string,
   build: (resend: Resend) => Promise<{ data: { id: string } | null; error: { message: string } | null }>,
 ): Promise<SendResult> {
+  const missing = missingEmailConfig();
+
+  if (missing.length > 0) {
+    console.error(
+      `Cannot send ${label}: ${missing.join(', ')} `
+      + `${missing.length === 1 ? 'is' : 'are'} not set in this environment. `
+      + 'Set them on the deployment and redeploy — these are read at runtime, so '
+      + 'a build that shipped before they existed will not pick them up.',
+    );
+
+    return { success: false, error: `Missing email configuration: ${missing.join(', ')}` };
+  }
+
   try {
     const resend = new Resend(requireEnv('RESEND_API_KEY', RESEND_API_KEY));
     const result = await build(resend);
