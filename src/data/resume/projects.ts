@@ -3,6 +3,21 @@ import type { ResumeItem } from '@/data/resume/types';
 
 export const projectItems: ResumeItem[] = [
   {
+    id: 'project-gli',
+    title: 'Gli',
+    organizationName: 'Gli',
+    logoShape: 'squircle',
+    logoSrc: 'gli.png',
+    dateStart: '2026-07',
+    dateEnd: null,
+    type: 'project',
+    tags: ['TypeScript', 'React', 'React Native', 'Expo', 'Postgres', 'Tailwind', 'Design Systems', 'Figma', 'Design Tokens', 'Motion', 'Responsive Design', 'Semantic Markup', 'UI Design', 'UX Design', 'Accessibility', 'Information Architecture', 'Prototyping', 'Vitest', 'CSS', 'TanStack Start', 'Vite', 'Device Storage', 'Offline Support', 'Sync Engines', 'Key-Value Stores', 'React Context', 'Convex', 'Monorepos', 'Vercel', 'CI/CD', 'Git', 'HITL Engineering', 'Agent Skills', 'Sub-agent Orchestration', 'Automated Guardrails', 'Continuous Verification', 'Claude Code', 'Automated Testing', 'Code Review', 'Node.js', 'Auth', 'Python', 'React Email', 'Full Stack', 'Product Strategy', 'Roadmapping'],
+    descriptionHeadline: 'An ice conditions reporting platform for the Nordic / wild ice skating community',
+    descriptionSummary: 'Designed and built a map-first mobile and web app for wild ice skating, including a lake corpus merged from four disagreeing public catalogues into 25,000 provenance-carrying records, a satellite pipeline that pairs optical and radar passes into a scrubbable freeze-up timeline, an on-device hazard alerting engine that projects a skater\'s course over ground and fires with no cell signal, and a weather-driven confidence model that ages every report and hazard without ever claiming the ice is safe.',
+    descriptionFull: '',
+    // detailLabel: 'Learn more',
+  },
+  {
     id: 'project-personal-site',
     hideFromPrint: true,
     title: 'Personal Site v11',
@@ -20,29 +35,6 @@ export const projectItems: ResumeItem[] = [
       'This site is a continuous personal project that I\'ve rebuilt from scratch more times than I can fully justify. Version 11 is built on Astro with React islands for interactive components, Tailwind CSS v4 for styling, and Convex for the backend. It features a ⌘K command palette powered by MiniSearch, a dark/light mode system, and this interactive résumé explorer. Every version of this site is an opportunity to try new tools, push my design sensibilities, and build something I\'m genuinely proud of — the eleventh time is no exception.',
     descriptionPrint:
       'Personal site (v11) built with Astro, React, Tailwind CSS v4, and Convex. Features a ⌘K command palette, dark mode, and an interactive résumé explorer.',
-    // detailLabel: 'Learn more',
-  },
-  {
-    // Gli is too early to stand as a résumé entry, so `hidden` keeps it off both
-    // the interactive résumé and the printed page. It lives here anyway because
-    // the home page reel resolves its entries out of the résumé data by id — see
-    // src/data/highlights.ts, which reads hidden entries deliberately. Drop the
-    // flag once there is real copy and the work can speak for itself.
-    id: 'project-gli',
-    hidden: true,
-    title: 'Gli',
-    organizationName: 'Gli',
-    logoShape: 'squircle',
-    // TODO: add gli.* to src/assets/logos/ and set logoSrc.
-    dateStart: '2026-07',
-    dateEnd: null,
-    type: 'project',
-    tags: ['TypeScript', 'React', 'React Native', 'Expo', 'Postgres', 'Tailwind', 'Design Systems', 'Figma', 'Design Tokens', 'Motion', 'Responsive Design', 'Semantic Markup', 'UI Design', 'UX Design', 'Accessibility', 'Information Architecture', 'Prototyping', 'Vitest', 'CSS', 'TanStack Start', 'Vite', 'Device Storage', 'Offline Support', 'Sync Engines', 'Key-Value Stores', 'React Context', 'Convex', 'Monorepos', 'Vercel', 'CI/CD', 'Git', 'HITL Engineering', 'Agent Skills', 'Sub-agent Orchestration', 'Automated Guardrails', 'Continuous Verification', 'Claude Code', 'Automated Testing', 'Code Review', 'Node.js', 'Auth', 'Python', 'React Email', 'Full Stack', 'Product Strategy', 'Roadmapping'],
-    descriptionHeadline: 'An ice conditions reporting platform for the Nordic / wild ice skating community',
-    // TODO: real copy. Nothing below is written yet; the home page shows the
-    // headline above and the mockups, and needs none of these.
-    descriptionSummary: '',
-    descriptionFull: '',
     // detailLabel: 'Learn more',
   },
   {
