@@ -2,6 +2,13 @@
 import Layout from '@/layouts/Layout.astro';
 import ContactForm from '@/islands/contact/ContactForm';
 
+// Nothing here is request-specific: Vite inlines `import.meta.env.PUBLIC_*` at
+// build time, so rendering on demand only bought a cold serverless invocation
+// for a value that was already frozen into the bundle. Prerendered, this is a
+// static file with an ETag that prefetch can actually reuse. The form still
+// posts to /api/contact/submit, which stays on demand.
+export const prerender = true;
+
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY;
 ---
 

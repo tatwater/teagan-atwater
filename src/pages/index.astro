@@ -6,6 +6,13 @@ import HomeReel from '@/islands/home-reel';
 import { highlights } from '@/data/highlights';
 import { mockupsFor } from '@/lib/mockups';
 
+// Built entirely from local data with nothing request-specific, so it is
+// prerendered at build time and served as a static file rather than invoked as a
+// serverless function on every request. On-demand pages ship without an ETag,
+// which made the router re-download this page on click even after prefetch had
+// already fetched it.
+export const prerender = true;
+
 // Only the reel's own fields cross into the island, so the home page does not
 // pull the whole résumé data set into its client bundle. Mockup URLs resolve
 // here, at build time, where Vite has already hashed them.

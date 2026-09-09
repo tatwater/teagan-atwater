@@ -1,4 +1,4 @@
-import { useReducer, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { NavbarActions } from '@/islands/navbar/navbar-actions';
 import TA from '@/components/ta-brand/TA';
 import { cn } from '@/lib/utils';
@@ -8,13 +8,36 @@ const NAV_LINKS = [
   { href: '/contact', label: 'Contact' },
 ];
 
+// `astro:transitions/client` re-exports the router functions and the plain
+// types, but not the event classes, so the one field we read is declared here.
+type NavigationEvent = Event & { to: URL };
+
+const currentPath = () => (typeof window === 'undefined' ? '' : window.location.pathname);
+
 export function Navbar() {
-  const [, forceUpdate] = useReducer(x => x + 1, 0);
-  const pathname = typeof window !== 'undefined' ? window.location.pathname : '';
+  const [pathname, setPathname] = useState(currentPath);
 
   useEffect(() => {
-    document.addEventListener('astro:after-swap', forceUpdate);
-    return () => document.removeEventListener('astro:after-swap', forceUpdate);
+    // `astro:before-preparation` fires the moment a link is clicked, before the
+    // new document has been requested. Moving the indicator here rather than on
+    // `astro:after-swap` means the navbar answers the click immediately instead
+    // of sitting on the old page for the length of the round trip.
+    const onStart = (event: Event) => setPathname((event as NavigationEvent).to.pathname);
+
+    // Re-sync from the real URL on arrival: a swap can happen without a
+    // preparation phase, and a navigation that fails mid-flight would otherwise
+    // strand the indicator on a page that was never reached.
+    const onSettled = () => setPathname(currentPath());
+
+    document.addEventListener('astro:before-preparation', onStart);
+    document.addEventListener('astro:after-swap', onSettled);
+    document.addEventListener('astro:page-load', onSettled);
+
+    return () => {
+      document.removeEventListener('astro:before-preparation', onStart);
+      document.removeEventListener('astro:after-swap', onSettled);
+      document.removeEventListener('astro:page-load', onSettled);
+    };
   }, []);
 
   return (
@@ -24,6 +47,7 @@ export function Navbar() {
           <div className='flex items-center gap-5 sm:gap-8'>
             <a
               className='size-10 opacity-85'
+              data-astro-prefetch='load'
               href='/'
             >
               <TA
@@ -38,6 +62,10 @@ export function Navbar() {
                   <a
                     key={href}
                     href={href}
+                    // Only three routes exist, so fetch both siblings once this
+                    // page has settled rather than waiting for a hover. Astro
+                    // drops back to `tap` on save-data and slow connections.
+                    data-astro-prefetch='load'
                     className={cn(
                       'relative isolate transition-colors px-2 py-0.5 whitespace-nowrap',
                       isActive
@@ -66,9 +94,6 @@ export function Navbar() {
                       </>
                     )}
                     {label}
-                    {isActive && (
-                      <span className='absolute -bottom-1.5 left-1/2 -translate-x-1/2 size-1 rounded-full bg-primary' />
-                    )}
                   </a>
                 );
               })}
