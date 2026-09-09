@@ -182,12 +182,12 @@ export const experienceItems: ResumeItem[] = [
     tags: ['Drupal', 'PHP', 'jQuery', 'JavaScript', 'HTML', 'CSS', 'Responsive Design', 'Agile/Scrum', 'Semantic Markup', 'Screen Readers', 'Accessibility', 'Sass/Less', 'Git'],
     descriptionHeadline: 'Joined a Boston digital agency full-time after graduation',
     descriptionSummary: [
-      'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern, then on contract, then full-time after graduation',
+      'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern in summer 2014, then on contract in winter 2014–15, then full-time after graduation',
     ],
     descriptionFull:
-      'OHO Interactive is a Boston digital agency I kept returning to — first as an intern, then on contract, and after graduation as a full-time engineer. In this role I worked across teams to build and ship large-scale Drupal sites in PHP and jQuery, the kind of projects where the content model matters as much as the interface.\n\nAgency work meant several clients at once, each with its own requirements and expectations, and OHO held high standards for code quality alongside a genuinely collaborative culture. It is where I learned the craft of shipping client work in production, and the reason I came back twice more.',
+      'OHO Interactive is a Boston digital agency I kept returning to — first as an intern in summer 2014, then on contract in winter 2014–15, and after graduation as a full-time engineer. In this role I worked across teams to build and ship large-scale Drupal sites in PHP and jQuery, the kind of projects where the content model matters as much as the interface.\n\nAgency work meant several clients at once, each with its own requirements and expectations, and OHO held high standards for code quality alongside a genuinely collaborative culture. It is where I learned the craft of shipping client work in production, and the reason I came back twice more.',
     descriptionPrint:
-      'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern, then on contract, then full-time after graduation.',
+      'Worked across teams to build and ship large-scale Drupal PHP/jQuery sites for a Boston digital agency, first as an intern in summer 2014, then on contract in winter 2014–15, then full-time after graduation.',
     // detailLabel: 'Learn more',
   },
   {
@@ -222,10 +222,12 @@ export const experienceItems: ResumeItem[] = [
     dateEnd: '2015-01',
     type: 'experience',
     groupKey: 'oho',
-    // Deliberately blank, the way Northfield Mount Hermon is in education.ts: a
-    // one-month engagement from a decade ago earns a line on the timeline and
-    // nothing more. Empty descriptions render no paragraph at any verbosity, and
-    // no tags keeps it out of skill filtering and search results.
+    // Shelved for now, data kept — drop `hidden` to bring the row back. The
+    // stint itself is not lost: the full-time OHO entry above names it in prose,
+    // dates and all. Descriptions stay deliberately blank, the way Northfield
+    // Mount Hermon is in education.ts — a one-month engagement from a decade ago
+    // earns a line on the timeline and nothing more.
+    hidden: true,
     tags: ['Responsive Design', 'Semantic Markup', 'Screen Readers', 'Accessibility', 'CSS', 'Sass/Less', 'JavaScript', 'HTML', 'jQuery', 'Web Performance', 'Git', 'PHP', 'Drupal', 'Agile/Scrum', 'Freelance'],
     descriptionHeadline: '',
     descriptionSummary: '',
