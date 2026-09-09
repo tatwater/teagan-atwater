@@ -32,12 +32,14 @@ const MOCKUP_ALT: Record<string, string> = {
     'A close-up of Gli\u2019s satellite layer over Mascoma Lake in Enfield, New Hampshire: a Sentinel-2 true colour capture from December 22 2025 at 1% cloud cover, scrubbable along a timeline of every earlier pass over the lake',
   'project-gli/03-logo-lockups.jpg':
     'The Gli wordmark in both of its lockups, reversed white on black and black on white, each underscored by a skate blade trailing pale blue ice',
-  'project-sous/01-recipe-detail-on-laptop.jpg':
-    'A Sous recipe open on a laptop — BBQ Chicken, grilled, an hour and twenty minutes for six servings: its ingredients and equipment down one column, five steps down the other with every ingredient linked back into the prose, a timer offered against the step that needs one, and a cook\u2019s own note left under the grilling step',
+  'project-sous/01-recipe-library-laptop.jpg':
+    'A cook\u2019s Sous recipe library open on a laptop in hard side light — twenty-six recipes in one sortable table, newest first, each carrying its cooking time, the writer it came from and the publication that ran it, from Hawaiian Chicken Tacos and Char Siu down to Mile-High Flaky Biscuits, with Last Made still reading Never the whole way down',
   'project-sous/02-meal-player-ingredients-crossed-off.jpg':
     'Sous\u2019 meal player held in one hand against a pantry wall of glass jars — spiralled pasta, rigatoni, grains and flour — with a whole dinner\u2019s shopping gathered into one list: the challah\u2019s water, vegetable oil, salt, flour and butter already struck through, its yeast, sugar, honey and sesame seeds still to fetch, and the mushroom risotto carrying on underneath',
   'project-sous/03-meal-player-chicken-step-4.jpg':
     'Sous\u2019 meal player face up on an oak table part-way through cooking, open on Baked Chicken Breasts at step four — whisking the salt, pepper, garlic powder and paprika, each measure tagged beneath the instruction — over a row of the three other dishes waiting at their own steps, the challah on six of seven and the green beans on three of six',
+  'project-sous/04-recipe-detail-laptop.jpg':
+    'A Sous recipe open on a laptop propped on a round oak stool in low evening light — BBQ Chicken, grilled, an hour and five minutes for six servings: its ingredients and equipment down one column, five steps down the other, a cook\u2019s note on two-zone grilling left under the third, and a side rail crediting Lisa Bryan at Downshiftology beside buttons to add it to the meal plan or start cooking now',
 };
 
 
