@@ -115,7 +115,7 @@ export const projectItems: ResumeItem[] = [
     tags: ['Product Strategy', 'Full Stack', 'React', 'TypeScript', 'UI Design', 'UX Design', 'Figma', 'Design Systems', 'Design Tokens', 'Responsive Design', 'Semantic Markup', 'Information Architecture', 'Prototyping', 'Tailwind', 'Vitest', 'CSS', 'TanStack Start', 'Vite', 'Device Storage', 'Offline Support', 'Sync Engines', 'Postgres', 'React Context', 'Convex', 'Monorepos', 'Vercel', 'CI/CD', 'Git', 'HITL Engineering', 'Automated Guardrails', 'Sub-agent Orchestration', 'Continuous Verification', 'Claude Code', 'Code Review', 'Node.js', 'Auth', 'React Email', 'Roadmapping'],
     descriptionHeadline: 'A lifetime cost-of-ownership tracker for personal vehicles',
     descriptionSummary:
-      'Description coming soon',
+      'Designed and built a vehicle ownership journal and cost tracker across native mobile and web, including a full-tank fuel-economy engine that reconstructs MPG across partial fills and corrections, a cash-basis ownership accounting model that separates acquisition price from financing cash flow, VIN decoding through a provider-neutral adapter, and a two-axis permission system that lets people share a car\'s history without exposing what they paid for it.',
     descriptionFull:
       'Coming soon',
     descriptionPrint:
