@@ -3,6 +3,7 @@ import type { Mockup, MockupEmbed } from '@/lib/mockups';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
+import { overrideCoarsePointer } from '@/lib/mockuuups-pointer-override';
 
 
 export interface ReelItem {
@@ -76,6 +77,11 @@ const EMBED_SCRIPT_SRC = 'https://embed.mckp.live/embed.js';
  * being bundled into more than one entry point.
  */
 function loadEmbedScript() {
+  // Must be in place before their bundle runs: it reads the pointer once, when
+  // it sizes the canvas. See src/lib/mockuuups-pointer-override.ts for why we
+  // lie to it, and docs/THIRD-PARTY-SCRIPTS.md for what that costs.
+  overrideCoarsePointer();
+
   if (document.querySelector(`script[src="${EMBED_SCRIPT_SRC}"]`)) return;
 
   const script = document.createElement('script');

@@ -25,6 +25,12 @@ their `<mockup-player>` element. Nothing is downloaded, so the slot depends on
 their service being up, and readers who prefer reduced motion are shown the
 stills instead — an embed has no still frame to fall back to.
 
+Their player also halves its own render resolution on touch devices, which the
+site works around by overriding a media query for the whole page. That is a
+global change with consequences for any other third-party script that adapts to
+touch — the reasoning is in `src/lib/mockuuups-pointer-override.ts`, and there
+is a longer note in `docs/THIRD-PARTY-SCRIPTS.md` if you have the internal docs.
+
 Anything that moves renders above that highlight's stills by default, so the
 first one takes the top slot. To place it somewhere else, give it a `position`
 that reads like one of the filenames here — `'02-app-on-phones'` files it
