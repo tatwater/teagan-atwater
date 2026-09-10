@@ -40,7 +40,21 @@ import '@/styles/global.css';
 		</script>
 	</head>
 	<body>
-	  <Navbar client:only="react" transition:persist="navbar" />
+		<!--
+			The navbar is `client:only`, so the server sends no header at all and the
+			page arrives 65px short of its real height. Everything below it is laid
+			out too high until React mounts and shoves it down — visible as a jolt on
+			every load, and worse on a reload, where the browser restores the scroll
+			position against the short document and then has to make the difference
+			up, landing the reader 65px past where they left off.
+
+			Holding the space keeps the first paint honest. The height is the navbar's
+			own `min-h-16` plus its bottom border, written the same way the home page
+			writes it when it subtracts the same bar from the viewport.
+		-->
+		<div class='min-h-[calc(4rem+1px)]'>
+			<Navbar client:only="react" transition:persist="navbar" />
+		</div>
 		<div class='px-5 md:px-8 lg:px-10'>
 		  <div class='max-w-7xl mx-auto border-x border-border-light min-h-full'>
 				<slot />
