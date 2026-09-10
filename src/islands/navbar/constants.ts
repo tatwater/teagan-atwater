@@ -1,4 +1,4 @@
-import { faDisplay, faMoon, faSun } from '@fortawesome/sharp-regular-svg-icons';
+import { faDisplay, faMoon, faSunBright } from '@fortawesome/sharp-regular-svg-icons';
 
 
 export const THEMES = {
@@ -7,7 +7,7 @@ export const THEMES = {
     label: 'Dark',
   },
   light: {
-    icon: faSun,
+    icon: faSunBright,
     label: 'Light',
   },
   system: {

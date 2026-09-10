@@ -15,7 +15,7 @@ import {
   faPrint,
   faRightFromBracket,
   faRightToBracket,
-  faSun,
+  faSunBright,
   faUser,
 } from '@fortawesome/sharp-regular-svg-icons';
 
@@ -114,7 +114,7 @@ const ICON_BY_NAME: Record<string, IconDefinition> = {
   folder: faFolder,
   login: faRightToBracket,
   logout: faRightFromBracket,
-  sun: faSun,
+  sun: faSunBright,
   moon: faMoon,
   system: faDisplay,
 };
