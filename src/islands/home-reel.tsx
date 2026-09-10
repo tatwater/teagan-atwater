@@ -1,6 +1,6 @@
 import type { Mockup, MockupEmbed } from '@/lib/mockups';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { cn } from '@/lib/utils';
 import { overrideCoarsePointer } from '@/lib/mockuuups-pointer-override';
@@ -16,6 +16,45 @@ export interface ReelItem {
 
 const PLACEHOLDER_COUNT = 3;
 
+/**
+ * Where the reel remembers which project is on screen.
+ *
+ * Session storage rather than the URL, so the home page keeps a bare address,
+ * and rather than local storage, so a project chosen once is not still sitting
+ * there weeks later when someone opens the site fresh.
+ */
+const STORAGE_KEY = 'home-reel:selected';
+
+/** Breathing room above the photoset once a switch has scrolled to it. */
+const PANEL_TOP_GAP = 8;
+
+/** Close enough to the photoset's top that scrolling would read as a twitch. */
+const SCROLL_DEADZONE = 12;
+
+
+/**
+ * Session storage, but never fatal.
+ *
+ * Reading it throws outright rather than returning null under some privacy
+ * settings, and an exception here would take the whole island's hydration down
+ * with it. A reader who cannot be remembered simply is not.
+ */
+function readSelection(): string | null {
+  try {
+    return sessionStorage.getItem(STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function storeSelection(id: string) {
+  try {
+    sessionStorage.setItem(STORAGE_KEY, id);
+  } catch {
+    // See above.
+  }
+}
+
 
 /**
  * A mockup that happens to move.
@@ -28,7 +67,7 @@ const PLACEHOLDER_COUNT = 3;
  * clip would otherwise ignore: they get the same frame, paused, with controls
  * if they want to play it themselves.
  */
-function MockupVideo({ alt, src }: { alt: string; src: string }) {
+function MockupVideo({ alt, aspectRatio, src }: { alt: string; aspectRatio: string; src: string }) {
   const ref = useRef<HTMLVideoElement>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
 
@@ -59,6 +98,10 @@ function MockupVideo({ alt, src }: { alt: string; src: string }) {
       playsInline
       preload='metadata'
       src={src}
+      // Holds the slot at the clip's own shape from the first frame. Without
+      // it the element is empty until the metadata lands, which is a hole in
+      // the column exactly when a switch can least afford one.
+      style={{ aspectRatio }}
     />
   );
 }
@@ -131,6 +174,10 @@ function MockupPlayer({ shot }: { shot: MockupEmbed }) {
       cursor-range={shot.cursorRange}
       mockup-id={shot.mockupId}
       role='img'
+      // The same ratio the player is told to use, in CSS this time. Until their
+      // script upgrades the element it is an unknown tag of no height, so the
+      // box has to be reserved here or the column comes up short.
+      style={{ aspectRatio: shot.aspectRatio }}
       trigger={shot.trigger}
       trigger-loop={shot.triggerLoop}
       trigger-threshold={shot.triggerThreshold}
@@ -162,8 +209,49 @@ export default function HomeReel(props: {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoAdvancing, setAutoAdvancing] = useState(true);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const panelRef = useRef<HTMLDivElement>(null);
 
   const stopAutoAdvancing = useCallback(() => setAutoAdvancing(false), []);
+
+  // Come back to the project the reader was last looking at.
+  //
+  // The page is prerendered, so the server cannot know which one that is and
+  // always emits the first; the swap has to happen here, on the client. As a
+  // layout effect it is applied before the hydrated page is painted — a passive
+  // effect would show the default project for a frame and then move the column
+  // sideways under a scroll position the browser had already restored into it.
+  //
+  // Restoring also ends the reel's autonomy, for the same reason: advancing
+  // twelve seconds later would swap the column out from under a reader whose
+  // place in it was just handed back to them.
+  useLayoutEffect(() => {
+    const stored = readSelection();
+    if (stored === null) return;
+
+    const index = items.findIndex((item) => item.id === stored);
+    // A project that has since been renamed or dropped leaves the default up.
+    if (index < 0) return;
+
+    setActiveIndex(index);
+    setAutoAdvancing(false);
+  }, [items]);
+
+  // Remember it for the next load. Whatever is on screen counts, including a
+  // project the reel moved to on its own — a reader who scrolled down into that
+  // column and stayed there is exactly the case a reload has to rebuild.
+  //
+  // The first run is skipped: it would only write back the value the effect
+  // above has just read.
+  const stored = useRef(false);
+
+  useEffect(() => {
+    if (!stored.current) {
+      stored.current = true;
+      return;
+    }
+
+    storeSelection(items[activeIndex].id);
+  }, [activeIndex, items]);
 
   // Any deliberate interaction ends the reel's autonomy — including the click
   // that selects a tab, which lands on window before this listener is removed.
@@ -198,6 +286,44 @@ export default function HomeReel(props: {
 
     return () => window.clearInterval(timer);
   }, [autoAdvancing, intervalMs, items.length]);
+
+  // A switch swaps the photoset in place, which leaves the reader parked
+  // wherever the last project's column happened to run to. Come back up to the
+  // top of the new photoset rather than the top of the page: the tab that was
+  // just clicked is the thing you are leaving, and the mockups are the thing
+  // you asked for.
+  //
+  // Upwards only, never down. From the top of the page the photoset is already
+  // the thing in front of you — on `lg` it starts a navbar's height down, and
+  // below `lg` the tabs themselves are what sits above it — so pinning it to
+  // the viewport would cost the reader context they never asked to lose. Below
+  // `lg` that makes this a no-op in practice, since the tabs are only in reach
+  // from up there in the first place.
+  //
+  // Click only. Arrow keys move focus to the next tab and the browser scrolls
+  // that tab back into view, so scrolling away from it here would only fight.
+  const handleTabClick = useCallback((index: number) => {
+    setActiveIndex(index);
+
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    const target = Math.max(
+      0,
+      window.scrollY + panel.getBoundingClientRect().top - PANEL_TOP_GAP,
+    );
+
+    // One test for both rules: a downward move is a negative distance, and a
+    // short upward one reads as a twitch.
+    if (window.scrollY - target <= SCROLL_DEADZONE) return;
+
+    window.scrollTo({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+      top: target,
+    });
+  }, []);
 
   // Roving focus, as a vertical tablist is expected to behave.
   function handleTabKeyDown(event: React.KeyboardEvent, index: number) {
@@ -266,7 +392,7 @@ export default function HomeReel(props: {
                     !selected && 'hover:bg-muted/20',
                   )}
                   id={`reel-tab-${item.id}`}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => handleTabClick(index)}
                   onKeyDown={(event) => handleTabKeyDown(event, index)}
                   ref={(node) => { tabRefs.current[index] = node; }}
                   role='tab'
@@ -306,7 +432,16 @@ export default function HomeReel(props: {
       </aside>
 
       {/* Photoset for the selected project */}
-      <div className='flex-1 min-w-0 p-2 page-runout'>
+      {/*
+        `overflow-anchor: none` opts the photoset out of Chrome's scroll
+        anchoring. Anchoring exists to hold the view still when something above
+        it resizes, but a switch replaces the column wholesale, and compensating
+        for the height difference between the outgoing shot and the incoming one
+        drags the scroll position by that difference — enough to land a restored
+        reader in the wrong part of their own column. Every shot reserves its
+        box now, so nothing else up there moves for anchoring to correct.
+      */}
+      <div className='flex-1 min-w-0 p-2 page-runout [overflow-anchor:none]' ref={panelRef}>
         {/*
           Keyed so React remounts the panel when the selection changes, which
           replays the fade-in. Deliberately not wrapped in AnimatePresence: an
@@ -336,18 +471,25 @@ export default function HomeReel(props: {
                       <MockupVideo
                         key={shot.src}
                         alt={shot.alt}
+                        aspectRatio={shot.aspectRatio}
                         src={shot.src}
                       />
                     );
                   }
 
                   return (
+                    // `h-auto` because the height attribute would otherwise
+                    // pin the element to the file's own pixel height; paired
+                    // with the width it becomes an aspect ratio instead, and
+                    // the box is reserved before the image decodes.
                     <img
                       key={shot.src}
                       alt={shot.alt}
-                      className='w-full border border-border-light'
+                      className='w-full h-auto border border-border-light'
+                      height={shot.height}
                       loading='lazy'
                       src={shot.src}
+                      width={shot.width}
                     />
                   );
                 })

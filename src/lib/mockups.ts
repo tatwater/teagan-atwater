@@ -1,18 +1,39 @@
 /**
+ * What the glob below hands back for a single file.
+ *
+ * Under Astro that is an ImageMetadata object. Under the plain Vite config the
+ * unit tests run on, where Astro's asset plugin is not loaded, it is only the
+ * URL string — so the size is genuinely unknown there rather than wrong, and
+ * reading both shapes keeps the tests on the same code path as the build.
+ */
+type MockupFile = string | { height: number; src: string; width: number };
+
+/**
  * Home page mockup photosets.
  *
  * Each highlight owns a directory under src/assets/mockups/<résumé item id>/.
  * Globbing them lets Vite emit hashed, cache-busted URLs the same way logos are
  * handled — see src/lib/logos.ts for why the raw /src path cannot be used.
  *
+ * Unlike that glob this one deliberately omits `?url`, which flattens each file
+ * to its URL and discards everything else. The reel wants the intrinsic size as
+ * well: it rebuilds the entire photoset column on every switch, and an <img>
+ * carrying no dimensions takes up no room until its bytes arrive — long enough
+ * for the page to collapse to nothing, which makes the browser clamp the scroll
+ * position and lose the reader's place. Sized, the column holds its shape
+ * across the swap and there is nothing to lose.
+ *
+ * That is also why SVG has dropped out of the pattern: Astro compiles an SVG
+ * import into a component rather than an image, so there would be no dimensions
+ * to read and nothing to hold the space. Mockups are photographs regardless.
+ *
  * Highlights with no directory yet resolve to an empty list, and the home page
  * renders labelled placeholders instead.
  */
-const MOCKUP_URLS = import.meta.glob('/src/assets/mockups/*/*.{png,jpg,jpeg,webp,avif,svg}', {
+const MOCKUP_FILES = import.meta.glob('/src/assets/mockups/*/*.{png,jpg,jpeg,webp,avif}', {
   eager: true,
   import: 'default',
-  query: '?url',
-}) as Record<string, string>;
+}) as Record<string, MockupFile>;
 
 /** Real alt text, keyed by the path under src/assets/mockups/. */
 const MOCKUP_ALT: Record<string, string> = {
@@ -45,12 +66,25 @@ const MOCKUP_ALT: Record<string, string> = {
 
 export interface MockupImage {
   alt: string;
+  /**
+   * The file's own pixel size, which the reel turns into a reserved box so the
+   * column keeps its height while a switch loads. Undefined only under the unit
+   * tests, where the glob has no asset pipeline behind it to ask.
+   */
+  height?: number;
   kind: 'image';
   src: string;
+  width?: number;
 }
 
 export interface MockupVideo {
   alt: string;
+  /**
+   * Written as CSS, e.g. `16 / 9`. A remote file has no size to read at build
+   * time the way a still does, so this is the stand-in that reserves the box —
+   * see MOCKUP_VIDEOS below for the measurement it comes from.
+   */
+  aspectRatio: string;
   kind: 'video';
   position?: string;
   src: string;
@@ -99,6 +133,10 @@ const MOCKUP_VIDEOS: Record<string, MockupVideo[]> = {
   'nmc': [
     {
       alt: 'The New Money Company — product walkthrough',
+      // The file is 3008 × 1692, which is 16:9 to the pixel. Nothing reads it
+      // at build time, so this has to be measured by hand and kept in step if
+      // the clip is ever re-cut.
+      aspectRatio: '16 / 9',
       kind: 'video',
       src: 'https://framerusercontent.com/assets/3Skn8cgIBaBLCUD3Y8gU51uIB4Q.mp4',
     },
@@ -140,6 +178,14 @@ const MOCKUP_EMBEDS: Record<string, MockupEmbed[]> = {
 };
 
 
+/** The URL and, where the pipeline knows it, the size of one globbed still. */
+function measure(file: MockupFile): Pick<MockupImage, 'height' | 'src' | 'width'> {
+  return typeof file === 'string'
+    ? { src: file }
+    : { height: file.height, src: file.src, width: file.width };
+}
+
+
 /**
  * A highlight's photoset, in the order the reel renders it.
  *
@@ -156,7 +202,7 @@ const MOCKUP_EMBEDS: Record<string, MockupEmbed[]> = {
 export function mockupsFor(id: string, name: string): Mockup[] {
   const prefix = `/src/assets/mockups/${id}/`;
 
-  const stills = Object.keys(MOCKUP_URLS)
+  const stills = Object.keys(MOCKUP_FILES)
     .filter((path) => path.startsWith(prefix))
     .sort()
     .map((path, index) => ({
@@ -165,7 +211,7 @@ export function mockupsFor(id: string, name: string): Mockup[] {
         alt: MOCKUP_ALT[path.slice('/src/assets/mockups/'.length)]
           ?? `${name} — mockup ${index + 1}`,
         kind: 'image' as const,
-        src: MOCKUP_URLS[path],
+        ...measure(MOCKUP_FILES[path]),
       } satisfies MockupImage,
     }));
 
