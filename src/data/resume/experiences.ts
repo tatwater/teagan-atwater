@@ -43,7 +43,7 @@ export const experienceItems: ResumeItem[] = [
       'I am employee #1 and the sole frontend engineer at The New Money Company, a four-person Y Combinator W24 fintech. I started on contract in January 2024, established the front-end patterns the team still works in, and came on full-time a few months later. Every user interface at the company is mine, built on a shared design system that keeps six production web apps and several internal dashboards — serving over a thousand users — visually consistent.\n\nThe work has ranged widely. I rebranded and rebuilt the UI of an acquired marketplace codebase, closing gaps in the inherited experience before we scaled it, and wrote the email dispatcher lambda behind our match alerts. I also built a native Electron email client with built-in AI chat, so sales reps can manage marketplace matches and trades inside their own networks.\n\nBeyond the interfaces, I set all of the frontend architecture: the monorepo structure, the boundaries between apps and shared packages, and the refactor roadmap we use to manage technical debt and centralize shared logic. At a company this size the useful instinct is to unblock yourself, so I have written SQL and PHP for endpoints and PDF templates that did not exist yet, and shipped ahead of design when a launch depended on it. As agentic tooling matured I folded it into daily delivery and code review.',
     descriptionPrint:
       'Employee #1 and sole frontend engineer at a four-person YC W24 fintech. Built every interface across 6 production web apps and internal dashboards serving 1,000+ users, set all frontend architecture, and shipped a native Electron client. Products I built process $250K+/month in transaction volume.',
-    detailLabel: 'Learn more',
+    // detailLabel: 'Learn more',
   },
   {
     // Shelved for now, data kept — drop `hidden` to bring the card back. Its
@@ -199,7 +199,7 @@ export const experienceItems: ResumeItem[] = [
     tags: ['Freelance', 'Full Stack', 'UI Design', 'UX Design', 'HTML', 'CSS', 'JavaScript', 'Content Strategy', 'Responsive Design', 'Figma', 'Semantic Markup', 'Information Architecture', 'Accessibility', 'Sass/Less', 'jQuery', 'Web Performance', 'Git', 'Agile/Scrum', 'SEO'],
     descriptionHeadline: 'Ran a freelance web design & development studio for 5 years',
     descriptionSummary:
-      'Founded and operated Shadow Art Studios, a freelance web design and development practice. Worked directly with clients to assess needs, design custom websites, and manage projects from scoping through launch.',
+      'A freelance web design and development practice I ran through high school and college. Built and launched ~10 custom sites for small businesses, owning every part myself: scoping and pricing the work, designing, building, and shipping it, and supporting clients afterward',
     descriptionFull:
       'Shadow Art Studios was my freelance web design and development practice, which I ran for five years starting in 2011. I worked directly with small businesses and individuals to understand their needs, design custom websites, and build and launch them end-to-end. Running my own studio meant I had to be good at everything: client communication, project scoping and budgeting, design, front-end and back-end development, and quality assurance. It was a formative period that gave me a broad, practical foundation across the full web stack and taught me how to run a client services business with integrity.',
     descriptionPrint:
