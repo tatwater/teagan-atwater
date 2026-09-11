@@ -41,6 +41,23 @@ import '@/styles/global.css';
 	</head>
 	<body>
 		<!--
+			The first thing Tab reaches, on every page, and the only reason it is the
+			first child of <body>: the navbar below is `client:only`, so on the very
+			first paint this link is the *only* focusable thing in the document.
+
+			Hidden until focused rather than always visible — `sr-only` keeps it out
+			of the layout entirely, so the navbar's top border stays flush, and
+			`not-sr-only` hands the box back the moment it takes focus. It is
+			positioned over the navbar rather than pushing it down, because a page
+			that grows 40px on the first keystroke is its own kind of jolt.
+		-->
+		<a
+			class='sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:inline-flex focus:items-center focus:px-3 focus:py-2 focus:border focus:border-border focus:bg-popover focus:font-mono focus:text-xs focus:shadow-sm focus:outline-none focus:ring-1 focus:ring-ring'
+			href='#main-content'
+		>
+			Skip to content
+		</a>
+		<!--
 			The navbar is `client:only`, so the server sends no header at all and the
 			page arrives 65px short of its real height. Everything below it is laid
 			out too high until React mounts and shoves it down — visible as a jolt on
@@ -57,7 +74,20 @@ import '@/styles/global.css';
 		</div>
 		<div class='px-5 md:px-8 lg:px-10'>
 		  <div class='max-w-7xl mx-auto border-x border-border-light min-h-full'>
-				<slot />
+				<!--
+					`tabindex="-1"` is what makes the skip link above actually work: without
+					it the browser moves the *scroll* to this element but leaves focus on
+					the body, so the next Tab drops the reader straight back into the navbar
+					they just skipped.
+
+					`outline-none` because that focus is programmatic and the region is the
+					whole page — a ring drawn around all of it reads as a rendering fault
+					rather than a focus indicator. The move is legible from where the next
+					Tab lands instead.
+				-->
+				<main id='main-content' tabindex='-1' class='focus:outline-none'>
+					<slot />
+				</main>
 			</div>
 		</div>
 	</body>

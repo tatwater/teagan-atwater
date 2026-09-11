@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { detectPlatform, MAC_MODIFIER_SYMBOLS, useHotkey } from '@tanstack/react-hotkeys';
 import { faPaperPlane, faCircleCheck, faTriangleExclamation } from '@fortawesome/sharp-regular-svg-icons';
 import { Icon } from '@/components/icon';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Kbd, KbdGroup } from '@/components/ui/kbd';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { rateLimitMessage } from '@/lib/rate-limit-message';
@@ -62,15 +64,76 @@ export default function ContactForm(props: {
   const [needsInteraction, setNeedsInteraction] = useState(false);
   const [theme, setTheme] = useState<ResolvedTheme>('light');
 
+  // Null until mounted, which is what keeps the hint out of the server's
+  // markup: the platform cannot be read there, and a ⌘ rendered for a visitor
+  // on Windows is worse than no hint at all.
+  const [metaKey, setMetaKey] = useState<string | null>(null);
+
+  useEffect(() => {
+    setMetaKey(detectPlatform() === 'mac' ? MAC_MODIFIER_SYMBOLS['Meta'] : 'Ctrl');
+  }, []);
+
   const turnstileRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   const tokenRef = useRef<string | null>(null);
   const waitersRef = useRef<Array<(token: string | null) => void>>([]);
 
+  const formRef = useRef<HTMLFormElement>(null);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const errorRef = useRef<HTMLDivElement>(null);
+  const successRef = useRef<HTMLDivElement>(null);
+
   // The widget is hidden until Cloudflare wants an interaction, so the form is
   // unmounted on success and remounted for "Send another" — a Turnstile token is
   // single-use, and a stale one would be rejected as a duplicate.
   const formVisible = status !== 'success';
+
+
+  /**
+   * Start in the first field, so the page can be filled in without touching
+   * anything first. Runs on arrival and again on "Send another", which is the
+   * same moment wearing a different hat.
+   *
+   * Only where the pointer is fine. On a touch device the reward for this is
+   * the on-screen keyboard thrown up over two thirds of the page before the
+   * visitor has read what the form is for. `preventScroll` covers the rest: a
+   * visitor who arrived deep-linked and part-way down should keep their place,
+   * not be yanked to a field they have not looked at yet.
+   */
+  useEffect(() => {
+    if (!formVisible) return;
+    if (!window.matchMedia('(pointer: fine)').matches) return;
+
+    nameRef.current?.focus({ preventScroll: true });
+  }, [formVisible]);
+
+
+  /**
+   * The way out of a long textarea without reaching for the mouse or tabbing
+   * past Turnstile's privacy links. Guarded against the command palette, which
+   * opens over this page and would otherwise send a half-written message from
+   * behind its own dialog.
+   */
+  useHotkey('Mod+Enter', (event) => {
+    if ((event.target as Element | null)?.closest?.('[role="dialog"]')) return;
+
+    formRef.current?.requestSubmit();
+  }, { enabled: formVisible && status !== 'submitting' });
+
+
+  // A failure that only paints red somewhere below the button is a failure a
+  // keyboard reader has to go looking for. `role='alert'` reads it out; moving
+  // focus puts the reader at the thing they now have to act on.
+  useEffect(() => {
+    if (status === 'error') errorRef.current?.focus();
+  }, [status]);
+
+
+  // The form the reader was standing in has just been replaced. Land them on
+  // what replaced it rather than back at the top of the document.
+  useEffect(() => {
+    if (status === 'success') successRef.current?.focus();
+  }, [status]);
 
 
   /** Hand a token (or a failure) to anything waiting on one. */
@@ -275,7 +338,12 @@ export default function ContactForm(props: {
 
   if (status === 'success') {
     return (
-      <div className='flex flex-col items-start gap-3 border border-border p-6'>
+      <div
+        className='flex flex-col items-start gap-3 border border-border p-6 focus:outline-none'
+        ref={successRef}
+        role='status'
+        tabIndex={-1}
+      >
         <Icon className='text-lg text-primary' icon={faCircleCheck} />
         <div className='flex flex-col gap-1'>
           <p className='text-sm font-medium'>
@@ -302,7 +370,7 @@ export default function ContactForm(props: {
 
 
   return (
-    <form className='flex flex-col gap-5' noValidate onSubmit={handleSubmit}>
+    <form className='flex flex-col gap-5' noValidate onSubmit={handleSubmit} ref={formRef}>
       <div className='grid gap-5 sm:grid-cols-2'>
         <Field htmlFor='contact-name' label='Name'>
           <Input
@@ -311,6 +379,7 @@ export default function ContactForm(props: {
             maxLength={200}
             name='name'
             placeholder='Your name'
+            ref={nameRef}
             required
           />
         </Field>
@@ -369,7 +438,12 @@ export default function ContactForm(props: {
       )}
 
       {error && (
-        <div className='flex items-start gap-2 border border-destructive/40 bg-destructive/10 px-3 py-2'>
+        <div
+          className='flex items-start gap-2 border border-destructive/40 bg-destructive/10 px-3 py-2 focus:outline-none'
+          ref={errorRef}
+          role='alert'
+          tabIndex={-1}
+        >
           <Icon className='mt-0.5 text-xs text-destructive' icon={faTriangleExclamation} />
           <p className='text-xs text-destructive'>
             {error}
@@ -379,12 +453,21 @@ export default function ContactForm(props: {
 
       <div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
         <Button
+          aria-keyshortcuts='Meta+Enter Control+Enter'
           className={cn('font-mono', status === 'submitting' && 'opacity-70')}
           disabled={status === 'submitting'}
           type='submit'
         >
           <Icon className='text-xs' icon={faPaperPlane} />
           {status === 'submitting' ? 'Sending…' : 'Send message'}
+          {/* Same hint the print button and the palette use — announced once,
+              by aria-keyshortcuts above, and hidden from the tree here. */}
+          {metaKey && status !== 'submitting' && (
+            <KbdGroup aria-hidden='true' className='relative hidden sm:inline-flex -right-1'>
+              <Kbd>{metaKey}</Kbd>
+              <Kbd>{`↵`}</Kbd>
+            </KbdGroup>
+          )}
         </Button>
 
         {/* Trails the button, flush with the right edge of the fields above. */}

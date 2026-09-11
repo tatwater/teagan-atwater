@@ -99,7 +99,28 @@ export function ResumeToolbar(props: {
     }
   });
 
-  useHotkey('Escape', () => {
+  /**
+   * Escape unwinds the page one step at a time, in the order a reader would
+   * have built it up: the query first, then the caret, then the sort.
+   *
+   * The dialog guard is not hypothetical. The command palette opens over this
+   * page and closes on Escape, and without this check that one keystroke also
+   * reached back through the overlay and cleared the sort the reader had set
+   * before opening it.
+   */
+  useHotkey('Escape', (e) => {
+    if ((e.target as Element | null)?.closest?.('[role="dialog"]')) return;
+
+    if (props.search) {
+      props.onSearchChange('');
+      return;
+    }
+
+    if (searchRef.current === document.activeElement) {
+      searchRef.current?.blur();
+      return;
+    }
+
     if (props.activeTag) props.onClearActiveTag();
   });
 
@@ -120,6 +141,8 @@ export function ResumeToolbar(props: {
             icon={faMagnifyingGlass}
           />
           <Input
+            aria-keyshortcuts='/'
+            aria-label='Highlight entries by keyword'
             className={cn(
               'pl-7 pr-7 text-xs bg-muted/50 border border-border',
               'placeholder:text-muted-foreground/50',
@@ -134,9 +157,11 @@ export function ResumeToolbar(props: {
           />
           {props.search ? (
             <button
+              aria-label='Clear search'
               className={cn(
                 'absolute grid place-items-center right-1 top-1/2 -translate-y-1/2 size-6 bg-transparent text-muted-foreground cursor-pointer',
-                'hover:bg-accent hover:text-foreground'
+                'hover:bg-accent hover:text-foreground',
+                'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
               )}
               onClick={() => props.onSearchChange('')}
               type='button'
@@ -147,7 +172,14 @@ export function ResumeToolbar(props: {
               />
             </button>
           ) : (
-              <Kbd className='absolute right-1.5 top-1/2 -translate-y-1/2 group-focus-within:hidden'>
+              // Both hiding rules are written as `hidden` rather than as one
+              // `hidden`/`inline-flex` pair, so neither has to win a specificity
+              // argument with the other: below `md` there is no key to press,
+              // and once the field has the caret the hint has been taken.
+              <Kbd
+                aria-hidden='true'
+                className='absolute right-1.5 top-1/2 -translate-y-1/2 max-md:hidden group-focus-within:hidden'
+              >
                 {`/`}
               </Kbd>
           )}

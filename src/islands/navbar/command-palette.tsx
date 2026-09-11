@@ -4,6 +4,7 @@ import type { ThemePreference } from '@/islands/navbar/types';
 import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { navigate } from 'astro:transitions/client';
 import { detectPlatform, MAC_MODIFIER_SYMBOLS } from '@tanstack/react-hotkeys';
+import { faMagnifyingGlass } from '@fortawesome/sharp-regular-svg-icons';
 import {
   Command,
   CommandDialog,
@@ -16,6 +17,7 @@ import {
 } from '@/components/ui/command';
 import { Icon } from '@/components/icon';
 import { Kbd, KbdGroup } from '@/components/ui/kbd';
+import { cn } from '@/lib/utils';
 import { applyTheme, getStoredTheme } from '@/islands/navbar/theme';
 import {
   createSearchIndex,
@@ -178,20 +180,48 @@ export function CommandPalette() {
 
   return (
     <>
-      {/* Explore by keyboard hint — visual only, not interactive */}
+      {/*
+        Two ways in, one per width, so the palette is never ⌘K-only: a reader
+        without a keyboard shortcut to hand — on a phone, or tabbing — still has
+        something to press. Above `lg` it reads as the hint it always was, just
+        one that answers a click now; below, a bare icon beside the theme
+        toggle, since the hint's copy is about a key that is not there.
+
+        The wide one waits for the platform, so the chip never shows the wrong
+        modifier for a frame. The narrow one has nothing to wait for.
+      */}
       {metaKey && (
-        <span
-          className="hidden lg:flex items-center gap-1.5 mr-2 text-xs text-muted-foreground font-mono select-none pointer-events-none"
-          aria-hidden="true"
-          tabIndex={-1}
+        <button
+          aria-keyshortcuts={`${metaKey === 'Ctrl' ? 'Control' : 'Meta'}+K`}
+          className={cn(
+            'hidden lg:flex items-center gap-1.5 mr-2 px-1.5 py-0.5 rounded-xs cursor-pointer',
+            'text-xs text-muted-foreground font-mono select-none transition-colors',
+            'hover:text-foreground',
+            'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+          )}
+          onClick={() => setOpen(true)}
+          type='button'
         >
           Explore by keyboard
-          <KbdGroup>
+          <KbdGroup aria-hidden='true'>
             <Kbd>{metaKey}</Kbd>
             <Kbd>K</Kbd>
           </KbdGroup>
-        </span>
+        </button>
       )}
+      <button
+        aria-label='Search'
+        className={cn(
+          'lg:hidden size-8 text-sm rounded-full',
+          'flex items-center justify-center cursor-pointer outline-none',
+          'text-muted-foreground hover:text-foreground hover:bg-muted transition-colors',
+          'focus-visible:ring-1 focus-visible:ring-ring',
+        )}
+        onClick={() => setOpen(true)}
+        type='button'
+      >
+        <Icon icon={faMagnifyingGlass} />
+      </button>
 
       <CommandDialog open={open} onOpenChange={setOpen}>
         <Command shouldFilter={false}>

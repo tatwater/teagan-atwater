@@ -41,12 +41,20 @@ export function Navbar() {
   }, []);
 
   return (
-    <div className='w-full border-b border-border-light'>
+    // Only the inner list of links is a navigation landmark. The bar itself is
+    // the page's banner, and the element between them is pure layout — nesting a
+    // second <nav> inside the first gave a screen reader two unlabelled
+    // navigation landmarks to choose between where there is only one list.
+    <header className='w-full border-b border-border-light'>
       <div className='px-5 md:px-8 lg:px-10'>
-        <nav className='relative flex items-center justify-between max-w-7xl mx-auto pl-6 pr-2 border-x border-border-light min-h-16'>
+        <div className='relative flex items-center justify-between max-w-7xl mx-auto pl-6 pr-2 border-x border-border-light min-h-16'>
           <div className='flex items-center gap-5 sm:gap-8'>
             <a
-              className='size-10 opacity-85'
+              aria-label='Home'
+              className={cn(
+                'size-10 opacity-85 rounded-xs',
+                'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+              )}
               data-astro-prefetch='load'
               href='/'
             >
@@ -55,19 +63,21 @@ export function Navbar() {
                 strokeWidth={2}
               />
             </a>
-            <nav className='flex items-center gap-3 sm:gap-6 font-glyph text-sm'>
+            <nav aria-label='Primary' className='flex items-center gap-3 sm:gap-6 font-glyph text-sm'>
               {NAV_LINKS.map(({ href, label }) => {
                 const isActive = pathname.startsWith(href);
                 return (
                   <a
                     key={href}
+                    aria-current={isActive ? 'page' : undefined}
                     href={href}
                     // Only three routes exist, so fetch both siblings once this
                     // page has settled rather than waiting for a hover. Astro
                     // drops back to `tap` on save-data and slow connections.
                     data-astro-prefetch='load'
                     className={cn(
-                      'relative isolate transition-colors px-2 py-0.5 whitespace-nowrap',
+                      'relative isolate transition-colors px-2 py-0.5 whitespace-nowrap rounded-xs',
+                      'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
                       isActive
                         ? 'text-foreground'
                         : 'text-secondary-foreground/70 hover:text-secondary-foreground',
@@ -105,8 +115,8 @@ export function Navbar() {
           {/* Corner squares */}
           <div className='absolute bottom-0 left-0 size-2.5 bg-background border border-border-light rounded-px translate-x-[calc(-50%-0.5px)] translate-y-[calc(50%+0.5px)] z-30' />
           <div className='absolute bottom-0 right-0 size-2.5 bg-background border border-border-light rounded-px translate-x-[calc(50%+0.5px)] translate-y-[calc(50%+0.5px)] z-30' />
-        </nav>
+        </div>
       </div>
-    </div>
+    </header>
   );
 }

@@ -1,7 +1,9 @@
 import type { Mockup, MockupEmbed } from '@/lib/mockups';
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { motion } from 'motion/react';
+import { useHotkeys } from '@tanstack/react-hotkeys';
+import { Kbd, KbdGroup } from '@/components/ui/kbd';
 import { cn } from '@/lib/utils';
 import { overrideCoarsePointer } from '@/lib/mockuuups-pointer-override';
 
@@ -30,6 +32,19 @@ const PANEL_TOP_GAP = 8;
 
 /** Close enough to the photoset's top that scrolling would read as a twitch. */
 const SCROLL_DEADZONE = 12;
+
+/**
+ * Marks one focusable shot in the photoset.
+ *
+ * Read back out of the DOM rather than tracked in a ref array because the panel
+ * remounts wholesale on every switch, and the answer this needs — "the shots
+ * that are on screen right now, in order" — is exactly what the DOM already
+ * knows. A ref array would have to be invalidated by hand on each remount.
+ */
+const SHOT_ATTR = 'data-reel-shot';
+
+/** How many works get a number key. Past nine there is no single digit left. */
+const DIGIT_SHORTCUT_LIMIT = 9;
 
 
 /**
@@ -67,15 +82,17 @@ function storeSelection(id: string) {
  * clip would otherwise ignore: they get the same frame, paused, with controls
  * if they want to play it themselves.
  */
-function MockupVideo({ alt, aspectRatio, src }: { alt: string; aspectRatio: string; src: string }) {
+function MockupVideo(props: {
+  alt: string;
+  aspectRatio: string;
+  reducedMotion: boolean;
+  src: string;
+}) {
+  const { alt, aspectRatio, reducedMotion, src } = props;
   const ref = useRef<HTMLVideoElement>(null);
-  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setReducedMotion(true);
-      return;
-    }
+    if (reducedMotion) return;
 
     const video = ref.current;
     if (!video) return;
@@ -84,7 +101,7 @@ function MockupVideo({ alt, aspectRatio, src }: { alt: string; aspectRatio: stri
     // Rejects when the browser blocks playback anyway; the poster frame stands
     // in and there is nothing useful to do about it.
     void video.play().catch(() => {});
-  }, []);
+  }, [reducedMotion]);
 
   return (
     <video
@@ -143,24 +160,14 @@ function loadEmbedScript() {
  * only honest option is to leave it out for those readers — the highlight's
  * stills sit directly below and carry the slot on their own.
  *
- * The check runs in an effect rather than during render because the markup is
- * server-rendered, where the media query cannot be read; matching the first
- * client paint to the server's and then dropping the player keeps hydration
- * quiet. MockupVideo above flips the same way for the same reason.
+ * Dropping it is HomeReel's job rather than this component's, because the
+ * photoset now numbers its shots out loud — "shot 2 of 4" — and a component
+ * that returns null after being counted would leave a labelled, empty tab stop
+ * where the player used to be. Filtering upstream means the count is taken
+ * against what is actually there.
  */
 function MockupPlayer({ shot }: { shot: MockupEmbed }) {
-  const [reducedMotion, setReducedMotion] = useState(false);
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setReducedMotion(true);
-      return;
-    }
-
-    loadEmbedScript();
-  }, []);
-
-  if (reducedMotion) return null;
+  useEffect(loadEmbedScript, []);
 
   return (
     <mockup-player
@@ -208,10 +215,32 @@ export default function HomeReel(props: {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoAdvancing, setAutoAdvancing] = useState(true);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const panelRef = useRef<HTMLDivElement>(null);
 
+  /** Set by a switch the reader asked for, and only by one. See below. */
+  const focusOnSwitch = useRef(false);
+
   const stopAutoAdvancing = useCallback(() => setAutoAdvancing(false), []);
+
+  // One reading of the media query for the whole reel, rather than one per
+  // shot: the photoset now counts itself aloud, and the count has to be taken
+  // against the same answer the embeds were filtered by.
+  //
+  // Read in an effect rather than during render because the page is
+  // prerendered, where there is no query to ask. Subscribing as well as reading
+  // means a reader who flips the system setting mid-visit is honoured without a
+  // reload — the embeds appear or vanish and the numbering follows.
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReducedMotion(query.matches);
+
+    sync();
+    query.addEventListener('change', sync);
+
+    return () => query.removeEventListener('change', sync);
+  }, []);
 
   // Come back to the project the reader was last looking at.
   //
@@ -274,7 +303,7 @@ export default function HomeReel(props: {
     if (!autoAdvancing || items.length < 2)
       return;
 
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (reducedMotion) {
       setAutoAdvancing(false);
       return;
     }
@@ -285,7 +314,7 @@ export default function HomeReel(props: {
     );
 
     return () => window.clearInterval(timer);
-  }, [autoAdvancing, intervalMs, items.length]);
+  }, [autoAdvancing, intervalMs, items.length, reducedMotion]);
 
   // A switch swaps the photoset in place, which leaves the reader parked
   // wherever the last project's column happened to run to. Come back up to the
@@ -318,12 +347,10 @@ export default function HomeReel(props: {
     if (window.scrollY - target <= SCROLL_DEADZONE) return;
 
     window.scrollTo({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ? 'auto'
-        : 'smooth',
+      behavior: reducedMotion ? 'auto' : 'smooth',
       top: target,
     });
-  }, []);
+  }, [reducedMotion]);
 
   // Roving focus, as a vertical tablist is expected to behave.
   function handleTabKeyDown(event: React.KeyboardEvent, index: number) {
@@ -346,9 +373,134 @@ export default function HomeReel(props: {
 
   const active = items[activeIndex];
 
+  // What the reader can actually reach in this photoset, which is what the
+  // "shot n of m" labels have to be counted against — see MockupPlayer.
+  const shots = useMemo(
+    () => (reducedMotion ? active.shots.filter((shot) => shot.kind !== 'embed') : active.shots),
+    [active.shots, reducedMotion],
+  );
+
+  /** The photoset's tab stops, in document order. */
+  const shotStops = useCallback(
+    () => Array.from(panelRef.current?.querySelectorAll<HTMLElement>(`[${SHOT_ATTR}]`) ?? []),
+    [],
+  );
+
+  /** Where a deliberate switch puts the reader: the top of what they asked for. */
+  const focusFirstShot = useCallback(() => {
+    const panel = panelRef.current;
+    if (!panel) return;
+
+    // A highlight whose mockups do not exist yet has no shots to land on, so
+    // the panel itself takes the focus and announces the project's name.
+    const target = panel.querySelector<HTMLElement>(`[${SHOT_ATTR}]`)
+      ?? panel.querySelector<HTMLElement>('[role="tabpanel"]');
+
+    target?.focus();
+  }, []);
+
+  /**
+   * Switch to a project and go and read it.
+   *
+   * Focus has to move, and not as a courtesy: the panel is keyed, so a switch
+   * unmounts whatever shot the reader was standing on and focus would fall back
+   * to the body — the next Tab restarting from the top of the document, which
+   * is the worst possible answer to "show me the next one".
+   *
+   * The flag is what keeps the reel from doing this to anyone uninvited. It is
+   * set only here, by a keystroke the reader typed, and never by the interval
+   * that advances the reel on its own.
+   */
+  const selectWork = useCallback((index: number) => {
+    setAutoAdvancing(false);
+
+    // Already there — nothing will remount, so nothing will run the effect
+    // below, and a flag left standing would be spent by the next switch.
+    if (index === activeIndex) {
+      focusFirstShot();
+      return;
+    }
+
+    focusOnSwitch.current = true;
+    setActiveIndex(index);
+  }, [activeIndex, focusFirstShot]);
+
+  const stepWork = useCallback(
+    (delta: number) => selectWork((activeIndex + delta + items.length) % items.length),
+    [activeIndex, items.length, selectWork],
+  );
+
+  useEffect(() => {
+    if (!focusOnSwitch.current) return;
+
+    focusOnSwitch.current = false;
+    focusFirstShot();
+  }, [activeIndex, focusFirstShot]);
+
+  // Switching project from anywhere on the page, which is the whole point:
+  // a reader four shots down a photoset can move on without climbing back up
+  // to the rail to do it. Brackets step, digits jump straight to one.
+  //
+  // Single-key hotkeys ignore keystrokes aimed at inputs by default, so typing
+  // a '2' into the command palette searches for a 2 rather than swapping the
+  // reel out from behind the dialog.
+  useHotkeys([
+    { callback: () => stepWork(-1), hotkey: '[' },
+    { callback: () => stepWork(1), hotkey: ']' },
+    ...items.slice(0, DIGIT_SHORTCUT_LIMIT).map((_, index) => ({
+      callback: () => selectWork(index),
+      hotkey: { key: String(index + 1) },
+    })),
+  ]);
+
+  /**
+   * Arrow keys step between shots, so the photoset can be read without Tab
+   * being the only way through it.
+   *
+   * Clamped rather than wrapped, unlike the tablist above: the tabs are a short
+   * ring you can feel your way around, while the photoset is a long column
+   * where wrapping off the last shot would throw the reader back to the top of
+   * the page without asking.
+   *
+   * Bails when the keystroke started somewhere deeper — under reduced motion a
+   * clip is rendered with its own controls, and those arrow keys are the
+   * video's business, not the reel's.
+   */
+  function handleShotKeyDown(event: React.KeyboardEvent<HTMLElement>) {
+    if (event.target !== event.currentTarget) return;
+
+    const stops = shotStops();
+    const index = stops.indexOf(event.currentTarget);
+    if (index < 0) return;
+
+    const lastIndex = stops.length - 1;
+
+    const nextIndex =
+      event.key === 'ArrowDown' || event.key === 'ArrowRight' ? Math.min(index + 1, lastIndex)
+      : event.key === 'ArrowUp' || event.key === 'ArrowLeft' ? Math.max(index - 1, 0)
+      : event.key === 'Home' ? 0
+      : event.key === 'End' ? lastIndex
+      : null;
+
+    if (nextIndex === null)
+      return;
+
+    event.preventDefault();
+    stops[nextIndex]?.focus();
+  }
+
 
   return (
-    <div className='flex flex-col lg:flex-row min-h-[calc(100vh-4rem-1px)]'>
+    // Focus arriving anywhere in the reel ends its autonomy, as a click or a
+    // keystroke would. Usually the Tab that brought it here has already done
+    // that through the window listener, but a screen reader's virtual cursor
+    // can land focus without ever sending a keydown, and a reel that swaps its
+    // panel out from under the thing being read is the one failure this
+    // component must never have.
+    <div
+      className='flex flex-col lg:flex-row min-h-[calc(100vh-4rem-1px)]'
+      onFocus={stopAutoAdvancing}
+    >
 
       {/* Sidebar: selected work */}
       <aside className='w-full lg:w-72 xl:w-80 shrink-0 border-b lg:border-b-0 lg:border-r border-border-light'>
@@ -383,6 +535,7 @@ export default function HomeReel(props: {
                 <button
                   key={item.id}
                   aria-controls={`reel-panel-${item.id}`}
+                  aria-keyshortcuts={index < DIGIT_SHORTCUT_LIMIT ? String(index + 1) : undefined}
                   aria-selected={selected}
                   className={cn(
                     // The rail sits outside the sidebar now, so a plain pl-6 puts
@@ -428,6 +581,49 @@ export default function HomeReel(props: {
               );
             })}
           </div>
+
+          {/*
+            The shortcuts are useless if nobody knows they are there, and this
+            is the only place on the page they could be announced without
+            shouting. Set below the list rather than between the heading and
+            the tabs, so it reads as a footnote to the rail instead of
+            interrupting it.
+
+            `lg` and up only — it is the same judgement the navbar's ⌘K hint
+            makes, that below this width there is unlikely to be a keyboard to
+            press. Hidden from the accessibility tree too, because each tab
+            carries its own `aria-keyshortcuts` and would otherwise say it twice.
+          */}
+          {items.length > 1 && (
+            <div
+              aria-hidden='true'
+              className='hidden lg:flex flex-col gap-1.5 px-6 pt-1 text-xs font-mono text-muted-foreground/60 select-none pointer-events-none'
+            >
+              <div className='flex items-center gap-x-1'>
+                <KbdGroup>
+                  <Kbd>{`[`}</Kbd>
+                  /
+                  <Kbd>{`]`}</Kbd>
+                </KbdGroup>
+                ,
+                <KbdGroup>
+                  <Kbd>{`1`}</Kbd>
+                  –
+                  <Kbd>{Math.min(items.length, DIGIT_SHORTCUT_LIMIT)}</Kbd>
+                </KbdGroup>
+                <span className='ml-2'>{`switch work`}</span>
+              </div>
+
+              <div className='flex items-center gap-x-1'>
+                <KbdGroup>
+                  <Kbd>{`↑`}</Kbd>
+                  /
+                  <Kbd>{`↓`}</Kbd>
+                </KbdGroup>
+                <span className='ml-2'>{`browse shots`}</span>
+              </div>
+            </div>
+          )}
         </div>
       </aside>
 
@@ -457,42 +653,60 @@ export default function HomeReel(props: {
           id={`reel-panel-${active.id}`}
           initial={{ opacity: 0 }}
           role='tabpanel'
-          tabIndex={0}
+          // A tabpanel only needs to be a tab stop of its own when it holds
+          // nothing focusable, which since the shots became figures is true
+          // only of a project whose mockups are still placeholders. It stays
+          // reachable in code either way, for the switch handler to land on.
+          tabIndex={shots.length > 0 ? -1 : 0}
           transition={{ duration: 0.25, ease: 'easeInOut' }}
         >
-            {active.shots.length > 0
-              ? active.shots.map((shot) => {
-                  if (shot.kind === 'embed') {
-                    return <MockupPlayer key={shot.mockupId} shot={shot} />;
-                  }
-
-                  if (shot.kind === 'video') {
-                    return (
+            {shots.length > 0
+              ? shots.map((shot, index) => (
+                  /*
+                    Each shot is its own tab stop, which is what makes a
+                    photoset something you can walk rather than one opaque
+                    block you either land in or scroll past. The label is
+                    positional on purpose: the alt text below it describes the
+                    picture at length and beautifully, but says nothing about
+                    where in the set you are.
+                  */
+                  <figure
+                    key={shot.kind === 'embed' ? shot.mockupId : shot.src}
+                    aria-label={`${active.name} — shot ${index + 1} of ${shots.length}`}
+                    className={cn(
+                      'relative scroll-mt-4 outline-none',
+                      'focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2',
+                      'focus-visible:ring-offset-background',
+                    )}
+                    onKeyDown={handleShotKeyDown}
+                    tabIndex={0}
+                    {...{ [SHOT_ATTR]: '' }}
+                  >
+                    {shot.kind === 'embed' ? (
+                      <MockupPlayer shot={shot} />
+                    ) : shot.kind === 'video' ? (
                       <MockupVideo
-                        key={shot.src}
                         alt={shot.alt}
                         aspectRatio={shot.aspectRatio}
+                        reducedMotion={reducedMotion}
                         src={shot.src}
                       />
-                    );
-                  }
-
-                  return (
-                    // `h-auto` because the height attribute would otherwise
-                    // pin the element to the file's own pixel height; paired
-                    // with the width it becomes an aspect ratio instead, and
-                    // the box is reserved before the image decodes.
-                    <img
-                      key={shot.src}
-                      alt={shot.alt}
-                      className='w-full h-auto border border-border-light'
-                      height={shot.height}
-                      loading='lazy'
-                      src={shot.src}
-                      width={shot.width}
-                    />
-                  );
-                })
+                    ) : (
+                      // `h-auto` because the height attribute would otherwise
+                      // pin the element to the file's own pixel height; paired
+                      // with the width it becomes an aspect ratio instead, and
+                      // the box is reserved before the image decodes.
+                      <img
+                        alt={shot.alt}
+                        className='block w-full h-auto border border-border-light'
+                        height={shot.height}
+                        loading='lazy'
+                        src={shot.src}
+                        width={shot.width}
+                      />
+                    )}
+                  </figure>
+                ))
               : Array.from({ length: PLACEHOLDER_COUNT }).map((_, i) => (
                   <div
                     key={i}

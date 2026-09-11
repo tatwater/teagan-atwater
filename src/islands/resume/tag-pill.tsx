@@ -20,7 +20,11 @@ export function TagPill(props: {
   highlighted?: boolean;
   label?: string;
   onClick?: (tag: SkillTag) => void;
+  /** Fires when the pill takes focus, however it got it. See SkillsPanel. */
+  onFocus?: (tag: SkillTag) => void;
   small?: boolean;
+  /** For a parent that roves focus over its pills; the default is a tab stop. */
+  tabIndex?: number;
   title?: string;
 }) {
   const className = cn(
@@ -47,8 +51,17 @@ export function TagPill(props: {
   return (
     <button
       aria-pressed={Boolean(props.active)}
-      className={cn(className, 'cursor-pointer')}
+      className={cn(
+        className,
+        'cursor-pointer',
+        // The pills sit shoulder to shoulder in the sidebar, so the ring is
+        // offset off the border rather than drawn on top of the neighbour's.
+        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring',
+        'focus-visible:ring-offset-1 focus-visible:ring-offset-background',
+      )}
       onClick={() => props.onClick?.(props.tag)}
+      onFocus={() => props.onFocus?.(props.tag)}
+      tabIndex={props.tabIndex}
       title={props.title}
       type='button'
     >
